@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8AD4E50B-4C13-4029-AB83-52FCEE729630}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ScriptManFinal</RootNamespace>
+    <AssemblyName>ScriptManFinal</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=13.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=13.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeFormat.cs" />
+    <Compile Include="dba_adminDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dba_adminDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dba_adminDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dba_adminDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dba_adminDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dba_adminDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="GradientPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InspectError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InspectError.Designer.cs">
+      <DependentUpon>InspectError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorPrompt.Designer.cs">
+      <DependentUpon>ErrorPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="ProgressReport.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RMDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet3.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet4.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet5.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet5.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet6.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet7.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet7.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RMDataSet8.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RMDataSet8.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SourceFormat.cs" />
+    <Compile Include="TsqlFormat.cs" />
+    <EmbeddedResource Include="InspectError.resx">
+      <DependentUpon>InspectError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorPrompt.resx">
+      <DependentUpon>ErrorPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="dba_adminDataSet.xsc">
+      <DependentUpon>dba_adminDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="dba_adminDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dba_adminDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dba_adminDataSet.xss">
+      <DependentUpon>dba_adminDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="dba_adminDataSet1.xsc">
+      <DependentUpon>dba_adminDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="dba_adminDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dba_adminDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dba_adminDataSet1.xss">
+      <DependentUpon>dba_adminDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="dba_adminDataSet2.xsc">
+      <DependentUpon>dba_adminDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="dba_adminDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dba_adminDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dba_adminDataSet2.xss">
+      <DependentUpon>dba_adminDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="RMDataSet.xsc">
+      <DependentUpon>RMDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet.xss">
+      <DependentUpon>RMDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet1.xsc">
+      <DependentUpon>RMDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet1.xss">
+      <DependentUpon>RMDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet2.xsc">
+      <DependentUpon>RMDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet2.xss">
+      <DependentUpon>RMDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet3.xsc">
+      <DependentUpon>RMDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet3.xss">
+      <DependentUpon>RMDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet4.xsc">
+      <DependentUpon>RMDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet4.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet4.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet4.xss">
+      <DependentUpon>RMDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet5.xsc">
+      <DependentUpon>RMDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet5.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet5.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet5.xss">
+      <DependentUpon>RMDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet6.xsc">
+      <DependentUpon>RMDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet6.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet6.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet6.xss">
+      <DependentUpon>RMDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet7.xsc">
+      <DependentUpon>RMDataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet7.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet7.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet7.xss">
+      <DependentUpon>RMDataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet8.xsc">
+      <DependentUpon>RMDataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="RMDataSet8.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RMDataSet8.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RMDataSet8.xss">
+      <DependentUpon>RMDataSet8.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
