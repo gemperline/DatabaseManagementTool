@@ -107,41 +107,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProgressReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RMDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet2.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet3.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet3.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet4.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet4.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet5.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet5.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="RMDataSet6.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RMDataSet6.xsd</DependentUpon>
-    </Compile>
     <Compile Include="RMDataSet7.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,83 +180,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="RMDataSet.xsc">
-      <DependentUpon>RMDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet.xss">
-      <DependentUpon>RMDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet1.xsc">
-      <DependentUpon>RMDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet1.xss">
-      <DependentUpon>RMDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet2.xsc">
-      <DependentUpon>RMDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet2.xss">
-      <DependentUpon>RMDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet3.xsc">
-      <DependentUpon>RMDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet3.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet3.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet3.xss">
-      <DependentUpon>RMDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet4.xsc">
-      <DependentUpon>RMDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet4.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet4.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet4.xss">
-      <DependentUpon>RMDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet5.xsc">
-      <DependentUpon>RMDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet5.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet5.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet5.xss">
-      <DependentUpon>RMDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet6.xsc">
-      <DependentUpon>RMDataSet6.xsd</DependentUpon>
-    </None>
-    <None Include="RMDataSet6.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>RMDataSet6.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RMDataSet6.xss">
-      <DependentUpon>RMDataSet6.xsd</DependentUpon>
-    </None>
     <None Include="RMDataSet7.xsc">
       <DependentUpon>RMDataSet7.xsd</DependentUpon>
     </None>

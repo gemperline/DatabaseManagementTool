@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Text.RegularExpressions;
-using ScriptManFinal.RMDataSetTableAdapters;
+using ScriptManFinal.RMDataSet8TableAdapters;
 using Microsoft.VisualBasic;
 using System.Threading;
 
@@ -36,7 +36,8 @@ namespace ScriptManFinal
         private bool proceed;
         private bool ignoreAll;     // ignore all errors for RUN sequence
         private int placeholder;
-
+        private bool lightSwitch = false;
+      
         public MainForm()
         {
             InitializeComponent();
@@ -60,9 +61,15 @@ namespace ScriptManFinal
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'rMDataSet8.refresh_testing' table. You can move, or remove it, as needed.
-            this.refresh_testingTableAdapter1.Fill(this.rMDataSet8.refresh_testing);
-
+            try
+            {
+                // TODO: This line of code loads data into the 'rMDataSet.refresh_testing' table. You can move, or remove it, as needed.
+                this.refresh_testingTableAdapter1.Fill(this.rMDataSet8.refresh_testing);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\nTry restarting the application.", "Connection Error");
+            }
             setInitState();
         }
 
@@ -73,6 +80,24 @@ namespace ScriptManFinal
                               "\nInitializing states...");
 
             // initial/refresh states and values
+            textBox1.BackColor = Color.DimGray;
+            textBox1.Visible = false;
+            textBox2.BackColor = Color.DimGray;
+            textBox2.Visible = false;
+            textBox3.BackColor = Color.DimGray;
+            label1.Visible = false;
+            textBox3.Visible = false;
+            textBox5.Visible = false;
+            label17.Visible = false;
+            label10.Visible = false;
+            label11.Visible = false;
+            label13.Visible = false;
+            label14.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            comboBox2.Visible = false;
+            comboBox3.Visible = false;
+            comboBox5.Visible = false;
             currentIndex = 0;
             placeholder = 0;
             ignoreAll = false;
@@ -85,32 +110,27 @@ namespace ScriptManFinal
             textBox2.Text = null;
             textBox3.Text = null;
             textBox5.Text = null;
-            textBox2.Enabled = false;
             actionSelected = null;
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
             comboBox5.SelectedIndex = -1;
             comboBox5.Enabled = false;
-            comboBox5.Visible = false;
-            textBox3.Visible = true;
             comboBox1.Visible = true;
             label9.Visible = true;
-            label10.Visible = true;
             label10.Enabled = true;
-            comboBox2.Visible = true;
             comboBox2.Enabled = false;
             comboBox3.Enabled = false;
             comboBox3.SelectedIndex = -1;
-            textBox2.Visible = true;
             textBox3.Enabled = false;
-            label13.Visible = true;
             label13.Enabled = true;
             label12.Visible = true;
             label12.Enabled = true;
-            label11.Visible = true;
-            label14.Visible = true;
-            comboBox4.SelectedIndex = 5;
-            textBox4.Text = null;
+            label11.Enabled = true;
+            label14.Enabled = true;
+            label4.Enabled = true;
+            label5.Enabled = true;
+            toolStripComboBox1.SelectedIndex = 5;
+            toolStripTextBox1.Text = null;
             progressBar1.Minimum = 0;
             progressBar1.Maximum = 1;
             progressBar1.Step = 1;
@@ -120,10 +140,9 @@ namespace ScriptManFinal
             radioButton4.Visible = false;
             textBox1.KeyDown += new KeyEventHandler(execute_KeyDown);
             textBox3.KeyDown += new KeyEventHandler(execute_KeyDown);
-            textBox4.KeyUp += new KeyEventHandler(textBox4_KeyUp);
+            toolStripTextBox1.KeyUp += new KeyEventHandler(toolStripTextBox1_KeyUp);
             progressBar1.Value = 0;
             label3.Visible = false;
-            tabControl1.SelectedIndex = 0;
             tabControl2.SelectedIndex = 0;
 
             if (comboBox1.Items.Contains("UPDATE & RESUME"))
@@ -157,6 +176,7 @@ namespace ScriptManFinal
                     MessageBox.Show("ERROR: could not open the file");
                 }
                 label1.Text = ofd.FileName;
+                label1.Visible = true;
             }
         }
 
@@ -172,23 +192,19 @@ namespace ScriptManFinal
         {
             actionSelected = comboBox1.GetItemText(comboBox1.SelectedItem);
 
-            // when INSERT INTO is selected
             if (actionSelected == "INSERT INTO")
             {
+                toggleFieldVisibility(1);
                 clearFields(sender, e);
                 label10.Enabled = true;
                 label14.Enabled = true;
                 label14.Visible = true;
                 textBox1.Enabled = true;
-                textBox2.Enabled = false;
+                textBox3.Enabled = true;
                 label17.Visible = false;
                 label12.Text = "INSERT INTO:";
                 comboBox2.Enabled = true;
-                comboBox2.Visible = true;
                 label11.Enabled = true;
-                label11.Visible = true;
-                textBox3.Enabled = true;
-                textBox3.Visible = true;
                 label13.Enabled = true;
                 label5.Enabled = true;
                 comboBox5.Visible = false;
@@ -202,14 +218,13 @@ namespace ScriptManFinal
                 if (!comboBox5.Items.Contains("QUAT_ALL"))
                     comboBox5.Items.Add("QUAT_ALL");
             }
-            // when UPDATE is selected
             else if (actionSelected == "UPDATE")
             {
+                toggleFieldVisibility(1);
                 label10.Enabled = true;
                 label14.Enabled = true;
                 label12.Text = "UPDATE:";
                 label14.Visible = true;
-                textBox2.Enabled = false;
                 label17.Enabled = true;
                 label17.Visible = false;
                 comboBox2.Enabled = true;
@@ -223,7 +238,6 @@ namespace ScriptManFinal
                 label5.Enabled = true;
                 textBox2.Visible = true;
                 label11.Visible = true;
-                comboBox2.Visible = true;
                 setSelectedValues(sender);
                 textBox5.Visible = false;
                 radioButton1.Visible = false;
@@ -233,30 +247,37 @@ namespace ScriptManFinal
                 if (!comboBox5.Items.Contains("QUAT_ALL"))
                     comboBox5.Items.Add("QUAT_ALL");
             }
-            // when RUN is selected
             else if (actionSelected == "RUN")
             {
+                toggleFieldVisibility(0);
+                label4.Enabled = false;
+                label4.Visible = false;
+                label5.Visible = false;
                 label5.Enabled = false;
                 label10.Enabled = false;
-                label14.Visible = true;
+                label10.Visible = false;
+                label14.Visible = false;
                 label14.Enabled = false;
                 textBox1.Enabled = false;
-                textBox2.Enabled = false;
                 label17.Enabled = true;
                 label17.Visible = true;
+                label17.Location = new Point(364, 219);
                 label12.Text = "Viewing:";
                 comboBox2.Enabled = false;
-                comboBox2.Visible = true;
+                comboBox2.Visible = false;
                 label11.Enabled = false;
-                label11.Visible = true;
+                label11.Visible = false;
                 textBox3.Enabled = false;
                 textBox3.Visible = true;
                 label13.Enabled = false;
+                label13.Visible = false;
                 comboBox5.Visible = true;
                 textBox2.Text = "AUTO";
                 label17.Text = "Run Environment:";
                 comboBox5.Enabled = true;
+                comboBox5.Location = new Point(367, 239);
                 comboBox3.Enabled = false;
+                comboBox3.Visible = false;
                 textBox5.Visible = true;
                 radioButton1.Visible = true;
                 radioButton3.Visible = true;
@@ -264,6 +285,9 @@ namespace ScriptManFinal
                 radioButton1.Checked = false;
                 radioButton3.Checked = false;
                 radioButton4.Checked = false;
+                textBox1.Visible = false;
+                textBox2.Visible = false;
+                textBox3.Visible = false;
                 clearFields(sender, e);
 
                 if (comboBox5.Items.Contains("QUAT_ALL"))
@@ -276,8 +300,8 @@ namespace ScriptManFinal
                 textBox5.Text = dataGridView1.SelectedRows[0].Cells[0].ToString();
                 label10.Enabled = true;
                 label14.Visible = true;
+                label14.Enabled = false;
                 textBox1.Enabled = false;
-                textBox2.Enabled = false;
                 label17.Enabled = true;
                 label17.Visible = true;
                 label12.Text = "Viewing:";
@@ -447,7 +471,7 @@ namespace ScriptManFinal
                 else
                     fieldCheck(sender, e);
             }
-            else if (comboBox1.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox1.Text) || comboBox2.SelectedIndex == -1 || comboBox5.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(richTextBox1.Text))
+            else if (comboBox1.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox1.Text) || comboBox2.SelectedIndex == -1 || comboBox3.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(richTextBox1.Text))
             {
                 toExecSummary("Incomplete field(s). Execution stopped.");
                 fieldCheck(sender, e);
@@ -692,7 +716,7 @@ namespace ScriptManFinal
                     DataGridViewRow errorRow = dgv.SelectedRows[0];
 
                     // open error dialog form and store user's response
-                    string response = openErrorDialog(errorRow);
+                    string response = openErrorPrompt(errorRow);
 
                     // handling user's response from error dialog 
                     if (response == "ignore")
@@ -769,9 +793,8 @@ namespace ScriptManFinal
 
         private void selectLastErrorLogged()
         {
-            // select most recent (last) error record 
-            // **(we subtract 2 from row count becuase row index = [0 -> (n-1)] AND there is always an extra, empty row ready to be inserted into)**
-            int lastRow = dataGridView2.Rows.Count - 2;
+            // select most recent (last) error record         
+            int lastRow = dataGridView2.Rows.Count - 1;
             dataGridView2.Rows[lastRow].Selected = true;
             dataGridView2.FirstDisplayedScrollingRowIndex = lastRow;
         }
@@ -792,14 +815,15 @@ namespace ScriptManFinal
 
 
 
-        private string openErrorDialog(DataGridViewRow errorRowSelected)
+        private string openErrorPrompt(DataGridViewRow errorRowSelected)
         {
             DataGridView dgv = dataGridView2 as DataGridView;
             if (dgv != null && dgv.SelectedRows.Count > 0)
             {
                 // set form values equal to values from selected row
                 toExecSummary("Opening error dialog...");
-                Editor f2 = new Editor();
+                ErrorPrompt f2 = new ErrorPrompt();
+                f2.colorScheme = lightSwitch;
                 f2.errorMessage = errorRowSelected.Cells[4].Value.ToString();
                 f2.errorLine = Convert.ToInt32(errorRowSelected.Cells[3].Value);
                 f2.procedure = errorRowSelected.Cells[5].Value.ToString();
@@ -863,42 +887,42 @@ namespace ScriptManFinal
                         da.Fill(dt);
                         dataGridView1.DataSource = dt;
 
-                        // search bar feature, searches selected column for textbox4 text upon ENTER key_up and BACKSPACE key_up
+                        // search bar feature, searches selected column for toolStriptextBox1 text upon ENTER key_up and BACKSPACE key_up
                         //NOTE: other Key Events (ex. key_down) combined with this particular search config will cause search to lag by one keystroke
 
-                        if (comboBox4.SelectedIndex == 0)
+                        if (toolStripComboBox1.SelectedIndex == 0)
                         {
-                            dv.RowFilter = string.Format("CONVERT(script_order, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(script_order, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
 
-                        else if (comboBox4.SelectedIndex == 1)
+                        else if (toolStripComboBox1.SelectedIndex == 1)
                         {
-                            dv.RowFilter = string.Format("CONVERT(ID, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(ID, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
 
-                        else if (comboBox4.SelectedIndex == 2)
+                        else if (toolStripComboBox1.SelectedIndex == 2)
                         {
-                            dv.RowFilter = string.Format("CONVERT(script_function, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(script_function, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
 
-                        else if (comboBox4.SelectedIndex == 3)
+                        else if (toolStripComboBox1.SelectedIndex == 3)
                         {
-                            dv.RowFilter = string.Format("CONVERT(script_environment, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(script_environment, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
 
-                        else if (comboBox4.SelectedIndex == 4)
+                        else if (toolStripComboBox1.SelectedIndex == 4)
                         {
-                            dv.RowFilter = string.Format("CONVERT(script_description, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(script_description, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
 
-                        else if (comboBox4.SelectedIndex == 5)
+                        else if (toolStripComboBox1.SelectedIndex == 5)
                         {
-                            dv.RowFilter = string.Format("CONVERT(Script, 'System.String') LIKE '%{0}%'", textBox4.Text.Trim());
+                            dv.RowFilter = string.Format("CONVERT(Script, 'System.String') LIKE '%{0}%'", toolStripTextBox1.Text.Trim());
                             dataGridView1.DataSource = dv.ToTable();
                         }
                     }
@@ -911,9 +935,9 @@ namespace ScriptManFinal
             }
         }
 
-
-
-        private void textBox4_KeyUp(object sender, KeyEventArgs e)
+        
+        
+        private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
         {
             // search table up pressing ENTER key
             if (e.KeyCode == Keys.Enter)
@@ -1273,6 +1297,7 @@ namespace ScriptManFinal
                     // set form values equal to values from selected row
                     toExecSummary("Inspecting error...");
                     InspectError form = new InspectError();
+                    form.colorScheme = lightSwitch;
                     form.errorMessage = row.Cells[4].Value.ToString();
                     form.errorLine = Convert.ToInt32(row.Cells[3].Value);
                     form.procedure = row.Cells[5].Value.ToString();
@@ -1418,6 +1443,7 @@ namespace ScriptManFinal
                 clearFields(sender, e);
                 comboBox5.Enabled = true;
                 richTextBox1.Text = "-- ALL SCRIPTS WITH ENVIRONMENT [Select Environment] OR QUAT_ALL WILL BE RAN";
+                toggleFieldVisibility(0);
             }
             else
             {
@@ -1433,6 +1459,11 @@ namespace ScriptManFinal
             {
                 clearFields(sender, e);
                 textBox5.Enabled = true;
+                if (!lightSwitch)
+                    textBox5.BackColor = Color.Lavender;
+                else
+                    textBox5.BackColor = Color.White;
+                toggleFieldVisibility(0);
                 comboBox5.Enabled = true;
 
                 try
@@ -1445,9 +1476,8 @@ namespace ScriptManFinal
                     else
                         textBox5.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show(ex.Message, "No row selected");
                     dataGridView1.Rows[0].Selected = true;
                     setSelectedValues(sender);
                 }
@@ -1456,6 +1486,10 @@ namespace ScriptManFinal
             {
                 textBox5.Enabled = false;
                 textBox5.Text = null;
+                if (!lightSwitch)
+                    textBox5.BackColor = Color.DimGray;
+                else
+                    textBox5.BackColor = Color.LightGray;
             }
         }
 
@@ -1486,8 +1520,28 @@ namespace ScriptManFinal
             comboBox5.Enabled = true;
 
             if (radioButton4.Checked == true)
+            {
+                toggleFieldVisibility(1);
                 setSelectedValues(sender);
-
+                comboBox5.Visible = true;
+                label11.Enabled = true;
+                label5.Enabled = true;
+                label4.Enabled = true;
+                label10.Enabled = true;
+                label14.Enabled = true;
+                label13.Enabled = true;
+                textBox1.ReadOnly = true;
+                textBox3.ReadOnly = true;
+                textBox1.Enabled = true;
+                textBox3.Enabled = true;
+            }
+            else
+            {
+                textBox1.ReadOnly = false;
+                textBox3.ReadOnly = false;
+                textBox1.Enabled = false;
+                textBox3.Enabled = false;
+            }
         }
 
 
@@ -1512,6 +1566,207 @@ namespace ScriptManFinal
             if (richTextBox1.Enabled == true)
                 button2_Click(sender, e);
         }
+
+
+
+        private void toggleFieldVisibility(int x)
+        {   
+            // RUN settings
+            if (x == 0)
+            {
+                textBox1.Visible = false;
+                textBox2.Visible = false;
+                textBox3.Visible = false;
+                label10.Visible = false;
+                label11.Visible = false;
+                label13.Visible = false;
+                label14.Visible = false;
+                label4.Visible = false;
+                label5.Visible = false;
+                comboBox2.Visible = false;
+                comboBox3.Visible = false;
+                comboBox5.Visible = true;
+            }
+            // INSERT and UPDATE settings
+            else if (x == 1)
+            {
+                textBox1.Visible = true;
+                textBox2.Visible = true;
+                textBox3.Visible = true;
+                label10.Visible = true;
+                label11.Visible = true;
+                label13.Visible = true;
+                label14.Visible = true;
+                label4.Visible = true;
+                label5.Visible = true;
+                comboBox2.Visible = true;
+                comboBox3.Visible = true;
+                comboBox5.Visible = false;
+            }
+        }
+
+
+
+        private void flipLightSwitch(bool on)
+        {
+            // color scheme settings
+            // off (dark) by default
+            if (on)
+            {
+                // light color scheme
+                textBox1.BackColor = Color.White;
+                textBox2.BackColor = Color.White;
+                textBox3.BackColor = Color.White;
+                textBox1.ForeColor = Color.Black;
+                textBox2.ForeColor = Color.Black;
+                textBox3.ForeColor = Color.Black;
+                if (radioButton3.Checked)
+                    textBox5.BackColor = Color.White;
+                else
+                    textBox5.BackColor = Color.LightGray;
+                label1.ForeColor = Color.Black;
+                label2.ForeColor = Color.Black;
+                label3.ForeColor = Color.Black;
+                label9.ForeColor = Color.Black;
+                label16.ForeColor = Color.Black;
+                label17.ForeColor = Color.Black;
+                label19.ForeColor = Color.Black;
+                label20.ForeColor = Color.Black;
+                label10.ForeColor = Color.Black;
+                label11.ForeColor = Color.Black;
+                label12.ForeColor = Color.Black;
+                label13.ForeColor = Color.Black;
+                label14.ForeColor = Color.Black;
+                label4.ForeColor = Color.Black;
+                label5.ForeColor = Color.Black;
+                comboBox1.BackColor = Color.Orange;
+                comboBox2.BackColor = Color.Orange;
+                comboBox3.BackColor = Color.Orange;
+                toolStripComboBox1.BackColor = Color.Orange;
+                toolStripTextBox1.BackColor = Color.White;
+                comboBox5.BackColor = Color.Orange;
+                toolStrip2.BackColor = Color.LightGray;
+                toolStripLabel1.ForeColor = Color.Black;
+                this.BackColor = Color.LightGray;
+                dataGridView1.DefaultCellStyle.BackColor = Color.White;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = Color.DarkOrange;
+                dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.Moccasin;
+                dataGridView1.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.DarkOrange;
+                dataGridView2.DefaultCellStyle.BackColor = Color.White;
+                dataGridView2.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.DarkOrange;
+                dataGridView2.RowsDefaultCellStyle.SelectionBackColor = Color.DarkOrange;
+                dataGridView2.DefaultCellStyle.SelectionBackColor = Color.Orange;
+                dataGridView2.BackgroundColor = Color.White;
+                dataGridView1.BackgroundColor = Color.White;
+                button7.BackColor = Color.Moccasin;
+                button7.ForeColor = Color.Black;
+                button8.BackColor = Color.Moccasin;
+                button8.ForeColor = Color.Black;
+                button1.BackColor = Color.Orange;
+                button1.ForeColor = Color.Black;
+                button6.BackColor = Color.Moccasin;
+                button6.ForeColor = Color.Black;
+                button2.BackColor = Color.Moccasin;
+                button2.ForeColor = Color.Black;
+                button3.BackColor = Color.ForestGreen;
+                button4.BackColor = Color.Gold;
+                button5.BackColor = Color.Firebrick;
+                this.ForeColor = Color.Black;
+                gradientPanel1.ColorLeft = Color.White;
+                gradientPanel1.ColorRight= Color.DarkOrange;
+                gradientPanel2.ColorLeft = Color.DarkOrange;
+                gradientPanel2.ColorRight = Color.White;
+                richTextBox2.BackColor = Color.White;
+                richTextBox2.ForeColor = Color.Black;
+                radioButton1.ForeColor = Color.Black;
+                radioButton3.ForeColor = Color.Black;
+                radioButton4.ForeColor = Color.Black;             
+            }
+            else 
+            {
+                // dark color scheme
+                textBox1.BackColor = Color.DimGray;
+                textBox2.BackColor = Color.DimGray;
+                textBox3.BackColor = Color.DimGray;
+                textBox1.ForeColor = Color.White;
+                textBox2.ForeColor = Color.White;
+                textBox3.ForeColor = Color.White;
+                if (radioButton3.Checked)
+                    textBox5.BackColor = Color.Lavender;
+                else
+                    textBox5.BackColor = Color.DimGray;
+                label1.ForeColor = Color.Gainsboro;
+                label2.ForeColor = Color.Gainsboro;
+                label3.ForeColor = Color.Gainsboro;
+                label9.ForeColor = Color.Gainsboro;
+                label16.ForeColor = Color.Gainsboro;
+                label17.ForeColor = Color.Gainsboro;
+                label19.ForeColor = Color.Gainsboro;
+                label20.ForeColor = Color.Gainsboro;
+                label10.ForeColor = Color.Gainsboro;
+                label11.ForeColor = Color.Gainsboro;
+                label12.ForeColor = Color.Gainsboro;
+                label13.ForeColor = Color.Gainsboro;
+                label14.ForeColor = Color.Gainsboro;
+                label4.ForeColor = Color.Gainsboro;
+                label5.ForeColor = Color.Gainsboro;
+                comboBox1.BackColor = Color.PaleTurquoise;
+                comboBox2.BackColor = Color.PaleTurquoise;
+                comboBox3.BackColor = Color.PaleTurquoise;
+                toolStripComboBox1.BackColor = Color.PaleTurquoise;
+                toolStripTextBox1.BackColor = Color.Lavender;
+                comboBox5.BackColor = Color.PaleTurquoise;
+                toolStrip2.BackColor = Color.FromArgb(64, 64, 64);
+                toolStripLabel1.ForeColor = Color.Gainsboro;
+                this.BackColor = Color.FromArgb(64, 64, 64);
+                dataGridView1.DefaultCellStyle.BackColor = Color.White;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = Color.DeepSkyBlue;
+                dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
+                dataGridView1.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.DeepSkyBlue;
+                dataGridView2.DefaultCellStyle.BackColor = Color.MediumPurple;
+                dataGridView2.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.Indigo;
+                dataGridView2.RowsDefaultCellStyle.SelectionBackColor = Color.Indigo;
+                dataGridView2.DefaultCellStyle.SelectionBackColor = Color.Indigo;
+                dataGridView2.BackgroundColor = Color.DimGray;
+                dataGridView1.BackgroundColor = Color.DimGray;
+                button7.BackColor = Color.MediumPurple;
+                button7.ForeColor = SystemColors.ButtonHighlight;
+                button8.BackColor = Color.MediumPurple;
+                button8.ForeColor = SystemColors.ButtonHighlight;
+                button1.BackColor = Color.RoyalBlue;
+                button1.ForeColor = Color.White;
+                button6.BackColor = Color.MediumTurquoise;
+                button6.ForeColor = Color.Black;
+                button2.BackColor = Color.LimeGreen;
+                button2.ForeColor = Color.White;
+                button3.BackColor = Color.LimeGreen;
+                button4.BackColor = Color.MediumTurquoise;
+                button5.BackColor = Color.RoyalBlue;
+                this.ForeColor = Color.Black;
+                gradientPanel1.ColorLeft = Color.Cyan;
+                gradientPanel1.ColorRight = Color.Indigo;
+                gradientPanel2.ColorLeft = Color.Indigo;
+                gradientPanel2.ColorRight = Color.Cyan;
+                richTextBox2.BackColor = Color.DimGray;
+                richTextBox2.ForeColor = Color.Ivory;
+                radioButton1.ForeColor = Color.White;
+                radioButton3.ForeColor = Color.White;
+                radioButton4.ForeColor = Color.White;
+            }
+        }
+
+
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            // off by default
+            if (lightSwitch)
+                lightSwitch = false;
+            else
+                lightSwitch = true;
+            flipLightSwitch(lightSwitch);
+        }
+
 
     }
 }
