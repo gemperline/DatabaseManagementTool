@@ -15,7 +15,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using ScriptManFinal.RMDataSet8TableAdapters;
 using Microsoft.VisualBasic;
-using System.Threading;
+using System.Timers;
 
 // TO DO: improve runtime and efficiency by closing connections when establishing a new one, after execution, 
 //            restarts should kill connections and release memory
@@ -26,38 +26,26 @@ namespace ScriptManFinal
     {
         SqlConnection conn;
         SqlCommand cmd;
-        public static Stream myStream;
-        private static string actionSelected = "";
+        public static Stream myStream;      // used for file stream
+        private string actionSelected = ""; // stores user selected action 
         string selectedID = "";
         DataTable dt;
-        BackgroundWorker worker;
         public static Color Yellow;
-        private int currentIndex;      // denotes where a RUN sequence stops and proceeds
-        private bool proceed;
-        private bool ignoreAll;     // ignore all errors for RUN sequence
+        private int currentIndex;           // denotes where a RUN sequence stops and proceeds
+        private bool proceed;               // controls continuation or exit of an execution
+        private bool ignoreAll;             // ignore all error dialogs for RUN sequence
         private int placeholder;
-        private bool lightSwitch = false;
-      
+        private bool lightSwitch = false;   // color scheme switch
+        public double progress;             // progressBar value
+
+
+
         public MainForm()
         {
             InitializeComponent();
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-
-            worker.ProgressChanged += Worker_ProgressChanged;
-            worker.DoWork += Worker_DoWork;
         }
 
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
 
-        }
-
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar1.Value = e.ProgressPercentage;
-
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -73,13 +61,15 @@ namespace ScriptManFinal
             setInitState();
         }
 
-        
+       
+         
         private void setInitState()
         {
             toExecSummary("\n------------------------------------------------------------------------------" + 
                               "\nInitializing states...");
 
             // initial/refresh states and values
+            progress = 0.0;
             textBox1.BackColor = Color.DimGray;
             textBox1.Visible = false;
             textBox2.BackColor = Color.DimGray;
@@ -107,6 +97,7 @@ namespace ScriptManFinal
             richTextBox1.Enabled = false;
             myStream = null;
             label1.Text = "*select .SQL files only";
+            label20.Text = "0%";
             textBox2.Text = null;
             textBox3.Text = null;
             textBox5.Text = null;
@@ -141,9 +132,13 @@ namespace ScriptManFinal
             textBox1.KeyDown += new KeyEventHandler(execute_KeyDown);
             textBox3.KeyDown += new KeyEventHandler(execute_KeyDown);
             toolStripTextBox1.KeyUp += new KeyEventHandler(toolStripTextBox1_KeyUp);
-            progressBar1.Value = 0;
-            label3.Visible = false;
+            timer.Tick += new EventHandler(timer_Tick);
             tabControl2.SelectedIndex = 0;
+            progressBar1.Value = 0;
+            label20.Text = "0%";
+            label20.Visible = false;
+            label3.Text = "";
+            label3.Visible = false;
 
             if (comboBox1.Items.Contains("UPDATE & RESUME"))
                 comboBox1.Items.Remove("UPDATE & RESUME");
@@ -152,10 +147,13 @@ namespace ScriptManFinal
             if (!comboBox1.Items.Contains("RUN"))
                 comboBox1.Items.Add("RUN");
 
-            toExecSummary("States initialized");
             loadData();
             dataGridView1.SelectedRows[0].Selected = false;
+
+            toExecSummary("States initialized");
         }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -184,12 +182,13 @@ namespace ScriptManFinal
 
         private void button5_Click(object sender, EventArgs e)
         {
-            // close button
+            // CLOSE button
             Close();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // ACTION comboBox
             actionSelected = comboBox1.GetItemText(comboBox1.SelectedItem);
 
             if (actionSelected == "INSERT INTO")
@@ -214,9 +213,6 @@ namespace ScriptManFinal
                 radioButton3.Visible = false;
                 radioButton4.Visible = false;
                 comboBox3.Enabled = true;
-
-                if (!comboBox5.Items.Contains("QUAT_ALL"))
-                    comboBox5.Items.Add("QUAT_ALL");
             }
             else if (actionSelected == "UPDATE")
             {
@@ -243,9 +239,6 @@ namespace ScriptManFinal
                 radioButton1.Visible = false;
                 radioButton3.Visible = false;
                 radioButton4.Visible = false;
-
-                if (!comboBox5.Items.Contains("QUAT_ALL"))
-                    comboBox5.Items.Add("QUAT_ALL");
             }
             else if (actionSelected == "RUN")
             {
@@ -289,9 +282,6 @@ namespace ScriptManFinal
                 textBox2.Visible = false;
                 textBox3.Visible = false;
                 clearFields(sender, e);
-
-                if (comboBox5.Items.Contains("QUAT_ALL"))
-                    comboBox5.Items.Remove("QUAT_ALL");
             }
 
             // when UPDATE & RESUME is selected
@@ -358,118 +348,61 @@ namespace ScriptManFinal
 
 
         // CAUTION! ------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
-        private void button3_Click(object sender, EventArgs e)
-        {   // EXECUTE button 
 
-            double progressPercent = 0.0;
+
+
+        private void button3_Click(object sender, EventArgs e)
+        {   
+        // EXECUTE button 
+
             proceed = true;     // control variable that stops RUN sequence upon user's error response
+            button3.Enabled = false;
+            button4.Enabled = false;
 
             // determine number of records in table
             int numRows = dataGridView1.Rows.Count;
-            toExecSummary("Number of Records in View: " + numRows);
+            int lastIndexInView = dataGridView1.Rows.GetLastRow(DataGridViewElementStates.Visible);
             int lastIndex = numRows - 1;
 
             // show Execution Summary tab
             tabControl1.SelectedIndex = 1;
+            tabControl1.Update();
 
             if (conn.State == ConnectionState.Open)
                 conn.Close();
 
-            if (fieldCheck(sender, e) == false)
+            if (fieldCheck(sender, e) == false)  // checks for required information, returns false if incomplete
+            {
+                button3.Enabled = true;
+                button4.Enabled = true;
                 return;
-                
+            }
+
             if (actionSelected == "RUN")
             {
                 // if "From Table View" is selected
                 if ((radioButton1.Checked == true) && (comboBox5.SelectedIndex != -1))
                 {
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        // select current row
-                        dataGridView1.Rows[row.Index].Selected = true;
-                        currentIndex = row.Index;
-
-                        if (row.Index.Equals(numRows))
-                        {
-                            // loop exceeded range
-                            break;
-                        }
-                        // run all scripts matching selected environment or where environment is QUAT_ALL
-                        else if (proceed == true && (row.Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || row.Cells[3].Value.ToString() == "QUAT_ALL"))
-                        {
-                            runScript(sender, row, e);
-
-                            progressBar1.PerformStep();
-                            progressPercent = progressBar1.Value;
-                            label20.Text = progressBar1.Value.ToString() + "%";
-                        }
-
-                        if (proceed == false)
-                        {
-                            break;
-                        }
-
-                        // if this row is the last row of the displayed records, restart the application
-                        if (row.Index == dataGridView1.Rows.GetLastRow(DataGridViewElementStates.Displayed))
-                        {
-                            toExecSummary("Run sequence complete.");
-                            button4_Click(sender, e);
-                        }
-
-                    }                 
+                    runFromTableView(sender, numRows, lastIndexInView, e);
                 }
                 // Start At Script Order is selected 
                 else if (radioButton3.Checked == true && (comboBox5.SelectedIndex != -1))
                 {
-
-                    int startingIndex = dataGridView1.SelectedRows[0].Index;
-
-                    // loop to run scripts within given script order range
-                    for (int i = startingIndex; i < numRows; i++)
-                    {
-                        // select current row
-                        dataGridView1.Rows[i].Selected = true;
-                        toExecSummary("CURRENT INDEX: " + i + ", LAST INDEX: " + lastIndex);
-
-                        // set the selected row to the current index
-                        dataGridView1.SelectedRows[0].Index.Equals(i);
-
-                        // run all scripts matching selected environment or where environment is QUAT_ALL
-                        if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
-                        {
-                            runScript(sender, dataGridView1.SelectedRows[0], e);
-
-                            progressBar1.PerformStep();
-                            progressPercent = progressBar1.Value;
-                            label20.Text = progressBar1.Value.ToString() + "%";
-                        }
-
-                        if (proceed == false)
-                        {
-                            break;
-                        }
-
-                        // if this row is the last row of the displayed records, restart the application
-                        if (i == dataGridView1.Rows.GetLastRow(DataGridViewElementStates.Displayed))
-                        {
-                            toExecSummary("Last index reached.");
-                            button4_Click(sender, e);
-                        }
-                    }
+                    runAtScriptOrder(sender, numRows, lastIndexInView, e);
                 }
                 // Run Selected Script is selected 
                 else if ((comboBox5.SelectedIndex != -1) && (radioButton4.Checked == true))
                 {
+                    label3.Text = "Executing script...";
+
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
                     runScript(sender, row, e);
-                    progressBar1.PerformStep();
-                    progressPercent = progressBar1.Value;
-                    toExecSummary("Progress: " + progressPercent);
-                    label20.Text = progressBar1.Value.ToString() + "%";
-                    setInitState();
+
+                    if (proceed == false)
+                        setInitState();
                 }
                 else
-                    fieldCheck(sender, e);
+                    fieldCheck(sender, e); // prompts user about blank fields 
             }
             else if (comboBox1.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox1.Text) || comboBox2.SelectedIndex == -1 || comboBox3.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(richTextBox1.Text))
             {
@@ -484,7 +417,21 @@ namespace ScriptManFinal
             else if (actionSelected == "INSERT INTO")
             {
                 proceed = false;
-                insertIntoTable(sender , e);
+
+                // function returns -1 if no matching script order is found
+                int searchResult = searchForScriptOrder(textBox1.Text);
+
+                if (searchResult == -1)
+                {
+                    insertIntoTable(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("That Script Order number already exists. Feel free to utilize up to two decimal places.");
+                    button3.Enabled = true;
+                    button4.Enabled = true;
+                    return;
+                }
             }
             else if (actionSelected == "UPDATE & RESUME")
             {
@@ -495,89 +442,149 @@ namespace ScriptManFinal
                 button3_Click(sender, e);
             }
 
+            button3.Enabled = true;
+            button4.Enabled = true;
 
-            toExecSummary("ProgressBar Value: " + progressBar1.Value);
-
-            // reset progress bar value
             if (progressBar1.Value == progressBar1.Maximum)
             {
-                label19.Text = "Process completed.";
+                label3.Text = "Process completed.";
+                label3.Update();
+            }
+
+            button3.Enabled = true;
+            button4.Enabled = true;
+        }
+
+
+
+        // ------------------------------------------- Run all records in table (filter applies) ----------------------------------------
+        private void runFromTableView(object sender, int numRows, int lastIndexInView, EventArgs e)
+        {
+            progressBar1.Maximum = numRows;
+            label3.Text = "Executing scripts...";
+            label3.Update();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // progress bar update
+                progressBar1.Value = progressBar1.Value + 1;
+                progress = progressBar1.Value;
+                double pp1 = progress / numRows;
+                int pp2 = (int)(pp1 * 100);
+                label20.Text = pp2.ToString() + "%";
+                label20.Update();
+
+                // select current row
+                dataGridView1.Rows[row.Index].Selected = true;
+                currentIndex = row.Index;
+
+                if (row.Index.Equals(numRows))
+                {
+                    // loop exceeded index range
+                    break;
+                }
+                // run all scripts matching selected environment or where environment is QUAT_ALL
+                else if (proceed == true && (row.Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || row.Cells[3].Value.ToString() == "QUAT_ALL"))
+                {
+                    runScript(sender, row, e);
+                }
+
+                if (proceed == false)
+                {
+                    break;
+                }
+
+                // if this row is the last row of the displayed records, restart the application
+                if (row.Index == numRows)
+                {
+                    toExecSummary("Run sequence complete.");
+                    button4_Click(sender, e);
+                }
 
             }
         }
 
 
 
-        // ------------------------------------------------Update existing script--------------------------------------------------
-        private void updateRecord(object sender, EventArgs e)
+        // ------------------------------------------- Begin run at a specific Script Order ----------------------------------------
+        private void runAtScriptOrder(object sender, int numRows, int lastIndexInView, EventArgs e)
         {
-            using (conn = initQatConnection())
+            label3.Text = "Executing scripts...";
+            label3.Update();
+            int startingIndex = dataGridView1.SelectedRows[0].Index;
+            int rowCount = numRows - startingIndex;
+            int result = 0;
+            progressBar1.Maximum = rowCount;
+
+            toExecSummary("Row Count: " + rowCount);
+
+            // verify that the selected row's Script Order matches the Script Order entered in textBox5, if a user manually types the S.O. number into the textBox, update the selected row to match before beginning execution
+            if (textBox5.Text != dataGridView1.SelectedRows[0].Cells[0].Value.ToString())
             {
-                string query = "UPDATE dbo.refresh_testing SET Script=@script, script_function=@script_function, script_environment=@script_environment, script_description=@script_description, script_order=@script_order WHERE ID = @id";
-                using (cmd = new SqlCommand(query, conn))
+                result = searchForScriptOrder(textBox5.Text); // returns the index where the S.O. is found, or returns -1 if no S.O. found, or -2 if there are duplicate S.O.'s
+            }
+
+            if (result > -1)
+            {
+                startingIndex = dataGridView1.SelectedRows[0].Index;
+
+                // loop to run scripts within given script order range
+                for (int i = startingIndex; i < numRows; i++)
                 {
-                    cmd.Parameters.AddWithValue("id", selectedID);
-                    cmd.Parameters.AddWithValue("script", richTextBox1.Text);
-                    cmd.Parameters.AddWithValue("script_function", comboBox2.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("script_environment", comboBox3.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("script_description", textBox3.Text);
-                    cmd.Parameters.AddWithValue("script_order", Convert.ToDecimal(textBox1.Text));
+                    // progress bar update
+                    progressBar1.Value++;
+                    progress = progressBar1.Value;
+                    double pp1 = progress / rowCount;
+                    int pp2 = (int)(pp1 * 100);
+                    label20.Text = pp2.ToString() + "%";
+                    label20.Update();
 
-                    toExecSummary("Updating record...");
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
+                    // select current row
+                    dataGridView1.Rows[i].Selected = true;
 
-                    // Check error
-                    if (result < 0)
+                    // set the selected row to the current index
+                    dataGridView1.SelectedRows[0].Index.Equals(i);
+
+                    // run all scripts matching selected environment or where environment is QUAT_ALL
+                    if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
                     {
-                        toExecSummary("Could not update script. Check script for errors. Result = " + result);
+                        runScript(sender, dataGridView1.SelectedRows[0], e);
                     }
-                    else
-                        toExecSummary("Script updated successfully.");
-                    toExecSummary("\n------------------------------------------------------------------------------");
+
+                    if (proceed == false)
+                    {
+                        break;
+                    }
+
+                    // if this row is the last row of the displayed records, restart the application
+                    if (i == lastIndexInView)
+                    {
+                        toExecSummary("Last index reached.");
+                        button4_Click(sender, e);
+                    }
                 }
             }
-            if (proceed == false)
-                button4_Click(sender, e); // restart
-        }
-
-
-
-        // ------------------------------------------------Insert a new script--------------------------------------------------
-        private void insertIntoTable(object sender, EventArgs e)
-        {
-            using (conn = initQatConnection())
+            else if (result == -1)
             {
-                string query = "INSERT INTO dbo.refresh_testing (Script, script_function, script_environment, script_description, script_order) VALUES (@Script, @script_function, @script_environment, @script_description, @script_order)";
-                using (cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Script", richTextBox1.Text);
-                    cmd.Parameters.AddWithValue("@script_function", comboBox2.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("@script_environment", comboBox3.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("@script_description", textBox3.Text);
-                    cmd.Parameters.AddWithValue("@script_order", Convert.ToDecimal(textBox1.Text));
-
-                    toExecSummary("Inserting record...");
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
-
-                    // Check error
-                    if (result < 0)
-                    {
-                        toExecSummary("Could not insert script. Check script for errors. Result = " + result);
-                    }
-                    else
-                        toExecSummary("Script inserted successfully.");
-                    toExecSummary("\n------------------------------------------------------------------------------");
-                }
+                MessageBox.Show("No matching script order found.");
+                return;
             }
-            if (proceed == false)
-                button4_Click(sender, e); // restart
+            else if (result == -2)
+            {
+                MessageBox.Show("There is more than one record with that Script Order. Please select the record to start at.");
+                return;
+            }
+            else
+            {
+                button3.Enabled = true;
+                button4.Enabled = true;
+                return;
+            }
         }
 
 
 
-        // ---------------------------------------------------------Run script(s)------------------------------------------------------------
+        // --------------------------------------------------------- Run script(s) ------------------------------------------------------------
         private void runScript(object sender, DataGridViewRow currentRow, EventArgs e)
         {
             // prompt user if selected script field is blank upon execution, offer to parse from selection
@@ -603,7 +610,7 @@ namespace ScriptManFinal
                               "\nRunning Script Order: " + currentRow.Cells[0].Value.ToString() + ", ID: " + currentRow.Cells[1].Value.ToString() +
                               "\n------------------------------------------------------------------------------");
                 toExecSummary("Current Index: " + currentRow.Index);
-
+                richTextBox1.Update();
                 try
                 {
                     using (conn = initQatConnection())
@@ -613,13 +620,13 @@ namespace ScriptManFinal
                             using (cmd = new SqlCommand(query, conn))
                             {
                                 conn.Open();
-                                toExecSummary("Connected to " + comboBox5.SelectedItem.ToString());                            
-                                try 
+                                toExecSummary("Connected to " + comboBox5.SelectedItem.ToString());
+                                try
                                 {
                                     int result = cmd.ExecuteNonQuery();
                                     toExecSummary("Run result = " + result);
-                                }            
-                                catch ( SqlException ex)
+                                }
+                                catch (SqlException ex)
                                 {
                                     logError(sender, ex, currentRow, e);
                                 }
@@ -640,6 +647,123 @@ namespace ScriptManFinal
                 }
             }
         }
+
+        
+
+        // ------------------------------------------------ Update existing script --------------------------------------------------
+        private void updateRecord(object sender, EventArgs e)
+        {
+            // progress bar update
+            label20.Enabled = true;
+            label20.Visible = true;
+            progressBar1.Maximum = 100;
+            timer.Enabled = true;
+            timer.Start();
+            timer.Interval = 10; // each tick represented in milliseconds
+
+
+            using (conn = initQatConnection())
+            {
+                string query = "UPDATE dbo.refresh_testing SET Script=@script, script_function=@script_function, script_environment=@script_environment, script_description=@script_description, script_order=@script_order WHERE ID = @id";
+                using (cmd = new SqlCommand(query, conn))
+                {
+                    label3.Text = "Update in progress...";
+                    cmd.Parameters.AddWithValue("id", selectedID);
+                    cmd.Parameters.AddWithValue("script", richTextBox1.Text);
+                    cmd.Parameters.AddWithValue("script_function", comboBox2.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("script_environment", comboBox3.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("script_description", textBox3.Text);
+                    cmd.Parameters.AddWithValue("script_order", Convert.ToDecimal(textBox1.Text));
+
+                    toExecSummary("Updating record...");
+
+                    conn.Open();
+                    int result = cmd.ExecuteNonQuery();
+
+                    // Check error
+                    if (result < 0)
+                    {
+                        toExecSummary("Could not update script. Check script for errors. Result = " + result);
+                    }
+                    else
+                    {
+                        toExecSummary("Script updated successfully.");
+                        label3.Text = "Script updated successfully.";
+                        label3.Visible = true;
+                    }
+                    toExecSummary("\n------------------------------------------------------------------------------");
+
+                    timer.Stop();
+                    progressBar1.Value = progressBar1.Maximum;
+                    label20.Text = progressBar1.Maximum + "%";
+                    label20.Update();
+                }
+            }
+            if (proceed == false)
+            {
+                System.Threading.Thread.Sleep(3000);
+                button4_Click(sender, e); // restart
+            }
+        }
+
+
+
+        // ------------------------------------------------ Insert a new script --------------------------------------------------
+        private void insertIntoTable(object sender, EventArgs e)
+        {
+            using (conn = initQatConnection())
+            {
+                string query = "INSERT INTO dbo.refresh_testing (Script, script_function, script_environment, script_description, script_order) VALUES (@Script, @script_function, @script_environment, @script_description, @script_order)";
+                using (cmd = new SqlCommand(query, conn))
+                {
+                    // progress bar update
+                    progressBar1.Maximum = 100;
+                    timer.Enabled = true;
+                    timer.Start();
+                    timer.Interval = 10; // each tick represented in milliseconds
+                    label20.Visible = true;
+                    label20.Text = progressBar1.Value.ToString() + "%";
+
+                    label3.Text = "Insert in progress...";
+                    cmd.Parameters.AddWithValue("@Script", richTextBox1.Text);
+                    cmd.Parameters.AddWithValue("@script_function", comboBox2.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@script_environment", comboBox3.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@script_description", textBox3.Text);
+                    cmd.Parameters.AddWithValue("@script_order", Convert.ToDecimal(textBox1.Text));
+
+                    toExecSummary("Inserting record...");
+
+                    conn.Open();
+                    int result = cmd.ExecuteNonQuery();
+
+                    // Check error
+                    if (result < 0)
+                    {
+                        toExecSummary("Could not insert script. Check script for errors. Result = " + result);
+                    }
+                    else
+                    {
+                        toExecSummary("Script inserted successfully.");
+                        label3.Text = "Script inserted successfully.";
+                        label3.Visible = true;
+                    }
+                    toExecSummary("\n------------------------------------------------------------------------------");
+
+                    timer.Stop();
+                    progressBar1.Value = progressBar1.Maximum;
+                    label20.Text = progressBar1.Maximum + "%";
+                    label20.Update();
+                }
+            }
+            if (proceed == false)
+            {
+                button4_Click(sender, e); // restart
+            }
+        }
+
+
+
+
         //  --------------------------------------------------------------- END EXECUTION STATEMENTS --------------------------------------------------------------------------------------
   
 
@@ -686,7 +810,7 @@ namespace ScriptManFinal
                         if (result < 0)
                             toExecSummary("Error logging failed. Result = " + result);
                         else
-                            toExecSummary("Error logged. Result = " + result);
+                            toExecSummary("Error logged");
                     }
                     catch (SqlException ex)
                     {
@@ -705,6 +829,7 @@ namespace ScriptManFinal
 
             // an Ignore All response from error dialog will prevent future error dialogs for this run session
             toExecSummary("Ignore All status: " + ignoreAll);
+
             if (ignoreAll == false)
             {
                 DataGridView dgv = dataGridView2 as DataGridView;
@@ -729,7 +854,16 @@ namespace ScriptManFinal
                     else if (response == "edit script")
                     {
                         toExecSummary("Entering edit mode...");
-                        prepareForUpdateAndResume(sender, e, exception, currentScriptRow);
+                        if(radioButton1.Checked == true || radioButton3.Checked == true)
+                            prepareForUpdateAndResume(sender, e, exception, currentScriptRow);
+
+                        else if (radioButton4.Checked == true)
+                        {
+                            richTextBox1.Enabled = true;
+                            tabControl1.SelectedIndex = 0;
+                            highlightLine(richTextBox1, Convert.ToInt32(errorRow.Cells[3].Value), Yellow);
+                            proceed = true;
+                        }
 
                     }
                     else if (response == "quit")
@@ -752,6 +886,40 @@ namespace ScriptManFinal
                     MessageBox.Show("The error log is empty");
             }
             Console.WriteLine("Ignore all is true");           
+        }
+
+
+
+        private int searchForScriptOrder(string scriptOrder)
+        {
+            int index = 0;
+            int matchCount = 0;
+
+            dataGridView1.Rows[index].Selected = true;
+
+            // loop to search for mathcing Script Order
+            while (index < dataGridView1.Rows.Count)
+            {
+                if (dataGridView1.Rows[index].Cells[0].Value.ToString() == scriptOrder)
+                {
+                    // select the row where the Script Order matches the textBox5 Script Order
+                    dataGridView1.Rows[index].Selected = true;
+                    matchCount++;
+                }
+                index++;
+            }
+            if (matchCount == 0)
+            {
+                return -1;
+            }
+            else if (matchCount > 1)
+            {
+                return -2;
+            }
+            else
+            {
+                return dataGridView1.SelectedRows[0].Index;
+            }
         }
 
 
@@ -784,7 +952,7 @@ namespace ScriptManFinal
             // set placeholder to index of record being fixed
             placeholder = Convert.ToInt32(dataGridView1.SelectedRows[0].Index);
             toExecSummary("Execution stopped at row: " + currentScriptRow.Index);
-            comboBox1.SelectedIndex = 1;
+            //comboBox1.SelectedIndex = 1;
             textBox5.Text = currentScriptRow.Index.ToString();
             radioButton3.Checked = true;
             setSelectedValues(sender);
@@ -796,18 +964,20 @@ namespace ScriptManFinal
             // select most recent (last) error record         
             int lastRow = dataGridView2.Rows.Count - 1;
             dataGridView2.Rows[lastRow].Selected = true;
-            dataGridView2.FirstDisplayedScrollingRowIndex = lastRow;
+            //dataGridView2.FirstDisplayedScrollingRowIndex = lastRow;
         }
 
 
 
-        private static void highlightLine(RichTextBox rtb1, int index, Color color)
+        private void highlightLine(RichTextBox rtb1, int index, Color color)
         {
+            index -= 1;
             var lines = rtb1.Lines;
             if (index < 0 || index >= lines.Length)
                 return;
             var start = rtb1.GetFirstCharIndexFromLine(index);
             var length = lines[index].Length;
+            toExecSummary("Highlight line: " + index + "\nStart :" + start + "\nLength: " + length);
             rtb1.SelectionBackColor = color;
             rtb1.Select(start, length);
             rtb1.SelectionBackColor = color;
@@ -956,8 +1126,8 @@ namespace ScriptManFinal
         private void colorizeScript()
         {
             // SQL text formatting
-            Manoli.Utils.CSharpFormat.TsqlFormat clrz = new Manoli.Utils.CSharpFormat.TsqlFormat();
-            richTextBox1.Rtf = clrz.FormatString(richTextBox1.Text);
+         //   Manoli.Utils.CSharpFormat.TsqlFormat clrz = new Manoli.Utils.CSharpFormat.TsqlFormat();
+          //  richTextBox1.Rtf = clrz.FormatString(richTextBox1.Text);
         }
 
 
@@ -997,7 +1167,7 @@ namespace ScriptManFinal
             }
 
             // allows only two digits after decimal
-            if (Regex.IsMatch(textBox1.Text, @"\.\d\d"))
+            if (Regex.IsMatch(textBox1.Text, @"\.\d\d") && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -1240,7 +1410,7 @@ namespace ScriptManFinal
                     if (result < 0)
                         toExecSummary("Deletion failed.");
                     else
-                        label19.Text = "Deletion successful.";
+                        label3.Text = "Deletion successful.";
 
                     loadData();
                 }
@@ -1311,22 +1481,7 @@ namespace ScriptManFinal
                     form.Close();
                     if (response == "edit script")
                     {
-                        int scriptID = Convert.ToInt32(row.Cells[1].Value);
-                        tabControl1.SelectedIndex = 0;
-                        richTextBox1.Enabled = true;
-
-                        // search the script table for matching script
-                        DataGridView grid = dataGridView1 as DataGridView;
-                        for (int i = 0; i < grid.Rows.Count - 1; i++)
-                        {
-                            if (scriptID == Convert.ToInt32(grid.Rows[i].Cells[1].Value))
-                            {
-                                richTextBox1.Text = grid.Rows[i].Cells[5].Value.ToString();
-                                colorizeScript();
-                                highlightLine(richTextBox1, 33, Yellow);
-                                break;
-                            }
-                        }
+                        editScript(sender, e, row);
                     }
                 }
             }
@@ -1338,23 +1493,25 @@ namespace ScriptManFinal
 
 
 
-
-        private Task processData(List<string> list, IProgress<ProgressReport> progress)
+        private void editScript(object sender, EventArgs e, DataGridViewRow row)
         {
-            int index = 1;
-            int totalProcess = list.Count;
-            var progressReport = new ProgressReport();
-            return Task.Run(() =>
-            {
-                for (int i = 0; i < totalProcess; i++)
-                {
-                    progressReport.percentComplete = index++ * 100 / totalProcess;
-                    progress.Report(progressReport);
-                    Thread.Sleep(10);//used to simulate length of operation
-                }
-            });
-        }
+            int scriptID = Convert.ToInt32(row.Cells[1].Value);
+            tabControl1.SelectedIndex = 0;
+            richTextBox1.Enabled = true;
 
+            // search the script table for matching script
+            DataGridView grid = dataGridView1 as DataGridView;
+            for (int i = 0; i < grid.Rows.Count; i++)
+            {
+                if (scriptID == Convert.ToInt32(grid.Rows[i].Cells[1].Value))
+                {
+                    richTextBox1.Text = grid.Rows[i].Cells[5].Value.ToString();
+                    colorizeScript();
+                    highlightLine(richTextBox1, Convert.ToInt32(row.Cells[3].Value), Yellow);
+                    break;
+                }
+            }
+        }
 
 
         private void toExecSummary(string output)
@@ -1515,6 +1672,8 @@ namespace ScriptManFinal
                 label16.Text = "RM.dbo.refresh_testing      (BRMQATONTDBS07)";
         }
 
+
+
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             comboBox5.Enabled = true;
@@ -1561,7 +1720,6 @@ namespace ScriptManFinal
             comboBox2.SelectedIndex = -1;
             comboBox3.SelectedIndex = -1;
             comboBox5.SelectedIndex = -1;
-            richTextBox1.Text = null;
 
             if (richTextBox1.Enabled == true)
                 button2_Click(sender, e);
@@ -1630,7 +1788,6 @@ namespace ScriptManFinal
                 label9.ForeColor = Color.Black;
                 label16.ForeColor = Color.Black;
                 label17.ForeColor = Color.Black;
-                label19.ForeColor = Color.Black;
                 label20.ForeColor = Color.Black;
                 label10.ForeColor = Color.Black;
                 label11.ForeColor = Color.Black;
@@ -1701,7 +1858,6 @@ namespace ScriptManFinal
                 label9.ForeColor = Color.Gainsboro;
                 label16.ForeColor = Color.Gainsboro;
                 label17.ForeColor = Color.Gainsboro;
-                label19.ForeColor = Color.Gainsboro;
                 label20.ForeColor = Color.Gainsboro;
                 label10.ForeColor = Color.Gainsboro;
                 label11.ForeColor = Color.Gainsboro;
@@ -1765,6 +1921,70 @@ namespace ScriptManFinal
             else
                 lightSwitch = true;
             flipLightSwitch(lightSwitch);
+        }
+
+
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // allows for digits, decimal, and backspace / delete entries
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != 46)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // allows for only one decimal to be entered
+            if (e.KeyChar == 46)
+            {
+                if ((sender as TextBox).Text.IndexOf(e.KeyChar) != -1)
+                    e.Handled = true;
+            }
+
+            // allows only two digits after decimal
+            if (Regex.IsMatch(textBox5.Text, @"\.\d\d") && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+
+
+        private void textBox5_MouseClick(object sender, MouseEventArgs e)
+        {
+            textBox5.ReadOnly = false;
+            textBox5.Text = "";
+        }
+
+
+
+        private void textBox5_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox5.Text))
+                textBox5.Text = "0.00";
+
+            decimal so = Convert.ToDecimal(textBox5.Text);
+            int decimalPlaces = BitConverter.GetBytes(decimal.GetBits(so)[3])[2];
+
+            if (decimalPlaces == 0)
+            {
+                textBox5.Text = so + ".00";
+            }
+            else if (decimalPlaces == 1)
+            {
+                textBox5.Text = so + "0";
+            }
+        }
+
+
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (progressBar1.Value != progressBar1.Maximum)
+            {
+                progressBar1.Value++;
+                label20.Text = progressBar1.Value.ToString() + "%";
+            }
         }
 
 
