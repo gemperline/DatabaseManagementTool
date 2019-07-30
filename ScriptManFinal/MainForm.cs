@@ -123,9 +123,6 @@ namespace ScriptManFinal
             toolStripComboBox1.SelectedIndex = 5;
             toolStripTextBox1.Text = null;
             progressBar1.Minimum = 0;
-            progressBar1.Maximum = 1;
-            progressBar1.Step = 1;
-            progressBar1.Value = 0;
             radioButton1.Visible = false;
             radioButton3.Visible = false;
             radioButton4.Visible = false;
@@ -135,6 +132,7 @@ namespace ScriptManFinal
             timer.Tick += new EventHandler(timer_Tick);
             tabControl2.SelectedIndex = 0;
             progressBar1.Value = 0;
+            progressBar1.Visible = false;
             label20.Text = "0%";
             label20.Visible = false;
             label3.Text = "";
@@ -155,36 +153,13 @@ namespace ScriptManFinal
 
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // BROWSE button opens a file dialog to upload files
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "SQL|*.sql";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                if ((myStream = ofd.OpenFile()) != null)
-                {
-                    string strFileName = ofd.FileName;
-                    string fileText = File.ReadAllText(strFileName);
-                    richTextBox1.Text = fileText;
-                }
-                else
-                {
-                    MessageBox.Show("ERROR: could not open the file");
-                }
-                label1.Text = ofd.FileName;
-                label1.Visible = true;
-            }
-        }
-
-
-
         private void button5_Click(object sender, EventArgs e)
         {
             // CLOSE button
             Close();
         }
+
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -358,6 +333,7 @@ namespace ScriptManFinal
             proceed = true;     // control variable that stops RUN sequence upon user's error response
             button3.Enabled = false;
             button4.Enabled = false;
+            progressBar1.Visible = true;
 
             // determine number of records in table
             int numRows = dataGridView1.Rows.Count;
@@ -1016,17 +992,7 @@ namespace ScriptManFinal
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // LOCK / UNLOCK BUTTON 
-            if (richTextBox1.Enabled == false)
-            {
-                richTextBox1.Enabled = true;
-                button2.Text = "LOCK";
-            }
-            else
-            {
-                richTextBox1.Enabled = false;
-                button2.Text = "UNLOCK";
-            }
+
         }
 
 
@@ -1128,24 +1094,6 @@ namespace ScriptManFinal
             // SQL text formatting
          //   Manoli.Utils.CSharpFormat.TsqlFormat clrz = new Manoli.Utils.CSharpFormat.TsqlFormat();
           //  richTextBox1.Rtf = clrz.FormatString(richTextBox1.Text);
-        }
-
-
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            // PARSE BUTTON
-            DataGridView dgv = dataGridView1 as DataGridView;
-
-            if (dgv != null && dgv.SelectedRows.Count > 0)
-            {
-                DataGridViewRow row = dgv.SelectedRows[0];
-                if (row != null)
-                {
-                    richTextBox1.Text = row.Cells[5].Value.ToString();
-                    colorizeScript();
-                }
-            }
         }
 
 
@@ -1604,7 +1552,7 @@ namespace ScriptManFinal
             }
             else
             {
-                button6_Click(sender, e);
+                toolStripButton3_Click(sender, e);
             }
         }
 
@@ -1819,12 +1767,12 @@ namespace ScriptManFinal
                 button7.ForeColor = Color.Black;
                 button8.BackColor = Color.Moccasin;
                 button8.ForeColor = Color.Black;
-                button1.BackColor = Color.Orange;
-                button1.ForeColor = Color.Black;
-                button6.BackColor = Color.Moccasin;
-                button6.ForeColor = Color.Black;
-                button2.BackColor = Color.Moccasin;
-                button2.ForeColor = Color.Black;
+                toolStripButton4.BackColor = Color.Orange;
+                toolStripButton4.ForeColor = Color.Black;
+                toolStripButton3.BackColor = Color.Moccasin;
+                toolStripButton3.ForeColor = Color.Black;
+                toolStripButton2.BackColor = Color.Moccasin;
+                toolStripButton2.ForeColor = Color.Black;
                 button3.BackColor = Color.ForestGreen;
                 button4.BackColor = Color.Gold;
                 button5.BackColor = Color.Firebrick;
@@ -1889,12 +1837,12 @@ namespace ScriptManFinal
                 button7.ForeColor = SystemColors.ButtonHighlight;
                 button8.BackColor = Color.MediumPurple;
                 button8.ForeColor = SystemColors.ButtonHighlight;
-                button1.BackColor = Color.RoyalBlue;
-                button1.ForeColor = Color.White;
-                button6.BackColor = Color.MediumTurquoise;
-                button6.ForeColor = Color.Black;
-                button2.BackColor = Color.LimeGreen;
-                button2.ForeColor = Color.White;
+                toolStripButton4.BackColor = Color.RoyalBlue;
+                toolStripButton4.ForeColor = Color.White;
+                toolStripButton3.BackColor = Color.MediumTurquoise;
+                toolStripButton3.ForeColor = Color.Black;
+                toolStripButton2.BackColor = Color.LimeGreen;
+                toolStripButton2.ForeColor = Color.White;
                 button3.BackColor = Color.LimeGreen;
                 button4.BackColor = Color.MediumTurquoise;
                 button5.BackColor = Color.RoyalBlue;
@@ -1988,6 +1936,66 @@ namespace ScriptManFinal
         }
 
 
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            // BROWSE button opens a file dialog to upload files
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "SQL|*.sql";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = ofd.OpenFile()) != null)
+                {
+                    string strFileName = ofd.FileName;
+                    string fileText = File.ReadAllText(strFileName);
+                    richTextBox1.Text = fileText;
+                }
+                else
+                {
+                    MessageBox.Show("ERROR: could not open the file");
+                }
+                label1.Text = ofd.FileName;
+                label1.Visible = true;
+            }
+        }
+
+
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            // LOCK / UNLOCK BUTTON 
+            if (richTextBox1.Enabled == false)
+            {
+                richTextBox1.Enabled = true;
+                toolStripButton2.Image = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\icons\unlock.png");
+                toolStripButton2.ToolTipText = "Lock editor";               
+            }
+            else
+            {
+                richTextBox1.Enabled = false;
+                toolStripButton2.Image = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\icons\lock.png");
+                toolStripButton2.ToolTipText = "Unlock editor";
+            }
+        }
+
+
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            // PARSE BUTTON
+            DataGridView dgv = dataGridView1 as DataGridView;
+
+            if (dgv != null && dgv.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = dgv.SelectedRows[0];
+                if (row != null)
+                {
+                    richTextBox1.Text = row.Cells[5].Value.ToString();
+                    colorizeScript();
+                }
+            }
+        }
     }
 }
 
