@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace ScriptManFinal {
+namespace ScriptManagerV4 {
     
     
     /// <summary>
@@ -799,7 +799,7 @@ namespace ScriptManFinal {
         }
     }
 }
-namespace ScriptManFinal.RMDataSet8TableAdapters {
+namespace ScriptManagerV4.RMDataSet8TableAdapters {
     
     
     /// <summary>
@@ -947,7 +947,7 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::ScriptManFinal.Properties.Settings.Default.RMConnectionString;
+            this._connection.ConnectionString = global::ScriptManagerV4.Properties.Settings.Default.RMConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1078,7 +1078,7 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private refresh_testingTableAdapter _refresh_testingTableAdapter1;
+        private refresh_testingTableAdapter _refresh_testingTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1100,12 +1100,12 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public refresh_testingTableAdapter refresh_testingTableAdapter1 {
+        public refresh_testingTableAdapter refresh_testingTableAdapter {
             get {
-                return this._refresh_testingTableAdapter1;
+                return this._refresh_testingTableAdapter;
             }
             set {
-                this._refresh_testingTableAdapter1 = value;
+                this._refresh_testingTableAdapter = value;
             }
         }
         
@@ -1128,9 +1128,9 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._refresh_testingTableAdapter1 != null) 
-                            && (this._refresh_testingTableAdapter1.Connection != null))) {
-                    return this._refresh_testingTableAdapter1.Connection;
+                if (((this._refresh_testingTableAdapter != null) 
+                            && (this._refresh_testingTableAdapter.Connection != null))) {
+                    return this._refresh_testingTableAdapter.Connection;
                 }
                 return null;
             }
@@ -1145,7 +1145,7 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._refresh_testingTableAdapter1 != null)) {
+                if ((this._refresh_testingTableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -1159,12 +1159,12 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateUpdatedRows(RMDataSet8 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._refresh_testingTableAdapter1 != null)) {
+            if ((this._refresh_testingTableAdapter != null)) {
                 global::System.Data.DataRow[] updatedRows = dataSet.refresh_testing.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._refresh_testingTableAdapter1.Update(updatedRows));
+                    result = (result + this._refresh_testingTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -1178,11 +1178,11 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateInsertedRows(RMDataSet8 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._refresh_testingTableAdapter1 != null)) {
+            if ((this._refresh_testingTableAdapter != null)) {
                 global::System.Data.DataRow[] addedRows = dataSet.refresh_testing.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._refresh_testingTableAdapter1.Update(addedRows));
+                    result = (result + this._refresh_testingTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -1196,11 +1196,11 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateDeletedRows(RMDataSet8 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._refresh_testingTableAdapter1 != null)) {
+            if ((this._refresh_testingTableAdapter != null)) {
                 global::System.Data.DataRow[] deletedRows = dataSet.refresh_testing.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._refresh_testingTableAdapter1.Update(deletedRows));
+                    result = (result + this._refresh_testingTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -1243,8 +1243,8 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._refresh_testingTableAdapter1 != null) 
-                        && (this.MatchTableAdapterConnection(this._refresh_testingTableAdapter1.Connection) == false))) {
+            if (((this._refresh_testingTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._refresh_testingTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -1280,13 +1280,13 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._refresh_testingTableAdapter1 != null)) {
-                    revertConnections.Add(this._refresh_testingTableAdapter1, this._refresh_testingTableAdapter1.Connection);
-                    this._refresh_testingTableAdapter1.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._refresh_testingTableAdapter1.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._refresh_testingTableAdapter1.Adapter.AcceptChangesDuringUpdate) {
-                        this._refresh_testingTableAdapter1.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._refresh_testingTableAdapter1.Adapter);
+                if ((this._refresh_testingTableAdapter != null)) {
+                    revertConnections.Add(this._refresh_testingTableAdapter, this._refresh_testingTableAdapter.Connection);
+                    this._refresh_testingTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
+                    this._refresh_testingTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    if (this._refresh_testingTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._refresh_testingTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._refresh_testingTableAdapter.Adapter);
                     }
                 }
                 // 
@@ -1347,9 +1347,9 @@ namespace ScriptManFinal.RMDataSet8TableAdapters {
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._refresh_testingTableAdapter1 != null)) {
-                    this._refresh_testingTableAdapter1.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._refresh_testingTableAdapter1]));
-                    this._refresh_testingTableAdapter1.Transaction = null;
+                if ((this._refresh_testingTableAdapter != null)) {
+                    this._refresh_testingTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._refresh_testingTableAdapter]));
+                    this._refresh_testingTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

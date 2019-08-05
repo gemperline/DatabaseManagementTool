@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace ScriptManFinal {
+namespace ScriptManagerV4 {
     
     
     /// <summary>
@@ -20,17 +20,17 @@ namespace ScriptManFinal {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("RMDataSet7")]
+    [global::System.Xml.Serialization.XmlRootAttribute("dba_adminDataSet2")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class RMDataSet7 : global::System.Data.DataSet {
+    public partial class dba_adminDataSet2 : global::System.Data.DataSet {
         
-        private refresh_error_logDataTable tablerefresh_error_log;
+        private PostRefresh_ErrorsDataTable tablePostRefresh_Errors;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public RMDataSet7() {
+        public dba_adminDataSet2() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace ScriptManFinal {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected RMDataSet7(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected dba_adminDataSet2(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace ScriptManFinal {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["refresh_error_log"] != null)) {
-                    base.Tables.Add(new refresh_error_logDataTable(ds.Tables["refresh_error_log"]));
+                if ((ds.Tables["PostRefresh_Errors"] != null)) {
+                    base.Tables.Add(new PostRefresh_ErrorsDataTable(ds.Tables["PostRefresh_Errors"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace ScriptManFinal {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public refresh_error_logDataTable refresh_error_log {
+        public PostRefresh_ErrorsDataTable PostRefresh_Errors {
             get {
-                return this.tablerefresh_error_log;
+                return this.tablePostRefresh_Errors;
             }
         }
         
@@ -127,7 +127,7 @@ namespace ScriptManFinal {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            RMDataSet7 cln = ((RMDataSet7)(base.Clone()));
+            dba_adminDataSet2 cln = ((dba_adminDataSet2)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace ScriptManFinal {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["refresh_error_log"] != null)) {
-                    base.Tables.Add(new refresh_error_logDataTable(ds.Tables["refresh_error_log"]));
+                if ((ds.Tables["PostRefresh_Errors"] != null)) {
+                    base.Tables.Add(new PostRefresh_ErrorsDataTable(ds.Tables["PostRefresh_Errors"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace ScriptManFinal {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tablerefresh_error_log = ((refresh_error_logDataTable)(base.Tables["refresh_error_log"]));
+            this.tablePostRefresh_Errors = ((PostRefresh_ErrorsDataTable)(base.Tables["PostRefresh_Errors"]));
             if ((initTable == true)) {
-                if ((this.tablerefresh_error_log != null)) {
-                    this.tablerefresh_error_log.InitVars();
+                if ((this.tablePostRefresh_Errors != null)) {
+                    this.tablePostRefresh_Errors.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace ScriptManFinal {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "RMDataSet7";
+            this.DataSetName = "dba_adminDataSet2";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/RMDataSet7.xsd";
+            this.Namespace = "http://tempuri.org/dba_adminDataSet2.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tablerefresh_error_log = new refresh_error_logDataTable();
-            base.Tables.Add(this.tablerefresh_error_log);
+            this.tablePostRefresh_Errors = new PostRefresh_ErrorsDataTable();
+            base.Tables.Add(this.tablePostRefresh_Errors);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializerefresh_error_log() {
+        private bool ShouldSerializePostRefresh_Errors() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace ScriptManFinal {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            RMDataSet7 ds = new RMDataSet7();
+            dba_adminDataSet2 ds = new dba_adminDataSet2();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,33 +270,41 @@ namespace ScriptManFinal {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void refresh_error_logRowChangeEventHandler(object sender, refresh_error_logRowChangeEvent e);
+        public delegate void PostRefresh_ErrorsRowChangeEventHandler(object sender, PostRefresh_ErrorsRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class refresh_error_logDataTable : global::System.Data.TypedTableBase<refresh_error_logRow> {
+        public partial class PostRefresh_ErrorsDataTable : global::System.Data.TypedTableBase<PostRefresh_ErrorsRow> {
             
-            private global::System.Data.DataColumn columnerror_message;
+            private global::System.Data.DataColumn columnErrorID;
             
-            private global::System.Data.DataColumn columnscript_order;
+            private global::System.Data.DataColumn columnUserName;
             
-            private global::System.Data.DataColumn columnerror_line;
+            private global::System.Data.DataColumn columnEnvironment;
             
-            private global::System.Data.DataColumn columnscript_environment;
+            private global::System.Data.DataColumn columnScript_ID;
             
-            private global::System.Data.DataColumn columnerror_time;
+            private global::System.Data.DataColumn columnErrorNumber;
             
-            private global::System.Data.DataColumn columnerror_procedure;
+            private global::System.Data.DataColumn columnErrorState;
             
-            private global::System.Data.DataColumn columnscript_id;
+            private global::System.Data.DataColumn columnErrorSeverity;
+            
+            private global::System.Data.DataColumn columnErrorLine;
+            
+            private global::System.Data.DataColumn columnErrorProcedure;
+            
+            private global::System.Data.DataColumn columnErrorMessage;
+            
+            private global::System.Data.DataColumn columnErrorDateTime;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logDataTable() {
-                this.TableName = "refresh_error_log";
+            public PostRefresh_ErrorsDataTable() {
+                this.TableName = "PostRefresh_Errors";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -304,7 +312,7 @@ namespace ScriptManFinal {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal refresh_error_logDataTable(global::System.Data.DataTable table) {
+            internal PostRefresh_ErrorsDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -321,64 +329,96 @@ namespace ScriptManFinal {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected refresh_error_logDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected PostRefresh_ErrorsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn error_messageColumn {
+            public global::System.Data.DataColumn ErrorIDColumn {
                 get {
-                    return this.columnerror_message;
+                    return this.columnErrorID;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn script_orderColumn {
+            public global::System.Data.DataColumn UserNameColumn {
                 get {
-                    return this.columnscript_order;
+                    return this.columnUserName;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn error_lineColumn {
+            public global::System.Data.DataColumn EnvironmentColumn {
                 get {
-                    return this.columnerror_line;
+                    return this.columnEnvironment;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn script_environmentColumn {
+            public global::System.Data.DataColumn Script_IDColumn {
                 get {
-                    return this.columnscript_environment;
+                    return this.columnScript_ID;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn error_timeColumn {
+            public global::System.Data.DataColumn ErrorNumberColumn {
                 get {
-                    return this.columnerror_time;
+                    return this.columnErrorNumber;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn error_procedureColumn {
+            public global::System.Data.DataColumn ErrorStateColumn {
                 get {
-                    return this.columnerror_procedure;
+                    return this.columnErrorState;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn script_idColumn {
+            public global::System.Data.DataColumn ErrorSeverityColumn {
                 get {
-                    return this.columnscript_id;
+                    return this.columnErrorSeverity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ErrorLineColumn {
+                get {
+                    return this.columnErrorLine;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ErrorProcedureColumn {
+                get {
+                    return this.columnErrorProcedure;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ErrorMessageColumn {
+                get {
+                    return this.columnErrorMessage;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ErrorDateTimeColumn {
+                get {
+                    return this.columnErrorDateTime;
                 }
             }
             
@@ -393,51 +433,55 @@ namespace ScriptManFinal {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logRow this[int index] {
+            public PostRefresh_ErrorsRow this[int index] {
                 get {
-                    return ((refresh_error_logRow)(this.Rows[index]));
+                    return ((PostRefresh_ErrorsRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event refresh_error_logRowChangeEventHandler refresh_error_logRowChanging;
+            public event PostRefresh_ErrorsRowChangeEventHandler PostRefresh_ErrorsRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event refresh_error_logRowChangeEventHandler refresh_error_logRowChanged;
+            public event PostRefresh_ErrorsRowChangeEventHandler PostRefresh_ErrorsRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event refresh_error_logRowChangeEventHandler refresh_error_logRowDeleting;
+            public event PostRefresh_ErrorsRowChangeEventHandler PostRefresh_ErrorsRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event refresh_error_logRowChangeEventHandler refresh_error_logRowDeleted;
+            public event PostRefresh_ErrorsRowChangeEventHandler PostRefresh_ErrorsRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Addrefresh_error_logRow(refresh_error_logRow row) {
+            public void AddPostRefresh_ErrorsRow(PostRefresh_ErrorsRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logRow Addrefresh_error_logRow(string error_message, int script_order, int error_line, string script_environment, System.DateTime error_time, string error_procedure, int script_id) {
-                refresh_error_logRow rowrefresh_error_logRow = ((refresh_error_logRow)(this.NewRow()));
+            public PostRefresh_ErrorsRow AddPostRefresh_ErrorsRow(string UserName, string Environment, int Script_ID, int ErrorNumber, int ErrorState, int ErrorSeverity, int ErrorLine, string ErrorProcedure, string ErrorMessage, System.DateTime ErrorDateTime) {
+                PostRefresh_ErrorsRow rowPostRefresh_ErrorsRow = ((PostRefresh_ErrorsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        error_message,
-                        script_order,
-                        error_line,
-                        script_environment,
-                        error_time,
-                        error_procedure,
-                        script_id};
-                rowrefresh_error_logRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowrefresh_error_logRow);
-                return rowrefresh_error_logRow;
+                        null,
+                        UserName,
+                        Environment,
+                        Script_ID,
+                        ErrorNumber,
+                        ErrorState,
+                        ErrorSeverity,
+                        ErrorLine,
+                        ErrorProcedure,
+                        ErrorMessage,
+                        ErrorDateTime};
+                rowPostRefresh_ErrorsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowPostRefresh_ErrorsRow);
+                return rowPostRefresh_ErrorsRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                refresh_error_logDataTable cln = ((refresh_error_logDataTable)(base.Clone()));
+                PostRefresh_ErrorsDataTable cln = ((PostRefresh_ErrorsDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -445,68 +489,85 @@ namespace ScriptManFinal {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new refresh_error_logDataTable();
+                return new PostRefresh_ErrorsDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnerror_message = base.Columns["error_message"];
-                this.columnscript_order = base.Columns["script_order"];
-                this.columnerror_line = base.Columns["error_line"];
-                this.columnscript_environment = base.Columns["script_environment"];
-                this.columnerror_time = base.Columns["error_time"];
-                this.columnerror_procedure = base.Columns["error_procedure"];
-                this.columnscript_id = base.Columns["script_id"];
+                this.columnErrorID = base.Columns["ErrorID"];
+                this.columnUserName = base.Columns["UserName"];
+                this.columnEnvironment = base.Columns["Environment"];
+                this.columnScript_ID = base.Columns["Script_ID"];
+                this.columnErrorNumber = base.Columns["ErrorNumber"];
+                this.columnErrorState = base.Columns["ErrorState"];
+                this.columnErrorSeverity = base.Columns["ErrorSeverity"];
+                this.columnErrorLine = base.Columns["ErrorLine"];
+                this.columnErrorProcedure = base.Columns["ErrorProcedure"];
+                this.columnErrorMessage = base.Columns["ErrorMessage"];
+                this.columnErrorDateTime = base.Columns["ErrorDateTime"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnerror_message = new global::System.Data.DataColumn("error_message", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnerror_message);
-                this.columnscript_order = new global::System.Data.DataColumn("script_order", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnscript_order);
-                this.columnerror_line = new global::System.Data.DataColumn("error_line", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnerror_line);
-                this.columnscript_environment = new global::System.Data.DataColumn("script_environment", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnscript_environment);
-                this.columnerror_time = new global::System.Data.DataColumn("error_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnerror_time);
-                this.columnerror_procedure = new global::System.Data.DataColumn("error_procedure", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnerror_procedure);
-                this.columnscript_id = new global::System.Data.DataColumn("script_id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnscript_id);
-                this.columnerror_message.MaxLength = 2147483647;
-                this.columnscript_environment.MaxLength = 2147483647;
-                this.columnerror_procedure.MaxLength = 2147483647;
-                this.columnscript_id.AllowDBNull = false;
+                this.columnErrorID = new global::System.Data.DataColumn("ErrorID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorID);
+                this.columnUserName = new global::System.Data.DataColumn("UserName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUserName);
+                this.columnEnvironment = new global::System.Data.DataColumn("Environment", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEnvironment);
+                this.columnScript_ID = new global::System.Data.DataColumn("Script_ID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnScript_ID);
+                this.columnErrorNumber = new global::System.Data.DataColumn("ErrorNumber", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorNumber);
+                this.columnErrorState = new global::System.Data.DataColumn("ErrorState", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorState);
+                this.columnErrorSeverity = new global::System.Data.DataColumn("ErrorSeverity", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorSeverity);
+                this.columnErrorLine = new global::System.Data.DataColumn("ErrorLine", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorLine);
+                this.columnErrorProcedure = new global::System.Data.DataColumn("ErrorProcedure", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorProcedure);
+                this.columnErrorMessage = new global::System.Data.DataColumn("ErrorMessage", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorMessage);
+                this.columnErrorDateTime = new global::System.Data.DataColumn("ErrorDateTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnErrorDateTime);
+                this.columnErrorID.AutoIncrement = true;
+                this.columnErrorID.AutoIncrementSeed = -1;
+                this.columnErrorID.AutoIncrementStep = -1;
+                this.columnErrorID.AllowDBNull = false;
+                this.columnErrorID.ReadOnly = true;
+                this.columnUserName.MaxLength = 100;
+                this.columnEnvironment.MaxLength = 20;
+                this.columnErrorProcedure.MaxLength = 2147483647;
+                this.columnErrorMessage.MaxLength = 2147483647;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logRow Newrefresh_error_logRow() {
-                return ((refresh_error_logRow)(this.NewRow()));
+            public PostRefresh_ErrorsRow NewPostRefresh_ErrorsRow() {
+                return ((PostRefresh_ErrorsRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new refresh_error_logRow(builder);
+                return new PostRefresh_ErrorsRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(refresh_error_logRow);
+                return typeof(PostRefresh_ErrorsRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.refresh_error_logRowChanged != null)) {
-                    this.refresh_error_logRowChanged(this, new refresh_error_logRowChangeEvent(((refresh_error_logRow)(e.Row)), e.Action));
+                if ((this.PostRefresh_ErrorsRowChanged != null)) {
+                    this.PostRefresh_ErrorsRowChanged(this, new PostRefresh_ErrorsRowChangeEvent(((PostRefresh_ErrorsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -514,8 +575,8 @@ namespace ScriptManFinal {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.refresh_error_logRowChanging != null)) {
-                    this.refresh_error_logRowChanging(this, new refresh_error_logRowChangeEvent(((refresh_error_logRow)(e.Row)), e.Action));
+                if ((this.PostRefresh_ErrorsRowChanging != null)) {
+                    this.PostRefresh_ErrorsRowChanging(this, new PostRefresh_ErrorsRowChangeEvent(((PostRefresh_ErrorsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -523,8 +584,8 @@ namespace ScriptManFinal {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.refresh_error_logRowDeleted != null)) {
-                    this.refresh_error_logRowDeleted(this, new refresh_error_logRowChangeEvent(((refresh_error_logRow)(e.Row)), e.Action));
+                if ((this.PostRefresh_ErrorsRowDeleted != null)) {
+                    this.PostRefresh_ErrorsRowDeleted(this, new PostRefresh_ErrorsRowChangeEvent(((PostRefresh_ErrorsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -532,14 +593,14 @@ namespace ScriptManFinal {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.refresh_error_logRowDeleting != null)) {
-                    this.refresh_error_logRowDeleting(this, new refresh_error_logRowChangeEvent(((refresh_error_logRow)(e.Row)), e.Action));
+                if ((this.PostRefresh_ErrorsRowDeleting != null)) {
+                    this.PostRefresh_ErrorsRowDeleting(this, new PostRefresh_ErrorsRowChangeEvent(((PostRefresh_ErrorsRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Removerefresh_error_logRow(refresh_error_logRow row) {
+            public void RemovePostRefresh_ErrorsRow(PostRefresh_ErrorsRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -548,7 +609,7 @@ namespace ScriptManFinal {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                RMDataSet7 ds = new RMDataSet7();
+                dba_adminDataSet2 ds = new dba_adminDataSet2();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -566,7 +627,7 @@ namespace ScriptManFinal {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "refresh_error_logDataTable";
+                attribute2.FixedValue = "PostRefresh_ErrorsDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -610,195 +671,306 @@ namespace ScriptManFinal {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class refresh_error_logRow : global::System.Data.DataRow {
+        public partial class PostRefresh_ErrorsRow : global::System.Data.DataRow {
             
-            private refresh_error_logDataTable tablerefresh_error_log;
+            private PostRefresh_ErrorsDataTable tablePostRefresh_Errors;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal refresh_error_logRow(global::System.Data.DataRowBuilder rb) : 
+            internal PostRefresh_ErrorsRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tablerefresh_error_log = ((refresh_error_logDataTable)(this.Table));
+                this.tablePostRefresh_Errors = ((PostRefresh_ErrorsDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string error_message {
+            public int ErrorID {
+                get {
+                    return ((int)(this[this.tablePostRefresh_Errors.ErrorIDColumn]));
+                }
+                set {
+                    this[this.tablePostRefresh_Errors.ErrorIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string UserName {
                 get {
                     try {
-                        return ((string)(this[this.tablerefresh_error_log.error_messageColumn]));
+                        return ((string)(this[this.tablePostRefresh_Errors.UserNameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'error_message\' in table \'refresh_error_log\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'UserName\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.error_messageColumn] = value;
+                    this[this.tablePostRefresh_Errors.UserNameColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int script_order {
+            public string Environment {
                 get {
                     try {
-                        return ((int)(this[this.tablerefresh_error_log.script_orderColumn]));
+                        return ((string)(this[this.tablePostRefresh_Errors.EnvironmentColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'script_order\' in table \'refresh_error_log\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Environment\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.script_orderColumn] = value;
+                    this[this.tablePostRefresh_Errors.EnvironmentColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int error_line {
+            public int Script_ID {
                 get {
                     try {
-                        return ((int)(this[this.tablerefresh_error_log.error_lineColumn]));
+                        return ((int)(this[this.tablePostRefresh_Errors.Script_IDColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'error_line\' in table \'refresh_error_log\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Script_ID\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.error_lineColumn] = value;
+                    this[this.tablePostRefresh_Errors.Script_IDColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string script_environment {
+            public int ErrorNumber {
                 get {
                     try {
-                        return ((string)(this[this.tablerefresh_error_log.script_environmentColumn]));
+                        return ((int)(this[this.tablePostRefresh_Errors.ErrorNumberColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'script_environment\' in table \'refresh_error_log\' is DBNull." +
-                                "", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorNumber\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.script_environmentColumn] = value;
+                    this[this.tablePostRefresh_Errors.ErrorNumberColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime error_time {
+            public int ErrorState {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tablerefresh_error_log.error_timeColumn]));
+                        return ((int)(this[this.tablePostRefresh_Errors.ErrorStateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'error_time\' in table \'refresh_error_log\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorState\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.error_timeColumn] = value;
+                    this[this.tablePostRefresh_Errors.ErrorStateColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string error_procedure {
+            public int ErrorSeverity {
                 get {
                     try {
-                        return ((string)(this[this.tablerefresh_error_log.error_procedureColumn]));
+                        return ((int)(this[this.tablePostRefresh_Errors.ErrorSeverityColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'error_procedure\' in table \'refresh_error_log\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorSeverity\' in table \'PostRefresh_Errors\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablerefresh_error_log.error_procedureColumn] = value;
+                    this[this.tablePostRefresh_Errors.ErrorSeverityColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int script_id {
+            public int ErrorLine {
                 get {
-                    return ((int)(this[this.tablerefresh_error_log.script_idColumn]));
+                    try {
+                        return ((int)(this[this.tablePostRefresh_Errors.ErrorLineColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorLine\' in table \'PostRefresh_Errors\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tablerefresh_error_log.script_idColumn] = value;
+                    this[this.tablePostRefresh_Errors.ErrorLineColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Iserror_messageNull() {
-                return this.IsNull(this.tablerefresh_error_log.error_messageColumn);
+            public string ErrorProcedure {
+                get {
+                    try {
+                        return ((string)(this[this.tablePostRefresh_Errors.ErrorProcedureColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorProcedure\' in table \'PostRefresh_Errors\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePostRefresh_Errors.ErrorProcedureColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Seterror_messageNull() {
-                this[this.tablerefresh_error_log.error_messageColumn] = global::System.Convert.DBNull;
+            public string ErrorMessage {
+                get {
+                    try {
+                        return ((string)(this[this.tablePostRefresh_Errors.ErrorMessageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorMessage\' in table \'PostRefresh_Errors\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePostRefresh_Errors.ErrorMessageColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isscript_orderNull() {
-                return this.IsNull(this.tablerefresh_error_log.script_orderColumn);
+            public System.DateTime ErrorDateTime {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tablePostRefresh_Errors.ErrorDateTimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorDateTime\' in table \'PostRefresh_Errors\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePostRefresh_Errors.ErrorDateTimeColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setscript_orderNull() {
-                this[this.tablerefresh_error_log.script_orderColumn] = global::System.Convert.DBNull;
+            public bool IsUserNameNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.UserNameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Iserror_lineNull() {
-                return this.IsNull(this.tablerefresh_error_log.error_lineColumn);
+            public void SetUserNameNull() {
+                this[this.tablePostRefresh_Errors.UserNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Seterror_lineNull() {
-                this[this.tablerefresh_error_log.error_lineColumn] = global::System.Convert.DBNull;
+            public bool IsEnvironmentNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.EnvironmentColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isscript_environmentNull() {
-                return this.IsNull(this.tablerefresh_error_log.script_environmentColumn);
+            public void SetEnvironmentNull() {
+                this[this.tablePostRefresh_Errors.EnvironmentColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setscript_environmentNull() {
-                this[this.tablerefresh_error_log.script_environmentColumn] = global::System.Convert.DBNull;
+            public bool IsScript_IDNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.Script_IDColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Iserror_timeNull() {
-                return this.IsNull(this.tablerefresh_error_log.error_timeColumn);
+            public void SetScript_IDNull() {
+                this[this.tablePostRefresh_Errors.Script_IDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Seterror_timeNull() {
-                this[this.tablerefresh_error_log.error_timeColumn] = global::System.Convert.DBNull;
+            public bool IsErrorNumberNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorNumberColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Iserror_procedureNull() {
-                return this.IsNull(this.tablerefresh_error_log.error_procedureColumn);
+            public void SetErrorNumberNull() {
+                this[this.tablePostRefresh_Errors.ErrorNumberColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Seterror_procedureNull() {
-                this[this.tablerefresh_error_log.error_procedureColumn] = global::System.Convert.DBNull;
+            public bool IsErrorStateNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorStateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorStateNull() {
+                this[this.tablePostRefresh_Errors.ErrorStateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsErrorSeverityNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorSeverityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorSeverityNull() {
+                this[this.tablePostRefresh_Errors.ErrorSeverityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsErrorLineNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorLineColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorLineNull() {
+                this[this.tablePostRefresh_Errors.ErrorLineColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsErrorProcedureNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorProcedureColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorProcedureNull() {
+                this[this.tablePostRefresh_Errors.ErrorProcedureColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsErrorMessageNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorMessageColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorMessageNull() {
+                this[this.tablePostRefresh_Errors.ErrorMessageColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsErrorDateTimeNull() {
+                return this.IsNull(this.tablePostRefresh_Errors.ErrorDateTimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetErrorDateTimeNull() {
+                this[this.tablePostRefresh_Errors.ErrorDateTimeColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -806,22 +978,22 @@ namespace ScriptManFinal {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class refresh_error_logRowChangeEvent : global::System.EventArgs {
+        public class PostRefresh_ErrorsRowChangeEvent : global::System.EventArgs {
             
-            private refresh_error_logRow eventRow;
+            private PostRefresh_ErrorsRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logRowChangeEvent(refresh_error_logRow row, global::System.Data.DataRowAction action) {
+            public PostRefresh_ErrorsRowChangeEvent(PostRefresh_ErrorsRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public refresh_error_logRow Row {
+            public PostRefresh_ErrorsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -837,7 +1009,7 @@ namespace ScriptManFinal {
         }
     }
 }
-namespace ScriptManFinal.RMDataSet7TableAdapters {
+namespace ScriptManagerV4.dba_adminDataSet2TableAdapters {
     
     
     /// <summary>
@@ -849,7 +1021,7 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class refresh_error_logTableAdapter : global::System.ComponentModel.Component {
+    public partial class PostRefresh_ErrorsTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -863,7 +1035,7 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public refresh_error_logTableAdapter() {
+        public PostRefresh_ErrorsTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -960,33 +1132,40 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "refresh_error_log";
-            tableMapping.ColumnMappings.Add("error_message", "error_message");
-            tableMapping.ColumnMappings.Add("script_order", "script_order");
-            tableMapping.ColumnMappings.Add("error_line", "error_line");
-            tableMapping.ColumnMappings.Add("script_environment", "script_environment");
-            tableMapping.ColumnMappings.Add("error_time", "error_time");
-            tableMapping.ColumnMappings.Add("error_procedure", "error_procedure");
-            tableMapping.ColumnMappings.Add("script_id", "script_id");
+            tableMapping.DataSetTable = "PostRefresh_Errors";
+            tableMapping.ColumnMappings.Add("ErrorID", "ErrorID");
+            tableMapping.ColumnMappings.Add("UserName", "UserName");
+            tableMapping.ColumnMappings.Add("Environment", "Environment");
+            tableMapping.ColumnMappings.Add("Script_ID", "Script_ID");
+            tableMapping.ColumnMappings.Add("ErrorNumber", "ErrorNumber");
+            tableMapping.ColumnMappings.Add("ErrorState", "ErrorState");
+            tableMapping.ColumnMappings.Add("ErrorSeverity", "ErrorSeverity");
+            tableMapping.ColumnMappings.Add("ErrorLine", "ErrorLine");
+            tableMapping.ColumnMappings.Add("ErrorProcedure", "ErrorProcedure");
+            tableMapping.ColumnMappings.Add("ErrorMessage", "ErrorMessage");
+            tableMapping.ColumnMappings.Add("ErrorDateTime", "ErrorDateTime");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[refresh_error_log] ([error_message], [script_order], [error_line], [script_environment], [error_time], [error_procedure], [script_id]) VALUES (@error_message, @script_order, @error_line, @script_environment, @error_time, @error_procedure, @script_id)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[PostRefresh_Errors] ([UserName], [Environment], [Script_ID], [ErrorNumber], [ErrorState], [ErrorSeverity], [ErrorLine], [ErrorProcedure], [ErrorMessage], [ErrorDateTime]) VALUES (@UserName, @Environment, @Script_ID, @ErrorNumber, @ErrorState, @ErrorSeverity, @ErrorLine, @ErrorProcedure, @ErrorMessage, @ErrorDateTime)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@error_message", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "error_message", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@script_order", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "script_order", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@error_line", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "error_line", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@script_environment", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "script_environment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@error_time", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "error_time", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@error_procedure", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "error_procedure", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@script_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "script_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserName", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Environment", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Environment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Script_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Script_ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorNumber", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorNumber", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorSeverity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorSeverity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorLine", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorLine", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorProcedure", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorProcedure", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorMessage", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorMessage", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ErrorDateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ErrorDateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::ScriptManFinal.Properties.Settings.Default.RMConnectionString;
+            this._connection.ConnectionString = global::ScriptManagerV4.Properties.Settings.Default.dba_adminConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -995,8 +1174,9 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT error_message, script_order, error_line, script_environment, error_time, e" +
-                "rror_procedure, script_id FROM dbo.refresh_error_log";
+            this._commandCollection[0].CommandText = "SELECT ErrorID, UserName, Environment, Script_ID, ErrorNumber, ErrorState, ErrorS" +
+                "everity, ErrorLine, ErrorProcedure, ErrorMessage, ErrorDateTime FROM dbo.PostRef" +
+                "resh_Errors";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1004,7 +1184,7 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(RMDataSet7.refresh_error_logDataTable dataTable) {
+        public virtual int Fill(dba_adminDataSet2.PostRefresh_ErrorsDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1017,9 +1197,9 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual RMDataSet7.refresh_error_logDataTable GetData() {
+        public virtual dba_adminDataSet2.PostRefresh_ErrorsDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            RMDataSet7.refresh_error_logDataTable dataTable = new RMDataSet7.refresh_error_logDataTable();
+            dba_adminDataSet2.PostRefresh_ErrorsDataTable dataTable = new dba_adminDataSet2.PostRefresh_ErrorsDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1027,15 +1207,15 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(RMDataSet7.refresh_error_logDataTable dataTable) {
+        public virtual int Update(dba_adminDataSet2.PostRefresh_ErrorsDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(RMDataSet7 dataSet) {
-            return this.Adapter.Update(dataSet, "refresh_error_log");
+        public virtual int Update(dba_adminDataSet2 dataSet) {
+            return this.Adapter.Update(dataSet, "PostRefresh_Errors");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1057,44 +1237,67 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string error_message, global::System.Nullable<int> script_order, global::System.Nullable<int> error_line, string script_environment, global::System.Nullable<global::System.DateTime> error_time, string error_procedure, int script_id) {
-            if ((error_message == null)) {
+        public virtual int Insert(string UserName, string Environment, global::System.Nullable<int> Script_ID, global::System.Nullable<int> ErrorNumber, global::System.Nullable<int> ErrorState, global::System.Nullable<int> ErrorSeverity, global::System.Nullable<int> ErrorLine, string ErrorProcedure, string ErrorMessage, global::System.Nullable<global::System.DateTime> ErrorDateTime) {
+            if ((UserName == null)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(error_message));
+                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(UserName));
             }
-            if ((script_order.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(script_order.Value));
-            }
-            else {
+            if ((Environment == null)) {
                 this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((error_line.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((int)(error_line.Value));
+            else {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(Environment));
+            }
+            if ((Script_ID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[2].Value = ((int)(Script_ID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
-            if ((script_environment == null)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
+            if ((ErrorNumber.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(ErrorNumber.Value));
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(script_environment));
+                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((error_time.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(error_time.Value));
+            if ((ErrorState.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(ErrorState.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((error_procedure == null)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
+            if ((ErrorSeverity.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[5].Value = ((int)(ErrorSeverity.Value));
             }
             else {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((string)(error_procedure));
+                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
-            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(script_id));
+            if ((ErrorLine.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(ErrorLine.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((ErrorProcedure == null)) {
+                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[7].Value = ((string)(ErrorProcedure));
+            }
+            if ((ErrorMessage == null)) {
+                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[8].Value = ((string)(ErrorMessage));
+            }
+            if ((ErrorDateTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[9].Value = ((System.DateTime)(ErrorDateTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1124,7 +1327,7 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private refresh_error_logTableAdapter _refresh_error_logTableAdapter;
+        private PostRefresh_ErrorsTableAdapter _postRefresh_ErrorsTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1146,12 +1349,12 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public refresh_error_logTableAdapter refresh_error_logTableAdapter {
+        public PostRefresh_ErrorsTableAdapter PostRefresh_ErrorsTableAdapter {
             get {
-                return this._refresh_error_logTableAdapter;
+                return this._postRefresh_ErrorsTableAdapter;
             }
             set {
-                this._refresh_error_logTableAdapter = value;
+                this._postRefresh_ErrorsTableAdapter = value;
             }
         }
         
@@ -1174,9 +1377,9 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._refresh_error_logTableAdapter != null) 
-                            && (this._refresh_error_logTableAdapter.Connection != null))) {
-                    return this._refresh_error_logTableAdapter.Connection;
+                if (((this._postRefresh_ErrorsTableAdapter != null) 
+                            && (this._postRefresh_ErrorsTableAdapter.Connection != null))) {
+                    return this._postRefresh_ErrorsTableAdapter.Connection;
                 }
                 return null;
             }
@@ -1191,7 +1394,7 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._refresh_error_logTableAdapter != null)) {
+                if ((this._postRefresh_ErrorsTableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -1203,14 +1406,14 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(RMDataSet7 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(dba_adminDataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._refresh_error_logTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.refresh_error_log.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+            if ((this._postRefresh_ErrorsTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.PostRefresh_Errors.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._refresh_error_logTableAdapter.Update(updatedRows));
+                    result = (result + this._postRefresh_ErrorsTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -1222,13 +1425,13 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(RMDataSet7 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(dba_adminDataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._refresh_error_logTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.refresh_error_log.Select(null, null, global::System.Data.DataViewRowState.Added);
+            if ((this._postRefresh_ErrorsTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.PostRefresh_Errors.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._refresh_error_logTableAdapter.Update(addedRows));
+                    result = (result + this._postRefresh_ErrorsTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -1240,13 +1443,13 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(RMDataSet7 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(dba_adminDataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._refresh_error_logTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.refresh_error_log.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+            if ((this._postRefresh_ErrorsTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.PostRefresh_Errors.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._refresh_error_logTableAdapter.Update(deletedRows));
+                    result = (result + this._postRefresh_ErrorsTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -1282,15 +1485,15 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(RMDataSet7 dataSet) {
+        public virtual int UpdateAll(dba_adminDataSet2 dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._refresh_error_logTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._refresh_error_logTableAdapter.Connection) == false))) {
+            if (((this._postRefresh_ErrorsTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._postRefresh_ErrorsTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -1326,13 +1529,13 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._refresh_error_logTableAdapter != null)) {
-                    revertConnections.Add(this._refresh_error_logTableAdapter, this._refresh_error_logTableAdapter.Connection);
-                    this._refresh_error_logTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._refresh_error_logTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._refresh_error_logTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._refresh_error_logTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._refresh_error_logTableAdapter.Adapter);
+                if ((this._postRefresh_ErrorsTableAdapter != null)) {
+                    revertConnections.Add(this._postRefresh_ErrorsTableAdapter, this._postRefresh_ErrorsTableAdapter.Connection);
+                    this._postRefresh_ErrorsTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
+                    this._postRefresh_ErrorsTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    if (this._postRefresh_ErrorsTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._postRefresh_ErrorsTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._postRefresh_ErrorsTableAdapter.Adapter);
                     }
                 }
                 // 
@@ -1393,9 +1596,9 @@ namespace ScriptManFinal.RMDataSet7TableAdapters {
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._refresh_error_logTableAdapter != null)) {
-                    this._refresh_error_logTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._refresh_error_logTableAdapter]));
-                    this._refresh_error_logTableAdapter.Transaction = null;
+                if ((this._postRefresh_ErrorsTableAdapter != null)) {
+                    this._postRefresh_ErrorsTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._postRefresh_ErrorsTableAdapter]));
+                    this._postRefresh_ErrorsTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

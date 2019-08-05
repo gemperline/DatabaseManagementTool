@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace ScriptManFinal {
+namespace ScriptManagerV4 {
     
     
     /// <summary>
@@ -1569,7 +1569,7 @@ namespace ScriptManFinal {
         }
     }
 }
-namespace ScriptManFinal.dba_adminDataSet1TableAdapters {
+namespace ScriptManagerV4.dba_adminDataSet1TableAdapters {
     
     
     /// <summary>
@@ -1725,7 +1725,7 @@ namespace ScriptManFinal.dba_adminDataSet1TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::ScriptManFinal.Properties.Settings.Default.dba_adminConnectionString;
+            this._connection.ConnectionString = global::ScriptManagerV4.Properties.Settings.Default.dba_adminConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2020,7 +2020,7 @@ namespace ScriptManFinal.dba_adminDataSet1TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::ScriptManFinal.Properties.Settings.Default.dba_adminConnectionString;
+            this._connection.ConnectionString = global::ScriptManagerV4.Properties.Settings.Default.dba_adminConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

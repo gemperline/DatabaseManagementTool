@@ -1,4 +1,16 @@
-﻿using System;
+﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  <copyright file="SM_copyright.cs" company="Total System Services">
+//
+//  Copyright © TSYS , 2019. All rights reserved.
+//
+//  Contributor(s) : Adam Gemperline, DBA , 2019
+//            
+//  </copyright>  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,14 +25,12 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Text.RegularExpressions;
-using ScriptManFinal.RMDataSet8TableAdapters;
+using ScriptManagerV4.RMDataSet8TableAdapters;
 using Microsoft.VisualBasic;
 using System.Timers;
 
-// TO DO: improve runtime and efficiency by closing connections when establishing a new one, after execution, 
-//            restarts should kill connections and release memory
 
-namespace ScriptManFinal
+namespace ScriptManagerV4
 {
     public partial class MainForm : Form
     {
@@ -65,6 +75,7 @@ namespace ScriptManFinal
          
         private void setInitState()
         {
+            System.Threading.Thread.Sleep(3000);
             toExecSummary("\n------------------------------------------------------------------------------" + 
                               "\nInitializing states...");
 
@@ -97,7 +108,7 @@ namespace ScriptManFinal
             richTextBox1.Enabled = false;
             myStream = null;
             label1.Text = "*select .SQL files only";
-            label20.Text = "0%";
+            toolStripLabel2.Text = "0%";
             textBox2.Text = null;
             textBox3.Text = null;
             textBox5.Text = null;
@@ -122,7 +133,7 @@ namespace ScriptManFinal
             label5.Enabled = true;
             toolStripComboBox1.SelectedIndex = 5;
             toolStripTextBox1.Text = null;
-            progressBar1.Minimum = 0;
+            toolStripProgressBar1.Minimum = 0;
             radioButton1.Visible = false;
             radioButton3.Visible = false;
             radioButton4.Visible = false;
@@ -131,12 +142,12 @@ namespace ScriptManFinal
             toolStripTextBox1.KeyUp += new KeyEventHandler(toolStripTextBox1_KeyUp);
             timer.Tick += new EventHandler(timer_Tick);
             tabControl2.SelectedIndex = 0;
-            progressBar1.Value = 0;
-            progressBar1.Visible = false;
-            label20.Text = "0%";
-            label20.Visible = false;
-            label3.Text = "";
-            label3.Visible = false;
+            toolStripProgressBar1.Value = 0;
+            toolStripProgressBar1.Visible = false;
+            toolStripLabel2.Text = "0%";
+            toolStripLabel2.Visible = false;
+            toolStripLabel3.Text = "";
+            toolStripLabel3.Visible = false;
 
             if (comboBox1.Items.Contains("UPDATE & RESUME"))
                 comboBox1.Items.Remove("UPDATE & RESUME");
@@ -333,7 +344,7 @@ namespace ScriptManFinal
             proceed = true;     // control variable that stops RUN sequence upon user's error response
             button3.Enabled = false;
             button4.Enabled = false;
-            progressBar1.Visible = true;
+            toolStripProgressBar1.Visible = true;
 
             // determine number of records in table
             int numRows = dataGridView1.Rows.Count;
@@ -369,13 +380,16 @@ namespace ScriptManFinal
                 // Run Selected Script is selected 
                 else if ((comboBox5.SelectedIndex != -1) && (radioButton4.Checked == true))
                 {
-                    label3.Text = "Executing script...";
+                    toolStripLabel3.Text = "Executing script...";
 
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
                     runScript(sender, row, e);
 
                     if (proceed == false)
+                    {
+                        toolStripLabel3.Text = "Execution Complete";
                         setInitState();
+                    }
                 }
                 else
                     fieldCheck(sender, e); // prompts user about blank fields 
@@ -421,10 +435,9 @@ namespace ScriptManFinal
             button3.Enabled = true;
             button4.Enabled = true;
 
-            if (progressBar1.Value == progressBar1.Maximum)
+            if (toolStripProgressBar1.Value == toolStripProgressBar1.Maximum)
             {
-                label3.Text = "Process completed.";
-                label3.Update();
+                toolStripLabel3.Text = "Process completed.";
             }
 
             button3.Enabled = true;
@@ -436,19 +449,17 @@ namespace ScriptManFinal
         // ------------------------------------------- Run all records in table (filter applies) ----------------------------------------
         private void runFromTableView(object sender, int numRows, int lastIndexInView, EventArgs e)
         {
-            progressBar1.Maximum = numRows;
-            label3.Text = "Executing scripts...";
-            label3.Update();
+            toolStripProgressBar1.Maximum = numRows;
+            toolStripLabel3.Text = "Executing scripts...";
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                // progress bar update
-                progressBar1.Value = progressBar1.Value + 1;
-                progress = progressBar1.Value;
+                toolStripProgressBar1.Value = toolStripProgressBar1.Value + 1;
+                progress = toolStripProgressBar1.Value;
                 double pp1 = progress / numRows;
                 int pp2 = (int)(pp1 * 100);
-                label20.Text = pp2.ToString() + "%";
-                label20.Update();
+                toolStripLabel2.Text = pp2.ToString() + "%";
+                toolStripLabel2.Visible = true;
 
                 // select current row
                 dataGridView1.Rows[row.Index].Selected = true;
@@ -474,9 +485,10 @@ namespace ScriptManFinal
                 if (row.Index == numRows)
                 {
                     toExecSummary("Run sequence complete.");
+                    tabControl1.Update();
+                    toolStripLabel3.Text = "Execution Complete";
                     button4_Click(sender, e);
                 }
-
             }
         }
 
@@ -485,12 +497,11 @@ namespace ScriptManFinal
         // ------------------------------------------- Begin run at a specific Script Order ----------------------------------------
         private void runAtScriptOrder(object sender, int numRows, int lastIndexInView, EventArgs e)
         {
-            label3.Text = "Executing scripts...";
-            label3.Update();
+            toolStripLabel3.Text = "Executing scripts...";
             int startingIndex = dataGridView1.SelectedRows[0].Index;
             int rowCount = numRows - startingIndex;
             int result = 0;
-            progressBar1.Maximum = rowCount;
+            toolStripProgressBar1.Maximum = rowCount;
 
             toExecSummary("Row Count: " + rowCount);
 
@@ -507,13 +518,12 @@ namespace ScriptManFinal
                 // loop to run scripts within given script order range
                 for (int i = startingIndex; i < numRows; i++)
                 {
-                    // progress bar update
-                    progressBar1.Value++;
-                    progress = progressBar1.Value;
+                    toolStripProgressBar1.Value++;
+                    progress = toolStripProgressBar1.Value;
                     double pp1 = progress / rowCount;
                     int pp2 = (int)(pp1 * 100);
-                    label20.Text = pp2.ToString() + "%";
-                    label20.Update();
+                    toolStripLabel2.Text = pp2.ToString() + "%";
+                    toolStripLabel2.Visible = true;
 
                     // select current row
                     dataGridView1.Rows[i].Selected = true;
@@ -535,7 +545,9 @@ namespace ScriptManFinal
                     // if this row is the last row of the displayed records, restart the application
                     if (i == lastIndexInView)
                     {
+                        toolStripLabel3.Text = "Execution Complete";
                         toExecSummary("Last index reached.");
+                        tabControl1.Update();
                         button4_Click(sender, e);
                     }
                 }
@@ -630,9 +642,9 @@ namespace ScriptManFinal
         private void updateRecord(object sender, EventArgs e)
         {
             // progress bar update
-            label20.Enabled = true;
-            label20.Visible = true;
-            progressBar1.Maximum = 100;
+            toolStripLabel2.Enabled = true;
+            toolStripLabel2.Visible = true;
+            toolStripProgressBar1.Maximum = 100;
             timer.Enabled = true;
             timer.Start();
             timer.Interval = 10; // each tick represented in milliseconds
@@ -643,7 +655,7 @@ namespace ScriptManFinal
                 string query = "UPDATE dbo.refresh_testing SET Script=@script, script_function=@script_function, script_environment=@script_environment, script_description=@script_description, script_order=@script_order WHERE ID = @id";
                 using (cmd = new SqlCommand(query, conn))
                 {
-                    label3.Text = "Update in progress...";
+                    toolStripLabel3.Text = "Update in progress...";
                     cmd.Parameters.AddWithValue("id", selectedID);
                     cmd.Parameters.AddWithValue("script", richTextBox1.Text);
                     cmd.Parameters.AddWithValue("script_function", comboBox2.SelectedItem.ToString());
@@ -664,20 +676,20 @@ namespace ScriptManFinal
                     else
                     {
                         toExecSummary("Script updated successfully.");
-                        label3.Text = "Script updated successfully.";
-                        label3.Visible = true;
+                        toolStripLabel3.Text = "Script updated successfully.";
+                        toolStripLabel3.Visible = true;
+                        tabControl1.Update();
                     }
                     toExecSummary("\n------------------------------------------------------------------------------");
 
                     timer.Stop();
-                    progressBar1.Value = progressBar1.Maximum;
-                    label20.Text = progressBar1.Maximum + "%";
-                    label20.Update();
+                    toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
+                    toolStripLabel2.Text = toolStripProgressBar1.Maximum + "%";
+                    toolStripLabel2.Visible = true;
                 }
             }
             if (proceed == false)
             {
-                System.Threading.Thread.Sleep(3000);
                 button4_Click(sender, e); // restart
             }
         }
@@ -692,15 +704,14 @@ namespace ScriptManFinal
                 string query = "INSERT INTO dbo.refresh_testing (Script, script_function, script_environment, script_description, script_order) VALUES (@Script, @script_function, @script_environment, @script_description, @script_order)";
                 using (cmd = new SqlCommand(query, conn))
                 {
-                    // progress bar update
-                    progressBar1.Maximum = 100;
+                    toolStripProgressBar1.Maximum = 100;
                     timer.Enabled = true;
                     timer.Start();
                     timer.Interval = 10; // each tick represented in milliseconds
-                    label20.Visible = true;
-                    label20.Text = progressBar1.Value.ToString() + "%";
+                    toolStripLabel2.Visible = true;
+                    toolStripLabel2.Text = toolStripProgressBar1.Value.ToString() + "%";
 
-                    label3.Text = "Insert in progress...";
+                    toolStripLabel3.Text = "Insert in progress...";
                     cmd.Parameters.AddWithValue("@Script", richTextBox1.Text);
                     cmd.Parameters.AddWithValue("@script_function", comboBox2.SelectedItem.ToString());
                     cmd.Parameters.AddWithValue("@script_environment", comboBox3.SelectedItem.ToString());
@@ -720,15 +731,16 @@ namespace ScriptManFinal
                     else
                     {
                         toExecSummary("Script inserted successfully.");
-                        label3.Text = "Script inserted successfully.";
-                        label3.Visible = true;
+                        toolStripLabel3.Text = "Script inserted successfully.";
+                        toolStripLabel3.Visible = true;
+                        tabControl1.Update();
                     }
                     toExecSummary("\n------------------------------------------------------------------------------");
 
                     timer.Stop();
-                    progressBar1.Value = progressBar1.Maximum;
-                    label20.Text = progressBar1.Maximum + "%";
-                    label20.Update();
+                    toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
+                    toolStripLabel2.Text = toolStripProgressBar1.Maximum + "%";
+                    toolStripLabel2.Visible = true;
                 }
             }
             if (proceed == false)
@@ -990,13 +1002,6 @@ namespace ScriptManFinal
 
 
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
         private void execute_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -1092,8 +1097,11 @@ namespace ScriptManFinal
         private void colorizeScript()
         {
             // SQL text formatting
-         //   Manoli.Utils.CSharpFormat.TsqlFormat clrz = new Manoli.Utils.CSharpFormat.TsqlFormat();
-          //  richTextBox1.Rtf = clrz.FormatString(richTextBox1.Text);
+            toolStripLabel3.Text = "Formatting script...";
+            toolStripLabel3.Visible = true;
+            Manoli.Utils.CSharpFormat.TsqlFormat clrz = new Manoli.Utils.CSharpFormat.TsqlFormat();
+            richTextBox1.Rtf = clrz.FormatString(richTextBox1.Text);
+            toolStripLabel3.Visible = false;
         }
 
 
@@ -1149,16 +1157,15 @@ namespace ScriptManFinal
                     string access = "";
                     if ((int)result != 1)
                     {
-                        label3.Text = "CAUTION: You do not have Decrypt Access in database " + comboBox5.SelectedItem.ToString();
-                        label3.Visible = true;
+                        toolStripLabel3.Text = "CAUTION: You do not have Decrypt Access in database " + comboBox5.SelectedItem.ToString();
+                        toolStripLabel3.Visible = true;
                         access = "Denied";
                     }
                     else
                     {
                         access = "Granted";
-                        label3.Visible = false;
+                        toolStripLabel3.Visible = false;
                     }
-                    toExecSummary("Decrypt Access: " + access + " @ " + comboBox5.SelectedItem.ToString());
                 }
             }
             catch (Exception ex)
@@ -1358,7 +1365,7 @@ namespace ScriptManFinal
                     if (result < 0)
                         toExecSummary("Deletion failed.");
                     else
-                        label3.Text = "Deletion successful.";
+                        toolStripLabel3.Text = "Deletion successful.";
 
                     loadData();
                 }
@@ -1670,7 +1677,7 @@ namespace ScriptManFinal
             comboBox5.SelectedIndex = -1;
 
             if (richTextBox1.Enabled == true)
-                button2_Click(sender, e);
+                toolStripButton2_Click(sender, e);
         }
 
 
@@ -1732,11 +1739,11 @@ namespace ScriptManFinal
                     textBox5.BackColor = Color.LightGray;
                 label1.ForeColor = Color.Black;
                 label2.ForeColor = Color.Black;
-                label3.ForeColor = Color.Black;
+                toolStripLabel3.ForeColor = Color.Black;
                 label9.ForeColor = Color.Black;
                 label16.ForeColor = Color.Black;
                 label17.ForeColor = Color.Black;
-                label20.ForeColor = Color.Black;
+                toolStripLabel2.ForeColor = Color.Black;
                 label10.ForeColor = Color.Black;
                 label11.ForeColor = Color.Black;
                 label12.ForeColor = Color.Black;
@@ -1785,7 +1792,9 @@ namespace ScriptManFinal
                 richTextBox2.ForeColor = Color.Black;
                 radioButton1.ForeColor = Color.Black;
                 radioButton3.ForeColor = Color.Black;
-                radioButton4.ForeColor = Color.Black;             
+                radioButton4.ForeColor = Color.Black;
+                toolStrip3.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3OrangeGradient.bmp");
+                toolStrip2.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS2OrangeGradient.bmp");
             }
             else 
             {
@@ -1802,11 +1811,11 @@ namespace ScriptManFinal
                     textBox5.BackColor = Color.DimGray;
                 label1.ForeColor = Color.Gainsboro;
                 label2.ForeColor = Color.Gainsboro;
-                label3.ForeColor = Color.Gainsboro;
+                toolStripLabel3.ForeColor = Color.Gainsboro;
                 label9.ForeColor = Color.Gainsboro;
                 label16.ForeColor = Color.Gainsboro;
                 label17.ForeColor = Color.Gainsboro;
-                label20.ForeColor = Color.Gainsboro;
+                toolStripLabel2.ForeColor = Color.Gainsboro;
                 label10.ForeColor = Color.Gainsboro;
                 label11.ForeColor = Color.Gainsboro;
                 label12.ForeColor = Color.Gainsboro;
@@ -1856,6 +1865,8 @@ namespace ScriptManFinal
                 radioButton1.ForeColor = Color.White;
                 radioButton3.ForeColor = Color.White;
                 radioButton4.ForeColor = Color.White;
+                toolStrip3.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3gradient.bmp");
+                toolStrip2.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS2gradient.bmp");
             }
         }
 
@@ -1863,12 +1874,12 @@ namespace ScriptManFinal
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            // off by default
-            if (lightSwitch)
-                lightSwitch = false;
-            else
-                lightSwitch = true;
-            flipLightSwitch(lightSwitch);
+              // off by default
+              if (lightSwitch)
+                  lightSwitch = false;
+              else
+                  lightSwitch = true;
+              flipLightSwitch(lightSwitch);
         }
 
 
@@ -1928,10 +1939,10 @@ namespace ScriptManFinal
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (progressBar1.Value != progressBar1.Maximum)
+            if (toolStripProgressBar1.Value != toolStripProgressBar1.Maximum)
             {
-                progressBar1.Value++;
-                label20.Text = progressBar1.Value.ToString() + "%";
+                toolStripProgressBar1.Value++;
+                toolStripLabel2.Text = toolStripProgressBar1.Value.ToString() + "%";
             }
         }
 
@@ -1996,6 +2007,21 @@ namespace ScriptManFinal
                 }
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // hard code to save gradient panel as an image which can then be set a toolStrip background
+            // oddly enough, this seems to be the easiest way wihout PhotoShop, Paint is useless.
+            // button is hidden by default
+            // panels are hiding behind toolStrips
+
+                 int pWidth = gradientPanel2.Size.Width;
+                 int pHeight = gradientPanel2.Size.Height;
+                 Bitmap bm = new Bitmap(pWidth, pHeight);
+                 gradientPanel2.DrawToBitmap(bm, new Rectangle(0, 0, pWidth, pHeight));
+                 bm.Save(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3OrangeGradient.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+        }
+
     }
 }
 

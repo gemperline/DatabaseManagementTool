@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ScriptManFinal
+namespace ScriptManagerV4
 {
     class GradientPanel : Panel
     {

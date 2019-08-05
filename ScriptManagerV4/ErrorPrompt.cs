@@ -1,4 +1,14 @@
-﻿using System;
+﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  <copyright file="SM_copyright.cs" company="Total System Services">
+//
+//  Copyright © TSYS , 2019. All rights reserved.
+//
+//  Contributor(s) : Adam Gemperline, DBA , 2019
+//            
+//  </copyright>  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +20,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 
 
-namespace ScriptManFinal
+namespace ScriptManagerV4
 {
     public partial class ErrorPrompt : Form
     {
@@ -51,8 +61,8 @@ namespace ScriptManFinal
                 button4.ForeColor = Color.White;
                 button5.BackColor = Color.DarkOrange;
                 button5.ForeColor = Color.White;
-                gradientPanel3.ColorLeft = Color.White;
-                gradientPanel3.ColorRight = Color.DarkOrange;
+                gradientPanel1.ColorLeft = Color.White;
+                gradientPanel1.ColorRight = Color.DarkOrange;
                 gradientPanel2.ColorLeft = Color.DarkOrange;
                 gradientPanel2.ColorRight = Color.White;
             }
@@ -75,8 +85,8 @@ namespace ScriptManFinal
                 button4.ForeColor = Color.Indigo;
                 button5.BackColor = Color.MediumPurple;
                 button5.ForeColor = Color.Indigo;
-                gradientPanel3.ColorLeft = Color.Cyan;
-                gradientPanel3.ColorRight = Color.Indigo;
+                gradientPanel1.ColorLeft = Color.Cyan;
+                gradientPanel1.ColorRight = Color.Indigo;
                 gradientPanel2.ColorLeft = Color.Indigo;
                 gradientPanel2.ColorRight = Color.Cyan;
             }

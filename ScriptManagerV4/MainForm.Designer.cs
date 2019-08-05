@@ -1,4 +1,15 @@
-﻿namespace ScriptManFinal
+﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  <copyright file="SM_copyright.cs" company="Total System Services">
+//
+//  Copyright © TSYS , 2019. All rights reserved.
+//
+//  Contributor(s) : Adam Gemperline, DBA , 2019
+//            
+//  </copyright>  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+namespace ScriptManagerV4
 {
     partial class MainForm
     {
@@ -57,7 +68,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.refreshtestingBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.rMDataSet8 = new ScriptManFinal.RMDataSet8();
+            this.rMDataSet8 = new ScriptManagerV4.RMDataSet8();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
@@ -70,7 +81,7 @@
             this.refresherrorlogBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.refresherrorlogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.postRefreshErrorsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dba_adminDataSet2 = new ScriptManFinal.dba_adminDataSet2();
+            this.dba_adminDataSet2 = new ScriptManagerV4.dba_adminDataSet2();
             this.scriptTab = new System.Windows.Forms.TabPage();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
@@ -80,15 +91,12 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.postRefresh_ErrorsTableAdapter = new ScriptManFinal.dba_adminDataSet2TableAdapters.PostRefresh_ErrorsTableAdapter();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label20 = new System.Windows.Forms.Label();
+            this.postRefresh_ErrorsTableAdapter = new ScriptManagerV4.dba_adminDataSet2TableAdapters.PostRefresh_ErrorsTableAdapter();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.refresherrorlogBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.refresherrorlogBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.refresh_testingTableAdapter1 = new ScriptManFinal.RMDataSet8TableAdapters.refresh_testingTableAdapter();
+            this.refresh_testingTableAdapter1 = new ScriptManagerV4.RMDataSet8TableAdapters.refresh_testingTableAdapter();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -101,7 +109,7 @@
             this.error_procedure = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.error_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.refresherrorlogBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
-            this.rMDataSet7 = new ScriptManFinal.RMDataSet7();
+            this.rMDataSet7 = new ScriptManagerV4.RMDataSet7();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -123,11 +131,16 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.refresh_testingTableAdapter = new ScriptManFinal.RMDataSet8TableAdapters.refresh_testingTableAdapter();
-            this.refresh_error_logTableAdapter6 = new ScriptManFinal.RMDataSet7TableAdapters.refresh_error_logTableAdapter();
+            this.refresh_testingTableAdapter = new ScriptManagerV4.RMDataSet8TableAdapters.refresh_testingTableAdapter();
+            this.refresh_error_logTableAdapter6 = new ScriptManagerV4.RMDataSet7TableAdapters.refresh_error_logTableAdapter();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.gradientPanel2 = new ScriptManFinal.GradientPanel();
-            this.gradientPanel1 = new ScriptManFinal.GradientPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
+            this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rMDataSet8)).BeginInit();
@@ -152,6 +165,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource2)).BeginInit();
             this.toolStrip2.SuspendLayout();
+            this.toolStrip3.SuspendLayout();
             this.SuspendLayout();
             // 
             // refreshtestingBindingSource
@@ -308,7 +322,9 @@
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.LimeGreen;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.button3.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Location = new System.Drawing.Point(367, 602);
@@ -322,6 +338,7 @@
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlLight;
             this.button4.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.button4.ForeColor = System.Drawing.Color.Black;
             this.button4.Location = new System.Drawing.Point(367, 647);
@@ -335,6 +352,7 @@
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.RoyalBlue;
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlLight;
             this.button5.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.button5.ForeColor = System.Drawing.Color.White;
             this.button5.Location = new System.Drawing.Point(367, 692);
@@ -499,7 +517,7 @@
             this.toolStripButton4.Name = "toolStripButton4";
             this.toolStripButton4.Size = new System.Drawing.Size(105, 22);
             this.toolStripButton4.Text = "BROWSE";
-            this.toolStripButton4.ToolTipText = "Upload a file";
+            this.toolStripButton4.ToolTipText = "Upload a script";
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
             // toolStripButton3
@@ -578,25 +596,6 @@
             // 
             this.postRefresh_ErrorsTableAdapter.ClearBeforeFill = true;
             // 
-            // progressBar1
-            // 
-            this.progressBar1.BackColor = System.Drawing.Color.DimGray;
-            this.progressBar1.Location = new System.Drawing.Point(12, 762);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(349, 10);
-            this.progressBar1.TabIndex = 44;
-            this.progressBar1.Visible = false;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label20.Location = new System.Drawing.Point(369, 760);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(23, 14);
-            this.label20.TabIndex = 45;
-            this.label20.Text = "0%";
-            // 
             // textBox5
             // 
             this.textBox5.BackColor = System.Drawing.Color.DimGray;
@@ -609,18 +608,6 @@
             this.textBox5.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox5_MouseClick);
             this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
             this.textBox5.Leave += new System.EventHandler(this.textBox5_Leave);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 10F);
-            this.label3.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label3.Location = new System.Drawing.Point(568, 759);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 16);
-            this.label3.TabIndex = 54;
-            this.label3.Text = "INFO LABEL";
-            this.label3.Visible = false;
             // 
             // refresh_testingTableAdapter1
             // 
@@ -1001,7 +988,9 @@
             // toolStrip2
             // 
             this.toolStrip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.toolStrip2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStrip2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolStrip2.BackgroundImage")));
+            this.toolStrip2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.toolStrip2.Font = new System.Drawing.Font("Arial", 9F);
             this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox1,
@@ -1019,8 +1008,10 @@
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripTextBox1.AutoSize = false;
             this.toolStripTextBox1.BackColor = System.Drawing.Color.Lavender;
             this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.toolStripTextBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.toolStripTextBox1.Size = new System.Drawing.Size(120, 25);
             this.toolStripTextBox1.Text = "Search";
@@ -1083,47 +1074,96 @@
             // 
             this.refresh_error_logTableAdapter6.ClearBeforeFill = true;
             // 
-            // gradientPanel2
+            // button1
             // 
-            this.gradientPanel2.ColorLeft = System.Drawing.Color.Indigo;
-            this.gradientPanel2.ColorRight = System.Drawing.Color.Cyan;
-            this.gradientPanel2.Location = new System.Drawing.Point(0, 782);
-            this.gradientPanel2.Name = "gradientPanel2";
-            this.gradientPanel2.Size = new System.Drawing.Size(1422, 10);
-            this.gradientPanel2.TabIndex = 59;
+            this.button1.Location = new System.Drawing.Point(1332, 40);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 61;
+            this.button1.Text = "Save Panel";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.AutoSize = false;
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(360, 22);
+            this.toolStripProgressBar1.Visible = false;
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(25, 22);
+            this.toolStripLabel2.Text = "0%";
+            this.toolStripLabel2.Visible = false;
+            // 
+            // toolStrip3
+            // 
+            this.toolStrip3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.toolStrip3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("toolStrip3.BackgroundImage")));
+            this.toolStrip3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.toolStrip3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.toolStrip3.Font = new System.Drawing.Font("Arial", 9F);
+            this.toolStrip3.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripLabel2,
+            this.toolStripLabel3});
+            this.toolStrip3.Location = new System.Drawing.Point(0, 767);
+            this.toolStrip3.Name = "toolStrip3";
+            this.toolStrip3.Size = new System.Drawing.Size(1419, 25);
+            this.toolStrip3.TabIndex = 62;
+            this.toolStrip3.Text = "toolStrip3";
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLabel3.Font = new System.Drawing.Font("Arial", 10F);
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(0, 22);
             // 
             // gradientPanel1
             // 
-            this.gradientPanel1.ColorLeft = System.Drawing.Color.Cyan;
-            this.gradientPanel1.ColorRight = System.Drawing.Color.Indigo;
-            this.gradientPanel1.Location = new System.Drawing.Point(1, 25);
+            this.gradientPanel1.ColorLeft = System.Drawing.Color.White;
+            this.gradientPanel1.ColorRight = System.Drawing.Color.DarkOrange;
+            this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(1421, 10);
-            this.gradientPanel1.TabIndex = 58;
+            this.gradientPanel1.Size = new System.Drawing.Size(1419, 25);
+            this.gradientPanel1.TabIndex = 63;
+            this.gradientPanel1.Visible = false;
+            // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.AutoSize = true;
+            this.gradientPanel2.ColorLeft = System.Drawing.Color.DarkOrange;
+            this.gradientPanel2.ColorRight = System.Drawing.Color.White;
+            this.gradientPanel2.Location = new System.Drawing.Point(0, 768);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(1419, 25);
+            this.gradientPanel2.TabIndex = 64;
+            this.gradientPanel2.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1419, 792);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.toolStrip3);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.gradientPanel2);
-            this.Controls.Add(this.gradientPanel1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.radioButton4);
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.label16);
-            this.Controls.Add(this.label20);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.comboBox5);
@@ -1143,6 +1183,8 @@
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.gradientPanel1);
+            this.Controls.Add(this.gradientPanel2);
             this.Font = new System.Drawing.Font("Arial", 8.25F);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1179,6 +1221,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource2)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
+            this.toolStrip3.ResumeLayout(false);
+            this.toolStrip3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1211,8 +1255,6 @@
         private dba_adminDataSet2TableAdapters.PostRefresh_ErrorsTableAdapter postRefresh_ErrorsTableAdapter;
         private System.Windows.Forms.BindingSource refresherrorlogBindingSource;
         private System.Windows.Forms.BindingSource refresherrorlogBindingSource1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.RichTextBox richTextBox2;
@@ -1227,7 +1269,6 @@
         private RMDataSet7 rMDataSet7;
         private System.Windows.Forms.BindingSource refresherrorlogBindingSource6;
         private RMDataSet7TableAdapters.refresh_error_logTableAdapter refresh_error_logTableAdapter6;
-        private System.Windows.Forms.Label label3;
         private RMDataSet8 rMDataSet8;
         private System.Windows.Forms.BindingSource refreshtestingBindingSource1;
         private RMDataSet8TableAdapters.refresh_testingTableAdapter refresh_testingTableAdapter1;
@@ -1250,8 +1291,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox comboBox5;
-        private GradientPanel gradientPanel1;
-        private GradientPanel gradientPanel2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStrip toolStrip2;
@@ -1274,6 +1313,14 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.Button button1;
+
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStrip toolStrip3;
+        private GradientPanel gradientPanel1;
+        private GradientPanel gradientPanel2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
     }
 }
 

@@ -1,4 +1,15 @@
-﻿namespace ScriptManFinal
+﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  <copyright file="SM_copyright.cs" company="Total System Services">
+//
+//  Copyright © TSYS , 2019. All rights reserved.
+//
+//  Contributor(s) : Adam Gemperline, DBA , 2019
+//            
+//  </copyright>  
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+namespace ScriptManagerV4
 {
     partial class ErrorPrompt
     {
@@ -40,9 +51,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.gradientPanel2 = new ScriptManFinal.GradientPanel();
-            this.gradientPanel1 = new ScriptManFinal.GradientPanel();
-            this.gradientPanel3 = new ScriptManFinal.GradientPanel();
+            this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
+            this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
             this.SuspendLayout();
             // 
             // button4
@@ -185,40 +195,30 @@
             this.label1.TabIndex = 24;
             this.label1.Text = "Script Order:";
             // 
-            // gradientPanel2
-            // 
-            this.gradientPanel2.ColorLeft = System.Drawing.Color.Indigo;
-            this.gradientPanel2.ColorRight = System.Drawing.Color.Cyan;
-            this.gradientPanel2.Location = new System.Drawing.Point(-2, 338);
-            this.gradientPanel2.Name = "gradientPanel2";
-            this.gradientPanel2.Size = new System.Drawing.Size(480, 10);
-            this.gradientPanel2.TabIndex = 61;
-            // 
             // gradientPanel1
             // 
             this.gradientPanel1.ColorLeft = System.Drawing.Color.Cyan;
             this.gradientPanel1.ColorRight = System.Drawing.Color.Indigo;
-            this.gradientPanel1.Location = new System.Drawing.Point(172, -580);
+            this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(756, 10);
-            this.gradientPanel1.TabIndex = 60;
+            this.gradientPanel1.Size = new System.Drawing.Size(488, 12);
+            this.gradientPanel1.TabIndex = 64;
             // 
-            // gradientPanel3
+            // gradientPanel2
             // 
-            this.gradientPanel3.ColorLeft = System.Drawing.Color.Cyan;
-            this.gradientPanel3.ColorRight = System.Drawing.Color.Indigo;
-            this.gradientPanel3.Location = new System.Drawing.Point(-2, 0);
-            this.gradientPanel3.Name = "gradientPanel3";
-            this.gradientPanel3.Size = new System.Drawing.Size(480, 10);
-            this.gradientPanel3.TabIndex = 62;
+            this.gradientPanel2.ColorLeft = System.Drawing.Color.Indigo;
+            this.gradientPanel2.ColorRight = System.Drawing.Color.Cyan;
+            this.gradientPanel2.Location = new System.Drawing.Point(0, 341);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(488, 12);
+            this.gradientPanel2.TabIndex = 65;
             // 
             // ErrorPrompt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(472, 347);
-            this.Controls.Add(this.gradientPanel3);
+            this.ClientSize = new System.Drawing.Size(472, 353);
             this.Controls.Add(this.gradientPanel2);
             this.Controls.Add(this.gradientPanel1);
             this.Controls.Add(this.label6);
@@ -259,8 +259,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private GradientPanel gradientPanel2;
         private GradientPanel gradientPanel1;
-        private GradientPanel gradientPanel3;
+        private GradientPanel gradientPanel2;
     }
 }

@@ -4,7 +4,7 @@
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
-          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="dba_adminConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="dba_adminConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.ScriptManFinal.Properties.Settings.GlobalReference.Default.dba_adminConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="dba_adminConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="dba_adminConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.ScriptManagerV4.v4.Properties.Settings.GlobalReference.Default.dba_adminConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PostRefresh_ErrorsTableAdapter" GeneratorDataComponentClassName="PostRefresh_ErrorsTableAdapter" Name="PostRefresh_Errors" UserDataComponentName="PostRefresh_ErrorsTableAdapter">

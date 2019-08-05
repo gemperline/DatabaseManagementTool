@@ -138,8 +138,8 @@ namespace Manoli.Utils.CSharpFormat
             regAll.Append(regKeyword);
             regAll.Append(")|(");
             regAll.Append(CommentBlockRegEx);
-            regAll.Append(")|(");
-            regAll.Append(VariableRegEx);
+            //regAll.Append(")|(");
+            //regAll.Append(VariableRegEx);
             regAll.Append(")");
 
             RegexOptions caseInsensitive = CaseSensitive ? 0 : RegexOptions.IgnoreCase;

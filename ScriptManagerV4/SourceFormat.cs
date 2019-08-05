@@ -88,6 +88,8 @@ namespace Manoli.Utils.CSharpFormat
         /// <returns>A string containing the RTF formatted code.</returns>
         public string FormatString(string source)
         {
+            source = source.Replace(@"\", @"\\");  // Added by Adam Gemperline on 8/1/2019 to counter escape character and preserve literal nature of T-SQL file paths
+
             return FormatCode(source);
         }
 

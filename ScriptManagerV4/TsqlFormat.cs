@@ -53,6 +53,7 @@ namespace Manoli.Utils.CSharpFormat
         {
             get
             {
+                
                 return @"''|'.*?'";
             }
         }
