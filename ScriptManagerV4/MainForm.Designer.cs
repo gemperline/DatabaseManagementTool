@@ -87,7 +87,6 @@ namespace ScriptManagerV4
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
@@ -139,8 +138,10 @@ namespace ScriptManagerV4
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
             this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rMDataSet8)).BeginInit();
@@ -220,6 +221,7 @@ namespace ScriptManagerV4
             this.textBox1.Size = new System.Drawing.Size(188, 20);
             this.textBox1.TabIndex = 6;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // label10
             // 
@@ -550,16 +552,6 @@ namespace ScriptManagerV4
             this.toolStripButton2.ToolTipText = "Unlock Editor";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.EnableAutoDragDrop = true;
-            this.richTextBox1.Location = new System.Drawing.Point(6, 33);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(329, 622);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.scriptTab);
@@ -602,6 +594,7 @@ namespace ScriptManagerV4
             this.textBox5.Enabled = false;
             this.textBox5.Location = new System.Drawing.Point(497, 155);
             this.textBox5.Name = "textBox5";
+            this.textBox5.ReadOnly = true;
             this.textBox5.Size = new System.Drawing.Size(58, 20);
             this.textBox5.TabIndex = 53;
             this.textBox5.Visible = false;
@@ -1110,7 +1103,8 @@ namespace ScriptManagerV4
             this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
             this.toolStripLabel2,
-            this.toolStripLabel3});
+            this.toolStripLabel3,
+            this.toolStripLabel4});
             this.toolStrip3.Location = new System.Drawing.Point(0, 767);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(1419, 25);
@@ -1120,9 +1114,25 @@ namespace ScriptManagerV4
             // toolStripLabel3
             // 
             this.toolStripLabel3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLabel3.Font = new System.Drawing.Font("Arial", 10F);
+            this.toolStripLabel3.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.toolStripLabel3.IsLink = true;
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(0, 22);
+            this.toolStripLabel3.Size = new System.Drawing.Size(155, 22);
+            this.toolStripLabel3.Tag = "https://teamworks.tsys.com/kb/wiki/Wiki%20Pages/ESM.aspx";
+            this.toolStripLabel3.Text = "DeCrypt access label";
+            this.toolStripLabel3.Visible = false;
+            this.toolStripLabel3.VisitedLinkColor = System.Drawing.Color.Indigo;
+            this.toolStripLabel3.Click += new System.EventHandler(this.toolStripLabel3_Click);
+            // 
+            // toolStripLabel4
+            // 
+            this.toolStripLabel4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLabel4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripLabel4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripLabel4.Image")));
+            this.toolStripLabel4.Name = "toolStripLabel4";
+            this.toolStripLabel4.Size = new System.Drawing.Size(16, 22);
+            this.toolStripLabel4.Text = "toolStripLabel4";
+            this.toolStripLabel4.Visible = false;
             // 
             // gradientPanel1
             // 
@@ -1145,6 +1155,17 @@ namespace ScriptManagerV4
             this.gradientPanel2.TabIndex = 64;
             this.gradientPanel2.Visible = false;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.Color.White;
+            this.richTextBox1.EnableAutoDragDrop = true;
+            this.richTextBox1.Location = new System.Drawing.Point(6, 33);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(329, 622);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            this.richTextBox1.EnabledChanged += new System.EventHandler(this.richTextBox1_EnabledChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -1152,7 +1173,6 @@ namespace ScriptManagerV4
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1419, 792);
-            this.Controls.Add(this.toolStrip3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.label5);
@@ -1184,6 +1204,7 @@ namespace ScriptManagerV4
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gradientPanel1);
+            this.Controls.Add(this.toolStrip3);
             this.Controls.Add(this.gradientPanel2);
             this.Font = new System.Drawing.Font("Arial", 8.25F);
             this.ForeColor = System.Drawing.Color.Black;
@@ -1248,7 +1269,6 @@ namespace ScriptManagerV4
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TabPage scriptTab;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.TabControl tabControl1;
         private dba_adminDataSet2 dba_adminDataSet2;
         private System.Windows.Forms.BindingSource postRefreshErrorsBindingSource;
@@ -1321,6 +1341,8 @@ namespace ScriptManagerV4
         private GradientPanel gradientPanel1;
         private GradientPanel gradientPanel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel4;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
