@@ -68,7 +68,7 @@ namespace ScriptManagerV4
                 // TODO: This line of code loads data into the 'rMDataSet.refresh_testing' table. You can move, or remove it, as needed.
                 this.refresh_testingTableAdapter1.Fill(this.rMDataSet8.refresh_testing);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\nTry restarting the application.", "Connection Error");
             }
@@ -79,7 +79,7 @@ namespace ScriptManagerV4
 
         private void setInitState()
         {
-            toExecLog("\n------------------------------------------------------------------------------" + 
+            toExecLog("\n------------------------------------------------------------------------------" +
                               "\nInitializing states...");
 
             // initial/refresh states and values
@@ -328,6 +328,13 @@ namespace ScriptManagerV4
             else if (comboBox1.SelectedIndex == -1)
             {
                 label12.Text = "Viewing:";
+                toggleFieldVisibility(0);
+                comboBox5.Visible = false;
+                label17.Visible = false;
+                radioButton1.Visible = false;
+                radioButton3.Visible = false;
+                radioButton4.Visible = false;
+                textBox5.Visible = false;
             }
 
             if (label5.Enabled)
@@ -352,9 +359,9 @@ namespace ScriptManagerV4
 
 
 
-        // CAUTION! ------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
+        // START: --------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
 
-
+        // CAUTION! 
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -389,12 +396,17 @@ namespace ScriptManagerV4
 
             if (actionSelected == "RUN")
             {
+                int startingIndex;
+
                 // if "From Table View" is selected
                 if ((radioButton1.Checked == true) && (comboBox5.SelectedIndex != -1))
                 {
-                    toolStripLabel4.Visible = false;
+                    // select first row 
+                    dataGridView1.Rows[0].Selected = true;
 
-                    runFromTableView(sender, numRows, lastIndexInView, e);
+                    toolStripLabel4.Visible = false;
+                    startingIndex = 0;
+                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Start/Resume At Script Order is selected 
                 else if (radioButton3.Checked == true && (comboBox5.SelectedIndex != -1))
@@ -405,9 +417,8 @@ namespace ScriptManagerV4
                     {
                         searchForScriptOrder(textBox5.Text);
                     }
-
-                    int startingIndex = dataGridView1.SelectedRows[0].Index;
-                    runAtScriptOrder(sender, numRows, lastIndexInView, e, startingIndex);
+                    startingIndex = dataGridView1.SelectedRows[0].Index;
+                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Run Selected Script is selected 
                 else if ((radioButton4.Checked == true) && (comboBox5.SelectedIndex != -1))
@@ -419,20 +430,11 @@ namespace ScriptManagerV4
                     toolStripProgressBar1.Maximum = 2;
                     updateProgressBar();
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
-                    runScript(sender, row, lastIndexInView,e);
+                    runScript(sender, row, lastIndexInView, e);
                     updateProgressBar();
-
-
                     toolStripLabel3.Text = "Execution Complete";
                     toolStrip3.Update();
                 }
-//                else
-//                    fieldCheck(sender, e); // prompts user about blank fields 
-            }
-            else if (comboBox1.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox1.Text) || comboBox2.SelectedIndex == -1 || comboBox3.SelectedIndex == -1 || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(richTextBox1.Text))
-            {
-                toExecLog("Incomplete field(s). Execution stopped.");
-                fieldCheck(sender, e);
             }
             else if (actionSelected == "UPDATE" && proceed == true)
             {
@@ -475,8 +477,8 @@ namespace ScriptManagerV4
 
                 if (dataGridView1.SelectedRows[0] != null && dataGridView1.SelectedRows[0].Index > -1)
                 {
-                    startingIndex = dataGridView1.SelectedRows[0].Index; // selected row's index
-                    runAtScriptOrder(sender, numRows, lastIndexInView, e, startingIndex);
+                    startingIndex = dataGridView1.SelectedRows[0].Index; // start RUN from selected row's index
+                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 else
                 {
@@ -489,6 +491,10 @@ namespace ScriptManagerV4
 
             if (toolStripProgressBar1.Value == toolStripProgressBar1.Maximum)
             {
+                toExecLog("Execution complete");
+                toolStripLabel3.Text = "Execution complete";
+                // print execution summary
+                executionSummary("display");
                 // restart
                 button4_Click(sender, e);
             }
@@ -499,51 +505,53 @@ namespace ScriptManagerV4
         // ------------------------------------------- Run all records in table (filter applies) ----------------------------------------
         private void runFromTableView(object sender, int numRows, int lastIndexInView, EventArgs e)
         {
-            toolStripProgressBar1.Maximum = numRows;
-            toolStripLabel3.Text = "Executing scripts...";
-            toolStripLabel3.Visible = true;
+            /*           toolStripProgressBar1.Maximum = numRows;
+                       toolStripLabel3.Text = "Executing scripts...";
+                       toolStripLabel3.Visible = true;
 
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                updateProgressBar();
+                       Cursor.Current = Cursors.WaitCursor;
 
-                // select current row
-                dataGridView1.Rows[row.Index].Selected = true;
-                currentIndex = row.Index;
+                       foreach (DataGridViewRow row in dataGridView1.Rows)
+                       {
+                           // select current row
+                           dataGridView1.Rows[row.Index].Selected = true;
+                           dataGridView1.Update();
+                           currentIndex = row.Index;
 
-                if (row.Index.Equals(numRows))
-                {
-                    // loop exceeded index range
-                    break;
-                }
-                // run all scripts matching selected environment or where environment is QUAT_ALL
-                else if (proceed == true && (row.Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || row.Cells[3].Value.ToString() == "QUAT_ALL"))
-                {
-                    runScript(sender, row, lastIndexInView, e);
-                }
+                           if (row.Index.Equals(numRows))
+                           {
+                               // loop exceeded index range
+                               break;
+                           }
+                           // run all scripts matching selected environment or where environment is QUAT_ALL
+                           else if (proceed == true && (row.Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || row.Cells[3].Value.ToString() == "QUAT_ALL"))
+                           {
+                               runScript(sender, row, lastIndexInView, e);
+                               executionSummary("record");
+                           }
 
-                if (proceed == false)
-                {
-                    break;
-                }
+                           if (proceed == false)
+                           {   
+                               // proceed will be set to false if the user chooses to edit a script mid-run
+                               break;
+                           }
 
-                // if this row is the last row of the displayed records, restart the application
-                if (row.Index == numRows)
-                {
-                    toExecLog("Run sequence complete.");
-                    tabControl1.Update();
-                    toolStripLabel3.Text = "Execution Complete";
-                    button4_Click(sender, e);
-                }
-                Cursor.Current = Cursors.Default;
-            }
+                           // if this row is the last row of the displayed records, restart the application
+                           if (row.Index == numRows)
+                           {
+                               toExecLog("Run sequence complete.");
+                               tabControl1.Update();
+                               toolStripLabel3.Text = "Execution Complete";
+                               button4_Click(sender, e);
+                           }
+                       }
+                       Cursor.Current = Cursors.Default;*/
         }
 
 
 
-        // ------------------------------------------- Begin run at a specific Script Order (or resume from paused run) ----------------------------------------
-        private void runAtScriptOrder(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
+        // ------------------------------------------- Run a defined range of scripts (or resume from paused run) ----------------------------------------
+        private void runMultiple(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
         {
             toolStripLabel3.Text = "Executing scripts...";
             int result = 0;
@@ -551,7 +559,7 @@ namespace ScriptManagerV4
             toolStripProgressBar1.Maximum = totalProcesses + progressPosition;
             toolStripProgressBar1.Value = progressPosition;
 
-            // updating progress percent is necessary after pausing the run to edit a script
+            // updating progress value and percent is necessary after pausing the run to edit a script (UPDATE before resume will change the progress to match a successful update)
             progress = toolStripProgressBar1.Value;
             pp1 = progress / toolStripProgressBar1.Maximum;
             pp2 = (int)(pp1 * 100);
@@ -560,14 +568,15 @@ namespace ScriptManagerV4
 
             toExecLog("Remaining processes: " + totalProcesses);
 
-            // verify that the selected row's Script Order matches the Script Order entered in textBox5, if a user manually types the S.O. number into the textBox, update the selected row to match before beginning execution
-            if (textBox5.Text != dataGridView1.SelectedRows[0].Cells[0].Value.ToString())
+            // verify that the selected row's Script Order matches the Script Order entered in textBox5, if a user manually types the S.O. number into the textBox, find and select the row to match before beginning execution
+            if (radioButton3.Checked == true && textBox5.Text != dataGridView1.SelectedRows[0].Cells[0].Value.ToString())
             {
                 result = searchForScriptOrder(textBox5.Text); // returns the index where the S.O. is found, or returns -1 if no S.O. found, or -2 if there are duplicate S.O.'s
             }
 
             if (result > -1)
             {
+
                 startingIndex = dataGridView1.SelectedRows[0].Index;
 
                 Cursor.Current = Cursors.WaitCursor;
@@ -582,23 +591,15 @@ namespace ScriptManagerV4
                     // set the selected row to the current index
                     dataGridView1.SelectedRows[0].Index.Equals(i);
 
-                    // run all scripts matching selected environment or where environment is QUAT_ALL
+                    // run all scripts matching the selected Run Environment or where script_environment is QUAT_ALL
                     if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
                     {
-                        runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView,e);
+                        runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e);
                     }
 
                     if (proceed == false)
                     {
                         break;
-                    }
-
-                    // if this row is the last row of the displayed records, restart the application
-                    if (i == lastIndexInView)
-                    {
-                        toolStripLabel3.Text = "Execution Complete";
-                        toExecLog("Execution Complete");
-                        executionSummary("display");
                     }
 
                     updateProgressBar();
@@ -634,8 +635,8 @@ namespace ScriptManagerV4
             toExecLog("Record Index: " + currentRow.Index + " | " + lastIndexInView);
             richTextBox1.Update();
 
-            string query = currentRow.Cells[5].Value.ToString();               
-                try
+            string query = currentRow.Cells[5].Value.ToString();
+            try
             {
                 using (conn = initQatConnection())
                 {
@@ -672,7 +673,7 @@ namespace ScriptManagerV4
             richTextBox1.Update();
         }
 
-        
+
 
         // ------------------------------------------------ Update existing script --------------------------------------------------
         private void updateRecord(object sender, EventArgs e)
@@ -680,7 +681,7 @@ namespace ScriptManagerV4
             // progress bar update
             toolStripProgressBar1.Value = 0;
             toolStripProgressBar1.Maximum = 1;
-          
+
 
             using (conn = initQatConnection())
             {
@@ -766,8 +767,7 @@ namespace ScriptManagerV4
 
 
 
-        //  --------------------------------------------------------------- END EXECUTION STATEMENTS --------------------------------------------------------------------------------------
-  
+        // END: --------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
 
 
         private void logError(object sender, SqlException exception, DataGridViewRow currentScriptRow, EventArgs e)
@@ -806,7 +806,7 @@ namespace ScriptManagerV4
                     cmd.Parameters.AddWithValue("@a7", currentScriptRow.Cells[1].Value.ToString());
 
                     conn.Open();
-                    try 
+                    try
                     {
                         toExecLog("Logging error...");
                         int result = cmd.ExecuteNonQuery();
@@ -821,7 +821,7 @@ namespace ScriptManagerV4
                     {
                         MessageBox.Show(ex.Message);
                         toExecLog(ex.Message);
-                    }     
+                    }
                 }
             }
             refreshErrorLog();
@@ -830,7 +830,7 @@ namespace ScriptManagerV4
                 comboBox5.SelectedItem = currQAT;
                 toExecLog("Connection restored to: " + comboBox5.SelectedItem.ToString());
             }
-            
+
 
             // an Ignore All response from error dialog will prevent future error dialogs for this run session
             toExecLog("Ignore All status: " + ignoreAll);
@@ -859,7 +859,7 @@ namespace ScriptManagerV4
                     else if (response == "edit script")
                     {
                         toExecLog("Entering edit mode...");
-                        if(radioButton1.Checked == true || radioButton3.Checked == true)
+                        if (radioButton1.Checked == true || radioButton3.Checked == true)
                             prepareForUpdateAndResume(sender, e, exception, currentScriptRow);
 
                         else if (radioButton4.Checked == true)
@@ -890,7 +890,7 @@ namespace ScriptManagerV4
                 else
                     MessageBox.Show("The error log is empty");
             }
-            Console.WriteLine("Ignore all is true");           
+            Console.WriteLine("Ignore all is true");
         }
 
 
@@ -932,7 +932,7 @@ namespace ScriptManagerV4
         private void prepareForUpdateAndResume(object sender, EventArgs e, SqlException exception, DataGridViewRow currentScriptRow)
         {
             // store value of progress bar 
-            progressPosition = toolStripProgressBar1.Value; 
+            progressPosition = toolStripProgressBar1.Value;
 
             // switch to tab where script can be modified
             tabControl1.SelectedIndex = 0;
@@ -962,6 +962,7 @@ namespace ScriptManagerV4
             radioButton3.Checked = true;
             setSelectedValues(sender);
         }
+
 
 
         private void selectLastErrorLogged()
@@ -1030,7 +1031,7 @@ namespace ScriptManagerV4
 
 
         private void searchTable(KeyEventArgs e)
-        {          
+        {
             dt = new DataTable("refresh_testing");
             DataView dv = dt.DefaultView;
             try
@@ -1083,7 +1084,7 @@ namespace ScriptManagerV4
                             dataGridView1.DataSource = dv.ToTable();
                         }
                     }
-                    conn.Close();             
+                    conn.Close();
                 }
             }
             catch (Exception ex)
@@ -1092,8 +1093,8 @@ namespace ScriptManagerV4
             }
         }
 
-        
-        
+
+
         private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
         {
             // search table up pressing ENTER key
@@ -1132,10 +1133,10 @@ namespace ScriptManagerV4
             }
 
             // allows for only one decimal to be entered
-            if ( e.KeyChar == 46)
+            if (e.KeyChar == 46)
             {
-                if ((sender as TextBox).Text.IndexOf(e.KeyChar) != - 1)
-                e.Handled = true;
+                if ((sender as TextBox).Text.IndexOf(e.KeyChar) != -1)
+                    e.Handled = true;
             }
 
             // allows only two digits after decimal
@@ -1198,15 +1199,15 @@ namespace ScriptManagerV4
         {
             // this function initializes and then returns a new SqlConnection
             // if the action selected is RUN, this function will establish a connection based on the User's Run Environment selection 
-                 // otherwise it will connect to QAT7 for all other purposes
+            // otherwise it will connect to QAT7 for all other purposes
 
             if (conn != null && conn.State == ConnectionState.Open)
                 conn.Close();
 
             // RM connecion strings 
-            
+
             // if RUN is selected along with a Run Environment from combobox5, connect to the selected Run Environment
-            if (actionSelected == "RUN" && comboBox5.SelectedIndex != -1) 
+            if (actionSelected == "RUN" && comboBox5.SelectedIndex != -1)
             {
                 // no selection
                 if (comboBox5.SelectedIndex == -1)
@@ -1252,7 +1253,7 @@ namespace ScriptManagerV4
                     return null;
                 }
             }
-            else 
+            else
             {
                 // brmqatontdbs07 RM
                 conn = new SqlConnection(@"Data Source=Brmqatontdbs07;Initial Catalog=RM;Integrated Security=True");
@@ -1264,32 +1265,32 @@ namespace ScriptManagerV4
 
         public void loadData()
         {
-             if (conn != null && conn.State == ConnectionState.Open)
-             {
-                 conn.Close();
-             }
+            if (conn != null && conn.State == ConnectionState.Open)
+            {
+                conn.Close();
+            }
 
-             // connect and fill table with dbo.refresh_testing data
-             dt = new DataTable("refresh_testing");
-             try
-             {
-                 using (conn = initQatConnection())
-                 {
-                     conn.Open();
+            // connect and fill table with dbo.refresh_testing data
+            dt = new DataTable("refresh_testing");
+            try
+            {
+                using (conn = initQatConnection())
+                {
+                    conn.Open();
 
-                     using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM refresh_testing ORDER BY script_order ASC", conn))
-                     {
-                         toExecLog("Loading table...");
-                         da.Fill(dt);
-                         dataGridView1.DataSource = dt;
-                     }
-                 }
-             }
-             catch (Exception ex)
-             {
-                 MessageBox.Show(ex.Message, "Error establishing connection to table", MessageBoxButtons.OK, MessageBoxIcon.Error);
-             }
-             refreshErrorLog();
+                    using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM refresh_testing ORDER BY script_order ASC", conn))
+                    {
+                        toExecLog("Loading table...");
+                        da.Fill(dt);
+                        dataGridView1.DataSource = dt;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error establishing connection to table", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            refreshErrorLog();
         }
 
 
@@ -1299,7 +1300,7 @@ namespace ScriptManagerV4
         {
             // this view is used for setting UPDATE & RUN fields to the values of the selected row
             DataGridView dgv = dataGridView1 as DataGridView;
-        
+
             if ((dgv != null && dgv.SelectedRows.Count > 0) && (dgv.SelectedRows[0].Selected = true) && actionSelected != "INSERT INTO")
             {
                 DataGridViewRow row = dgv.SelectedRows[0];
@@ -1313,7 +1314,7 @@ namespace ScriptManagerV4
                     // set selected ID number to textBox, this disabled and cannot be changed
                     selectedID = row.Cells[1].Value.ToString();
                     textBox2.Text = selectedID;
-                    
+
 
                     // set selected row value to Function comboBox
                     for (int i = 0; i < comboBox2.Items.Count; i++)
@@ -1369,7 +1370,7 @@ namespace ScriptManagerV4
 
         private void button7_Click(object sender, EventArgs e)
         {
-          // CLEAR ERROR LOG button
+            // CLEAR ERROR LOG button
             using (conn = initQatConnection())
             {
                 string query = "DELETE FROM dbo.refresh_error_log";
@@ -1568,7 +1569,7 @@ namespace ScriptManagerV4
                             toolStripButton3_Click(sender, e);
                             return false;
                         }
-                        else 
+                        else
                         {
                             dataGridView1.Rows[0].Selected = true;
                             toolStripButton3_Click(sender, e);
@@ -1579,7 +1580,7 @@ namespace ScriptManagerV4
                         return false;
                 }
             }
-            else 
+            else
             {
                 if (comboBox1.SelectedIndex == -1)
                 {
@@ -1727,7 +1728,7 @@ namespace ScriptManagerV4
 
 
         private void toggleFieldVisibility(int x)
-        {   
+        {
             // RUN settings
             if (x == 0)
             {
@@ -1829,7 +1830,7 @@ namespace ScriptManagerV4
                 button5.BackColor = Color.Firebrick;
                 this.ForeColor = Color.Black;
                 gradientPanel1.ColorLeft = Color.White;
-                gradientPanel1.ColorRight= Color.DarkOrange;
+                gradientPanel1.ColorRight = Color.DarkOrange;
                 gradientPanel2.ColorLeft = Color.DarkOrange;
                 gradientPanel2.ColorRight = Color.White;
                 richTextBox2.BackColor = Color.White;
@@ -1840,7 +1841,7 @@ namespace ScriptManagerV4
                 toolStrip3.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3OrangeGradient.bmp");
                 toolStrip2.BackgroundImage = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS2OrangeGradient.bmp");
             }
-            else 
+            else
             {
                 // dark color scheme
                 textBox1.BackColor = Color.DimGray;
@@ -1918,12 +1919,12 @@ namespace ScriptManagerV4
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-              // off by default
-              if (lightSwitch)
-                  lightSwitch = false;
-              else
-                  lightSwitch = true;
-              flipLightSwitch(lightSwitch);
+            // off by default
+            if (lightSwitch)
+                lightSwitch = false;
+            else
+                lightSwitch = true;
+            flipLightSwitch(lightSwitch);
         }
 
 
@@ -2015,7 +2016,7 @@ namespace ScriptManagerV4
             {
                 richTextBox1.Enabled = true;
                 toolStripButton2.Image = Image.FromFile(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\icons\unlock.png");
-                toolStripButton2.ToolTipText = "Lock editor";               
+                toolStripButton2.ToolTipText = "Lock editor";
             }
             else
             {
@@ -2052,11 +2053,11 @@ namespace ScriptManagerV4
             // button is hidden by default
             // panels are hiding behind toolStrips
 
-                 int pWidth = gradientPanel2.Size.Width;
-                 int pHeight = gradientPanel2.Size.Height;
-                 Bitmap bm = new Bitmap(pWidth, pHeight);
-                 gradientPanel2.DrawToBitmap(bm, new Rectangle(0, 0, pWidth, pHeight));
-                 bm.Save(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3OrangeGradient.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+            int pWidth = gradientPanel2.Size.Width;
+            int pHeight = gradientPanel2.Size.Height;
+            Bitmap bm = new Bitmap(pWidth, pHeight);
+            gradientPanel2.DrawToBitmap(bm, new Rectangle(0, 0, pWidth, pHeight));
+            bm.Save(@"\\BRMSPNVDIFSV01\TFD_Profile\agemperline\Documents\My Pictures\TS3OrangeGradient.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
         }
 
 
@@ -2135,8 +2136,8 @@ namespace ScriptManagerV4
 
         private void toolStripLabel3_Click(object sender, EventArgs e)
         {
-          // ESM and DeCrypt infolink
-             
+            // ESM and DeCrypt infolink
+
             ToolStripLabel toolStripLabel3 = (ToolStripLabel)sender;
 
             // start Internet Explorer and navigate to the URL in the tag property
@@ -2144,7 +2145,7 @@ namespace ScriptManagerV4
 
             // set the LinkVisited propert to true to change the color
             toolStripLabel3.LinkVisited = true;
-            
+
         }
 
 
@@ -2162,7 +2163,7 @@ namespace ScriptManagerV4
             else if (varType == "error")
                 numErrors++;
             else if (varType == "errorResolved")
-                errorsResolved++;            
+                errorsResolved++;
             else if (varType == "display")
             {
                 if (actionSelected == "INSERT INTO" || actionSelected == "UPDATE")
@@ -2225,9 +2226,12 @@ namespace ScriptManagerV4
 
 
 
+        // START: ---------------------------------------------- Menu and contextMenuStrip Items' events ----------------------------------------------
+
+
         private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
-            // right-click on Script table creates contextMenuStrip
+            // right-click on Script table opens contextMenuStrip
             toolStripComboBox2.SelectedIndex = -1;
             toolStripComboBox3.SelectedIndex = -1;
             toolStripComboBox4.SelectedIndex = -1;
@@ -2240,11 +2244,129 @@ namespace ScriptManagerV4
             }
         }
 
-
-
         private void deleteRowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // contextMenuStrip Delete Row option
+            deleteRecord(sender, e);
+        }
+
+        private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            comboBox1.SelectedItem = "UPDATE";
+            setSelectedValues(sender);
+        }
+
+        private void insertIntoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            comboBox1.SelectedItem = "INSERT INTO";
+            toolStripButton4_Click(sender, e);
+        }
+
+        private void viewScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // View/parse script shortcut from right-click
+            comboBox1.SelectedIndex = -1;
+            toolStripButton3_Click(sender, e);
+        }
+
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // right-click shortcut to Run from Table View
+            comboBox1.SelectedItem = "RUN";
+            radioButton1.Checked = true;
+            radioButton1_CheckedChanged(sender, e);
+            contextMenuStrip1.Close();
+
+            if (toolStripComboBox2.SelectedIndex != -1)
+            {
+                comboBox5.SelectedItem = toolStripComboBox2.SelectedItem;
+                button3_Click(sender, e);
+            }
+        }
+
+        private void toolStripComboBox3_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            // right-click shortcut to Run from selected script order and thereafter
+            comboBox1.SelectedItem = "RUN";
+            radioButton3.Checked = true;
+            radioButton3_CheckedChanged(sender, e);
+            contextMenuStrip1.Close();
+
+            if (toolStripComboBox3.SelectedIndex != -1)
+            {
+                comboBox5.SelectedItem = toolStripComboBox3.SelectedItem;
+                button3_Click(sender, e);
+            }
+        }
+
+        private void toolStripComboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // right-click shortcut to Run selected script
+            comboBox1.SelectedItem = "RUN";
+            radioButton4.Checked = true;
+            radioButton4_CheckedChanged(sender, e);
+            contextMenuStrip1.Close();
+
+            if (toolStripComboBox4.SelectedIndex != -1)
+            {
+                comboBox5.SelectedItem = toolStripComboBox4.SelectedItem;
+                button3_Click(sender, e);
+            }
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            // launch SQL Server Management Studio
+            System.Diagnostics.Process.Start("SSMS.EXE");
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            flipLightSwitch(true);
+        }
+
+        private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            flipLightSwitch(false);
+        }
+
+        private void uploadAFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripButton4_Click(sender, e);
+        }
+
+        private void restartApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            button4_Click(sender, e);
+        }
+
+        private void editScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            comboBox1.SelectedItem = "UPDATE";
+            setSelectedValues(sender);
+        }
+
+        private void deleteScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            deleteRecord(sender, e);
+        }
+
+
+        private void deleteRecord(object sender, EventArgs e)
+        {
+            int selected = dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            if (selected < 1)
+            {
+                MessageBox.Show("You must select a record", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+           // contextMenuStrip Delete Row option
             comboBox1.SelectedIndex = -1;
             comboBox5.SelectedItem = "BRMQATONTDBS07"; // prepare to establish the connection to QAT 7 where table exists
 
@@ -2286,51 +2408,14 @@ namespace ScriptManagerV4
             }
         }
 
-        private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            comboBox1.SelectedItem = "UPDATE";
-            setSelectedValues(sender);
-        }
-
-        private void insertIntoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void insertToolStripMenuItem_Click(object sender, EventArgs e)
         {
             comboBox1.SelectedItem = "INSERT INTO";
             toolStripButton4_Click(sender, e);
         }
 
-        private void fromTableViewincludesFilterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            comboBox1.SelectedItem = "RUN";
-            radioButton1.Checked = true;
-            radioButton1_CheckedChanged(sender, e);
-        }
 
-        private void startAtScriptOrderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // right-click shortcut to Run from selected script order and thereafter
-            comboBox1.SelectedItem = "RUN";
-            radioButton3.Checked = true;
-            radioButton3_CheckedChanged(sender, e);
-        }
-
-        private void selectedScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // right-click shortcut to Run only selected script
-            comboBox1.SelectedItem = "RUN";
-            radioButton4.Checked = true; 
-            radioButton4_CheckedChanged(sender, e);
-        }
-
-        private void viewScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // View/parse script shortcut from right-click
-            comboBox1.SelectedIndex = -1;
-            toolStripButton3_Click(sender, e);
-        }
-
-
-
-        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripComboBox5_Click(object sender, EventArgs e)
         {
             // right-click shortcut to Run from Table View
             comboBox1.SelectedItem = "RUN";
@@ -2346,8 +2431,7 @@ namespace ScriptManagerV4
         }
 
 
-
-        private void toolStripComboBox3_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void toolStripComboBox6_Click(object sender, EventArgs e)
         {
             // right-click shortcut to Run from selected script order and thereafter
             comboBox1.SelectedItem = "RUN";
@@ -2360,11 +2444,11 @@ namespace ScriptManagerV4
                 comboBox5.SelectedItem = toolStripComboBox3.SelectedItem;
                 button3_Click(sender, e);
             }
+
+
         }
 
-
-
-        private void toolStripComboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripComboBox7_Click(object sender, EventArgs e)
         {
             // right-click shortcut to Run selected script
             comboBox1.SelectedItem = "RUN";
@@ -2378,6 +2462,9 @@ namespace ScriptManagerV4
                 button3_Click(sender, e);
             }
         }
+
+
+        // END: ---------------------------------------------- Menu and contextMenuStrip Items' events ----------------------------------------------
     }
 }
 

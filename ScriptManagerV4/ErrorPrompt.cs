@@ -41,7 +41,7 @@ namespace ScriptManagerV4
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            // color scheme settings
+          // color scheme settings
             // light
             if (colorScheme)
             {
