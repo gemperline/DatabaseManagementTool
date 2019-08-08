@@ -87,6 +87,7 @@ namespace ScriptManagerV4
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
@@ -118,6 +119,18 @@ namespace ScriptManagerV4
             this.scriptenvironmentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.scriptdescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.scriptDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.insertIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rUNSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromTableViewincludesFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
+            this.startAtScriptOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
+            this.selectedScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox4 = new System.Windows.Forms.ToolStripComboBox();
+            this.viewScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteRowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshtestingBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.label17 = new System.Windows.Forms.Label();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -141,7 +154,6 @@ namespace ScriptManagerV4
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
             this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rMDataSet8)).BeginInit();
@@ -164,6 +176,7 @@ namespace ScriptManagerV4
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource2)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.toolStrip3.SuspendLayout();
@@ -552,6 +565,17 @@ namespace ScriptManagerV4
             this.toolStripButton2.ToolTipText = "Unlock Editor";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.Color.White;
+            this.richTextBox1.EnableAutoDragDrop = true;
+            this.richTextBox1.Location = new System.Drawing.Point(6, 33);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(329, 622);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            this.richTextBox1.EnabledChanged += new System.EventHandler(this.richTextBox1_EnabledChanged);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.scriptTab);
@@ -569,7 +593,7 @@ namespace ScriptManagerV4
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(341, 658);
             this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Execution Summary";
+            this.tabPage1.Text = "Execution Log";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // richTextBox2
@@ -835,6 +859,7 @@ namespace ScriptManagerV4
             this.scriptenvironmentDataGridViewTextBoxColumn,
             this.scriptdescriptionDataGridViewTextBoxColumn,
             this.scriptDataGridViewTextBoxColumn});
+            this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
             this.dataGridView1.DataSource = this.refreshtestingBindingSource2;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.Color.GhostWhite;
@@ -861,6 +886,7 @@ namespace ScriptManagerV4
             this.dataGridView1.Size = new System.Drawing.Size(840, 657);
             this.dataGridView1.TabIndex = 36;
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
+            this.dataGridView1.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseUp);
             // 
             // scriptorderDataGridViewTextBoxColumn
             // 
@@ -914,6 +940,135 @@ namespace ScriptManagerV4
             this.scriptDataGridViewTextBoxColumn.Name = "scriptDataGridViewTextBoxColumn";
             this.scriptDataGridViewTextBoxColumn.ReadOnly = true;
             this.scriptDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertIntoToolStripMenuItem,
+            this.updateRecordToolStripMenuItem,
+            this.rUNSelectedToolStripMenuItem,
+            this.viewScriptToolStripMenuItem,
+            this.deleteRowToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 114);
+            // 
+            // insertIntoToolStripMenuItem
+            // 
+            this.insertIntoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("insertIntoToolStripMenuItem.Image")));
+            this.insertIntoToolStripMenuItem.Name = "insertIntoToolStripMenuItem";
+            this.insertIntoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.insertIntoToolStripMenuItem.Text = "Insert a record";
+            this.insertIntoToolStripMenuItem.Click += new System.EventHandler(this.insertIntoToolStripMenuItem_Click);
+            // 
+            // updateRecordToolStripMenuItem
+            // 
+            this.updateRecordToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("updateRecordToolStripMenuItem.Image")));
+            this.updateRecordToolStripMenuItem.Name = "updateRecordToolStripMenuItem";
+            this.updateRecordToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.updateRecordToolStripMenuItem.Text = "Update record";
+            this.updateRecordToolStripMenuItem.Click += new System.EventHandler(this.updateRecordToolStripMenuItem_Click);
+            // 
+            // rUNSelectedToolStripMenuItem
+            // 
+            this.rUNSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fromTableViewincludesFilterToolStripMenuItem,
+            this.startAtScriptOrderToolStripMenuItem,
+            this.selectedScriptToolStripMenuItem});
+            this.rUNSelectedToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("rUNSelectedToolStripMenuItem.Image")));
+            this.rUNSelectedToolStripMenuItem.Name = "rUNSelectedToolStripMenuItem";
+            this.rUNSelectedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rUNSelectedToolStripMenuItem.Text = "Run...";
+            // 
+            // fromTableViewincludesFilterToolStripMenuItem
+            // 
+            this.fromTableViewincludesFilterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox2});
+            this.fromTableViewincludesFilterToolStripMenuItem.Name = "fromTableViewincludesFilterToolStripMenuItem";
+            this.fromTableViewincludesFilterToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.fromTableViewincludesFilterToolStripMenuItem.Text = "From Table View (includes filter)";
+            this.fromTableViewincludesFilterToolStripMenuItem.Click += new System.EventHandler(this.fromTableViewincludesFilterToolStripMenuItem_Click);
+            // 
+            // toolStripComboBox2
+            // 
+            this.toolStripComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.toolStripComboBox2.Items.AddRange(new object[] {
+            "BRMQATONTDBS02",
+            "BRMQATONTDBS03",
+            "BRMQATONTDBS04",
+            "BRMQATONTDBS05",
+            "BRMQATONTDBS06",
+            "BRMQATONTDBS07",
+            "BRMQATONTDBS11"});
+            this.toolStripComboBox2.Name = "toolStripComboBox2";
+            this.toolStripComboBox2.Size = new System.Drawing.Size(121, 150);
+            this.toolStripComboBox2.Text = "Run Environment";
+            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
+            // 
+            // startAtScriptOrderToolStripMenuItem
+            // 
+            this.startAtScriptOrderToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox3});
+            this.startAtScriptOrderToolStripMenuItem.Name = "startAtScriptOrderToolStripMenuItem";
+            this.startAtScriptOrderToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.startAtScriptOrderToolStripMenuItem.Text = "Start at script order";
+            this.startAtScriptOrderToolStripMenuItem.Click += new System.EventHandler(this.startAtScriptOrderToolStripMenuItem_Click);
+            // 
+            // toolStripComboBox3
+            // 
+            this.toolStripComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.toolStripComboBox3.Items.AddRange(new object[] {
+            "BRMQATONTDBS02",
+            "BRMQATONTDBS03",
+            "BRMQATONTDBS04",
+            "BRMQATONTDBS05",
+            "BRMQATONTDBS06",
+            "BRMQATONTDBS07",
+            "BRMQATONTDBS11"});
+            this.toolStripComboBox3.Name = "toolStripComboBox3";
+            this.toolStripComboBox3.Size = new System.Drawing.Size(121, 150);
+            this.toolStripComboBox3.Text = "Run Environment";
+            this.toolStripComboBox3.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox3_SelectedIndexChanged_1);
+            // 
+            // selectedScriptToolStripMenuItem
+            // 
+            this.selectedScriptToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox4});
+            this.selectedScriptToolStripMenuItem.Name = "selectedScriptToolStripMenuItem";
+            this.selectedScriptToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.selectedScriptToolStripMenuItem.Text = "Selected script";
+            this.selectedScriptToolStripMenuItem.Click += new System.EventHandler(this.selectedScriptToolStripMenuItem_Click);
+            // 
+            // toolStripComboBox4
+            // 
+            this.toolStripComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.toolStripComboBox4.Items.AddRange(new object[] {
+            "BRMQATONTDBS02",
+            "BRMQATONTDBS03",
+            "BRMQATONTDBS04",
+            "BRMQATONTDBS05",
+            "BRMQATONTDBS06",
+            "BRMQATONTDBS07",
+            "BRMQATONTDBS11"});
+            this.toolStripComboBox4.Name = "toolStripComboBox4";
+            this.toolStripComboBox4.Size = new System.Drawing.Size(121, 150);
+            this.toolStripComboBox4.Text = "Run Environment";
+            this.toolStripComboBox4.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox4_SelectedIndexChanged);
+            // 
+            // viewScriptToolStripMenuItem
+            // 
+            this.viewScriptToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("viewScriptToolStripMenuItem.Image")));
+            this.viewScriptToolStripMenuItem.Name = "viewScriptToolStripMenuItem";
+            this.viewScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewScriptToolStripMenuItem.Text = "View script";
+            this.viewScriptToolStripMenuItem.Click += new System.EventHandler(this.viewScriptToolStripMenuItem_Click);
+            // 
+            // deleteRowToolStripMenuItem
+            // 
+            this.deleteRowToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteRowToolStripMenuItem.Image")));
+            this.deleteRowToolStripMenuItem.Name = "deleteRowToolStripMenuItem";
+            this.deleteRowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteRowToolStripMenuItem.Text = "Delete this row";
+            this.deleteRowToolStripMenuItem.Click += new System.EventHandler(this.deleteRowToolStripMenuItem_Click);
             // 
             // refreshtestingBindingSource2
             // 
@@ -1115,7 +1270,6 @@ namespace ScriptManagerV4
             // 
             this.toolStripLabel3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLabel3.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.toolStripLabel3.IsLink = true;
             this.toolStripLabel3.Name = "toolStripLabel3";
             this.toolStripLabel3.Size = new System.Drawing.Size(155, 22);
             this.toolStripLabel3.Tag = "https://teamworks.tsys.com/kb/wiki/Wiki%20Pages/ESM.aspx";
@@ -1154,17 +1308,6 @@ namespace ScriptManagerV4
             this.gradientPanel2.Size = new System.Drawing.Size(1419, 25);
             this.gradientPanel2.TabIndex = 64;
             this.gradientPanel2.Visible = false;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.EnableAutoDragDrop = true;
-            this.richTextBox1.Location = new System.Drawing.Point(6, 33);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(329, 622);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            this.richTextBox1.EnabledChanged += new System.EventHandler(this.richTextBox1_EnabledChanged);
             // 
             // MainForm
             // 
@@ -1239,6 +1382,7 @@ namespace ScriptManagerV4
             this.tabControl2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource2)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
@@ -1343,6 +1487,18 @@ namespace ScriptManagerV4
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem deleteRowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem insertIntoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateRecordToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rUNSelectedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewScriptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fromTableViewincludesFilterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startAtScriptOrderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectedScriptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox4;
     }
 }
 
