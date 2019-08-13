@@ -406,7 +406,7 @@ namespace ScriptManagerV4
 
                     toolStripLabel4.Visible = false;
                     startingIndex = 0;
-                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
+                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Start/Resume At Script Order is selected 
                 else if (radioButton3.Checked == true && (comboBox5.SelectedIndex != -1))
@@ -418,7 +418,7 @@ namespace ScriptManagerV4
                         searchForScriptOrder(textBox5.Text);
                     }
                     startingIndex = dataGridView1.SelectedRows[0].Index;
-                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
+                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Run Selected Script is selected 
                 else if ((radioButton4.Checked == true) && (comboBox5.SelectedIndex != -1))
@@ -478,7 +478,7 @@ namespace ScriptManagerV4
                 if (dataGridView1.SelectedRows[0] != null && dataGridView1.SelectedRows[0].Index > -1)
                 {
                     startingIndex = dataGridView1.SelectedRows[0].Index; // start RUN from selected row's index
-                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
+                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 else
                 {
@@ -551,7 +551,7 @@ namespace ScriptManagerV4
 
 
         // ------------------------------------------- Run a defined range of scripts (or resume from paused run) ----------------------------------------
-        private void runMultiple(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
+        private async Task runMultiple(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
         {
             toolStripLabel3.Text = "Executing scripts...";
             int result = 0;
@@ -594,7 +594,7 @@ namespace ScriptManagerV4
                     // run all scripts matching the selected Run Environment or where script_environment is QUAT_ALL
                     if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
                     {
-                        runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e);
+                        await Task.Run(() => runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e));
                     }
 
                     if (proceed == false)
@@ -629,11 +629,22 @@ namespace ScriptManagerV4
         // --------------------------------------------------------- Run script(s) ------------------------------------------------------------
         private void runScript(object sender, DataGridViewRow currentRow, int lastIndexInView, EventArgs e)
         {
-            toExecLog("\n____________________________________________" +
+            Invoke(new Action(() =>
+            {
+                toExecLog("\n____________________________________________" +
                 "\nRunning Script Order: " + currentRow.Cells[0].Value.ToString() + ", ID: " + currentRow.Cells[1].Value.ToString() +
                 "\n------------------------------------------------------------------------------");
-            toExecLog("Record Index: " + currentRow.Index + " | " + lastIndexInView);
-            richTextBox1.Update();
+            }));
+
+            Invoke(new Action(() =>
+            {
+                toExecLog("Record Index: " + currentRow.Index + " | " + lastIndexInView);
+            }));
+
+            Invoke(new Action(() =>
+            {
+                richTextBox2.Update();
+            }));
 
             string query = currentRow.Cells[5].Value.ToString();
             try
@@ -645,11 +656,19 @@ namespace ScriptManagerV4
                         using (cmd = new SqlCommand(query, conn))
                         {
                             conn.Open();
-                            toExecLog("Connected to " + comboBox5.SelectedItem.ToString());
+                            Invoke(new Action(() =>
+                             {
+                                 richTextBox2.AppendText("Connected to " + comboBox5.SelectedItem.ToString());
+                             }));
+
                             try
                             {
-                                int result = cmd.ExecuteNonQuery();
-                                toExecLog("Run result = " + result);
+                                var result = cmd.ExecuteNonQuery();
+                                Convert.ToInt32(result);
+                                Invoke(new Action(() =>
+                                {
+                                    richTextBox2.AppendText("Run Result: " + result);
+                                }));
                             }
                             catch (SqlException ex)
                             {
@@ -662,7 +681,7 @@ namespace ScriptManagerV4
                         if (string.IsNullOrWhiteSpace(currentRow.Cells[5].Value.ToString()))
                             MessageBox.Show(ex.Message, "ERROR: There is an empty script entry at ID:" + currentRow.Cells[1].Value.ToString());
                         else
-                            MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, "From runScript:", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -670,7 +689,11 @@ namespace ScriptManagerV4
             {
                 logError(sender, ex, currentRow, e);
             }
-            richTextBox1.Update();
+
+            Invoke(new Action(() =>
+            {
+                richTextBox2.Update();
+            }));
         }
 
 
@@ -774,15 +797,23 @@ namespace ScriptManagerV4
         {
             executionSummary("error");
 
+            string selectedItem = "";
+            if (comboBox5.InvokeRequired)
+            {
+                comboBox5.Invoke(new MethodInvoker(delegate { selectedItem = comboBox5.SelectedItem.ToString(); }));
+            }
+            else
+                selectedItem = comboBox5.SelectedItem.ToString();
+
             string currQAT = null;
 
             // if selected Run Environment is not BRMQATONTDBS07, force conncection for error logging (dbo.refresh_error_log is in BRMQATONTDBS07), then return to previous selection
-            if (comboBox5.SelectedItem.ToString() != "BRMQATONTDBS07")
+            if (selectedItem != "BRMQATONTDBS07")
             {
-                currQAT = comboBox5.SelectedItem.ToString();
+                currQAT = selectedItem;
                 toExecLog("Current QAT connection: " + currQAT);
-                comboBox5.SelectedItem = "BRMQATONTDBS07";
-                toExecLog("Connecting to " + comboBox5.SelectedItem.ToString() + " for error logging...");
+                selectedItem = "BRMQATONTDBS07";
+                toExecLog("Connecting to " + selectedItem + " for error logging...");
             }
 
 
@@ -809,7 +840,8 @@ namespace ScriptManagerV4
                     try
                     {
                         toExecLog("Logging error...");
-                        int result = cmd.ExecuteNonQuery();
+                        var result = cmd.ExecuteNonQuery();
+                        Convert.ToInt32(result);
 
                         // Check error
                         if (result < 0)
@@ -819,7 +851,7 @@ namespace ScriptManagerV4
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.Message, "From LogError");
                         toExecLog(ex.Message);
                     }
                 }
@@ -1201,49 +1233,58 @@ namespace ScriptManagerV4
             // if the action selected is RUN, this function will establish a connection based on the User's Run Environment selection 
             // otherwise it will connect to QAT7 for all other purposes
 
+            int index = 0;
+            if (comboBox5.InvokeRequired)
+            {
+                // comboBox5.Invoke(new Action(() => comboBox5.SelectedIndex = index));
+                comboBox5.Invoke(new MethodInvoker(delegate { index = comboBox5.SelectedIndex; }));
+            }
+            else
+                index = comboBox5.SelectedIndex;
+            
             if (conn != null && conn.State == ConnectionState.Open)
                 conn.Close();
 
             // RM connecion strings 
 
             // if RUN is selected along with a Run Environment from combobox5, connect to the selected Run Environment
-            if (actionSelected == "RUN" && comboBox5.SelectedIndex != -1)
+            if (actionSelected == "RUN" && index != -1)
             {
                 // no selection
-                if (comboBox5.SelectedIndex == -1)
+                if (index == -1)
                     return null;
                 // brmqatontdbs02 RM
-                else if (comboBox5.SelectedIndex == 0)
+                else if (index == 0)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs02;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs03 RM
-                else if (comboBox5.SelectedIndex == 1)
+                else if (index == 1)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs03;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs04 RM
-                else if (comboBox5.SelectedIndex == 2)
+                else if (index == 2)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs04;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs05 RM
-                else if (comboBox5.SelectedIndex == 3)
+                else if (index == 3)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs05;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs06 RM
-                else if (comboBox5.SelectedIndex == 4)
+                else if (index == 4)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs06;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs07 RM
-                else if (comboBox5.SelectedIndex == 5)
+                else if (index == 5)
                 {
                     conn = new SqlConnection(@"Data Source=Brmqatontdbs07;Initial Catalog=RM;Integrated Security=True");
                 }
                 // brmqatontdbs11 RM
-                else if (comboBox5.SelectedIndex == 6)
+                else if (index == 6)
                 {
                     conn = new SqlConnection(@"Data Source=brmqatontdbs11;Initial Catalog=RM;Integrated Security=True");
                 }
@@ -1492,11 +1533,18 @@ namespace ScriptManagerV4
         }
 
 
-        private void toExecLog(string input)
+        public void toExecLog(string input)
         {
-            // outputs to Execution Log rtb
-            richTextBox2.AppendText("\r" + input);
-            richTextBox2.ScrollToCaret();
+            if (richTextBox2.InvokeRequired)
+            {
+                richTextBox2.Invoke(new MethodInvoker(delegate { richTextBox2.AppendText("\r" + input); }));
+            }
+            else
+            {
+                // outputs to Execution Log rtb
+                richTextBox2.AppendText("\r" + input);
+                richTextBox2.ScrollToCaret();
+            }
         }
 
 
