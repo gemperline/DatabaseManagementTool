@@ -46,11 +46,11 @@ namespace ScriptManagerV4
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.refreshtestingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -101,6 +101,13 @@ namespace ScriptManagerV4
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.scriptorderDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.script_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.scriptenvironmentDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.error_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.error_message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.error_procedure = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.error_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.refresherrorlogBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.rMDataSet7 = new ScriptManagerV4.RMDataSet7();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -167,13 +174,6 @@ namespace ScriptManagerV4
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
             this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
-            this.scriptorderDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.script_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scriptenvironmentDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.error_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.error_message = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.error_procedure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.error_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rMDataSet8)).BeginInit();
@@ -368,6 +368,7 @@ namespace ScriptManagerV4
             this.button3.TabIndex = 11;
             this.button3.Text = "EXECUTE";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
@@ -751,6 +752,70 @@ namespace ScriptManagerV4
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(840, 628);
             this.dataGridView2.TabIndex = 0;
+            // 
+            // scriptorderDataGridViewTextBoxColumn1
+            // 
+            this.scriptorderDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.scriptorderDataGridViewTextBoxColumn1.DataPropertyName = "script_order";
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Moccasin;
+            this.scriptorderDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.scriptorderDataGridViewTextBoxColumn1.HeaderText = "script_order";
+            this.scriptorderDataGridViewTextBoxColumn1.Name = "scriptorderDataGridViewTextBoxColumn1";
+            this.scriptorderDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.scriptorderDataGridViewTextBoxColumn1.Width = 60;
+            // 
+            // script_id
+            // 
+            this.script_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.script_id.DataPropertyName = "script_id";
+            this.script_id.HeaderText = "script_id";
+            this.script_id.Name = "script_id";
+            this.script_id.ReadOnly = true;
+            this.script_id.Width = 73;
+            // 
+            // scriptenvironmentDataGridViewTextBoxColumn1
+            // 
+            this.scriptenvironmentDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.scriptenvironmentDataGridViewTextBoxColumn1.DataPropertyName = "script_environment";
+            this.scriptenvironmentDataGridViewTextBoxColumn1.HeaderText = "script_environment";
+            this.scriptenvironmentDataGridViewTextBoxColumn1.Name = "scriptenvironmentDataGridViewTextBoxColumn1";
+            this.scriptenvironmentDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.scriptenvironmentDataGridViewTextBoxColumn1.Width = 124;
+            // 
+            // error_line
+            // 
+            this.error_line.DataPropertyName = "error_line";
+            this.error_line.HeaderText = "error_line";
+            this.error_line.Name = "error_line";
+            this.error_line.ReadOnly = true;
+            this.error_line.Width = 78;
+            // 
+            // error_message
+            // 
+            this.error_message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.error_message.DataPropertyName = "error_message";
+            this.error_message.HeaderText = "error_message";
+            this.error_message.Name = "error_message";
+            this.error_message.ReadOnly = true;
+            this.error_message.Width = 270;
+            // 
+            // error_procedure
+            // 
+            this.error_procedure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.error_procedure.DataPropertyName = "error_procedure";
+            this.error_procedure.HeaderText = "error_procedure";
+            this.error_procedure.Name = "error_procedure";
+            this.error_procedure.ReadOnly = true;
+            this.error_procedure.Width = 112;
+            // 
+            // error_time
+            // 
+            this.error_time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.error_time.DataPropertyName = "error_time";
+            this.error_time.HeaderText = "error_time";
+            this.error_time.Name = "error_time";
+            this.error_time.ReadOnly = true;
+            this.error_time.Width = 81;
             // 
             // refresherrorlogBindingSource6
             // 
@@ -1234,7 +1299,7 @@ namespace ScriptManagerV4
             // 
             this.insertToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("insertToolStripMenuItem.Image")));
             this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-            this.insertToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.insertToolStripMenuItem.Text = "Insert";
             this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
             // 
@@ -1242,7 +1307,7 @@ namespace ScriptManagerV4
             // 
             this.editScriptToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editScriptToolStripMenuItem.Image")));
             this.editScriptToolStripMenuItem.Name = "editScriptToolStripMenuItem";
-            this.editScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editScriptToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.editScriptToolStripMenuItem.Text = "Update";
             this.editScriptToolStripMenuItem.Click += new System.EventHandler(this.editScriptToolStripMenuItem_Click);
             // 
@@ -1254,7 +1319,7 @@ namespace ScriptManagerV4
             this.toolStripMenuItem5});
             this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
             this.toolStripMenuItem1.Text = "Run...";
             // 
             // toolStripMenuItem2
@@ -1333,7 +1398,7 @@ namespace ScriptManagerV4
             // 
             this.deleteScriptToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteScriptToolStripMenuItem.Image")));
             this.deleteScriptToolStripMenuItem.Name = "deleteScriptToolStripMenuItem";
-            this.deleteScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteScriptToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.deleteScriptToolStripMenuItem.Text = "Delete";
             this.deleteScriptToolStripMenuItem.Click += new System.EventHandler(this.deleteScriptToolStripMenuItem_Click);
             // 
@@ -1482,70 +1547,6 @@ namespace ScriptManagerV4
             this.gradientPanel2.Size = new System.Drawing.Size(1419, 25);
             this.gradientPanel2.TabIndex = 64;
             this.gradientPanel2.Visible = false;
-            // 
-            // scriptorderDataGridViewTextBoxColumn1
-            // 
-            this.scriptorderDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.scriptorderDataGridViewTextBoxColumn1.DataPropertyName = "script_order";
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Moccasin;
-            this.scriptorderDataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.scriptorderDataGridViewTextBoxColumn1.HeaderText = "script_order";
-            this.scriptorderDataGridViewTextBoxColumn1.Name = "scriptorderDataGridViewTextBoxColumn1";
-            this.scriptorderDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.scriptorderDataGridViewTextBoxColumn1.Width = 60;
-            // 
-            // script_id
-            // 
-            this.script_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.script_id.DataPropertyName = "script_id";
-            this.script_id.HeaderText = "script_id";
-            this.script_id.Name = "script_id";
-            this.script_id.ReadOnly = true;
-            this.script_id.Width = 73;
-            // 
-            // scriptenvironmentDataGridViewTextBoxColumn1
-            // 
-            this.scriptenvironmentDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.scriptenvironmentDataGridViewTextBoxColumn1.DataPropertyName = "script_environment";
-            this.scriptenvironmentDataGridViewTextBoxColumn1.HeaderText = "script_environment";
-            this.scriptenvironmentDataGridViewTextBoxColumn1.Name = "scriptenvironmentDataGridViewTextBoxColumn1";
-            this.scriptenvironmentDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.scriptenvironmentDataGridViewTextBoxColumn1.Width = 124;
-            // 
-            // error_line
-            // 
-            this.error_line.DataPropertyName = "error_line";
-            this.error_line.HeaderText = "error_line";
-            this.error_line.Name = "error_line";
-            this.error_line.ReadOnly = true;
-            this.error_line.Width = 78;
-            // 
-            // error_message
-            // 
-            this.error_message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.error_message.DataPropertyName = "error_message";
-            this.error_message.HeaderText = "error_message";
-            this.error_message.Name = "error_message";
-            this.error_message.ReadOnly = true;
-            this.error_message.Width = 270;
-            // 
-            // error_procedure
-            // 
-            this.error_procedure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.error_procedure.DataPropertyName = "error_procedure";
-            this.error_procedure.HeaderText = "error_procedure";
-            this.error_procedure.Name = "error_procedure";
-            this.error_procedure.ReadOnly = true;
-            this.error_procedure.Width = 112;
-            // 
-            // error_time
-            // 
-            this.error_time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.error_time.DataPropertyName = "error_time";
-            this.error_time.HeaderText = "error_time";
-            this.error_time.Name = "error_time";
-            this.error_time.ReadOnly = true;
-            this.error_time.Width = 81;
             // 
             // MainForm
             // 
