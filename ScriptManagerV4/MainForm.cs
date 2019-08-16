@@ -9,7 +9,6 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,11 +31,10 @@ using System.Timers;
 
 namespace ScriptManagerV4
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form 
     {
         SqlConnection conn;
         SqlCommand cmd;
-        SqlException sqlException;
         public static Stream myStream;      // used for file stream
         private string actionSelected = ""; // stores user selected action 
         string selectedID = "";
@@ -60,6 +58,8 @@ namespace ScriptManagerV4
         public MainForm()
         {
             InitializeComponent();
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
 
@@ -187,16 +187,8 @@ namespace ScriptManagerV4
 
         private void button5_Click(object sender, EventArgs e)
         {
-            // EXIT / ABORT button
-
-            if (button5.Text == "ABORT")
-            {
-                proceed = false;
-            }
-            else 
-            {
-                Close();
-            }
+            // CLOSE button
+            Close();
         }
 
 
@@ -386,12 +378,14 @@ namespace ScriptManagerV4
         // START: --------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
         // CAUTION! 
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
             // EXECUTE button 
+
             proceed = true;     // control variable that stops RUN sequence upon user's error response
             button3.Enabled = false;
             button4.Enabled = false;
+            button5.Text = "ABORT";
             toolStripProgressBar1.Visible = true;
             toolStripLabel2.Enabled = true;
             toolStripLabel2.Visible = true;
@@ -428,8 +422,9 @@ namespace ScriptManagerV4
                 {
                     runTableView(sender, e);
 
-                    if (errorEncountered == true)
-                        logError(sender, sqlException, dataGridView1.SelectedRows[0], e);
+                    toolStripLabel4.Visible = false;
+                    startingIndex = 0;
+                    runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Start/Resume At Script Order is selected 
                 else if (radioButton3.Checked == true && (comboBox5.SelectedIndex != -1))
@@ -597,22 +592,26 @@ namespace ScriptManagerV4
                 Cursor.Current = Cursors.WaitCursor;
 
                 // loop to run scripts within given script order range
-                for (int i = startingIndex; i < numRows; i++) 
+                for (int i = startingIndex; i < numRows; i++)
                 {
                     // select current row
                     dataGridView1.Rows[i].Selected = true;
                     dataGridView1.Update();
 
-                    // set the selected row to the current index
-                    dataGridView1.SelectedRows[0].Index.Equals(i);
+ /*REDUNDANT?*/         // set the selected row to the current index
+                        dataGridView1.SelectedRows[0].Index.Equals(i);
 
                     // run all scripts matching the selected Run Environment or where script_environment is QUAT_ALL
                     if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
                     {
                         runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e);
-                        richTextBox2.Update();
-
                     }
+
+                    if (proceed == false)
+                    {
+                        break;
+                    }
+
                     updateProgressBar();
                 }
                 Cursor.Current = Cursors.Default;
@@ -636,7 +635,7 @@ namespace ScriptManagerV4
 
 
         // --------------------------------------------------------- Run script(s) ------------------------------------------------------------
-        private void runScript(object sender, DataGridViewRow currentRow, int lastIndexInView, EventArgs e)
+        public async Task runScript(object sender, DataGridViewRow currentRow, int lastIndexInView, EventArgs e)
         {
             errorEncountered = false;
 
@@ -656,25 +655,27 @@ namespace ScriptManagerV4
                         using (cmd = new SqlCommand(query, conn))
                         {
                             conn.Open();
-                            //toExecLog("Connected to " + comboBox5.SelectedItem.ToString());
+                            toExecLog("Connected to " + comboBox5.SelectedItem.ToString());
                             try
                             {
                                 int result = cmd.ExecuteNonQuery();
-                                toExecLog("Run Result: " + result);
+                                toExecLog("Run result = " + result);
                             }
                             catch (SqlException ex)
                             { 
                                 errorEncountered = true;
                                 sqlException = ex;
                             }
+
                         }
                     }
+
                     catch (Exception ex)
                     {
                         if (string.IsNullOrWhiteSpace(currentRow.Cells[5].Value.ToString()))
                             MessageBox.Show(ex.Message, "ERROR: There is an empty script entry at ID:" + currentRow.Cells[1].Value.ToString());
                         else
-                            MessageBox.Show(ex.Message, "From runScript:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -779,7 +780,7 @@ namespace ScriptManagerV4
 
 
 
-        private void logError(object sender, SqlException exception, DataGridViewRow currentScriptRow, EventArgs e)
+        public void logError(object sender, SqlException exception, DataGridViewRow currentScriptRow, EventArgs e)
         {
             executionSummary("error");
 
@@ -1239,7 +1240,7 @@ namespace ScriptManagerV4
 
 
 
-        private SqlConnection initQatConnection()
+        public SqlConnection initQatConnection()
         {
             // this function initializes and then returns a new SqlConnection
             // if the action selected is RUN, this function will establish a connection based on the User's Run Environment selection 
@@ -1545,18 +1546,11 @@ namespace ScriptManagerV4
         }
 
 
-        public void toExecLog(string input)
+        private void toExecLog(string input)
         {
-            if (richTextBox2.InvokeRequired)
-            {
-                richTextBox2.Invoke(new MethodInvoker(delegate { richTextBox2.AppendText("\r" + input); }));
-            }
-            else
-            {
-                // outputs to Execution Log rtb
-                richTextBox2.AppendText("\r" + input);
-                richTextBox2.ScrollToCaret();
-            }
+            // outputs to Execution Log rtb
+            richTextBox2.AppendText("\r" + input);
+            richTextBox2.ScrollToCaret();
         }
 
 
@@ -2522,9 +2516,114 @@ namespace ScriptManagerV4
                 button3_Click(sender, e);
             }
         }
-
-
         // END: ---------------------------------------------- Menu and contextMenuStrip Items' events ----------------------------------------------
+
+
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == true)
+            {
+                toExecLog("Canceled");
+            }
+        }
+
+        private async void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            // checks to see if "Abort" button has been clicked before each run 
+            if (worker.CancellationPending == true)
+            {
+                e.Cancel = true;
+            }
+            else 
+            {
+                List<object> runParams = e.Argument as List<object>;
+
+                SqlConnection conn = (SqlConnection) runParams.ElementAt(0);
+                SqlCommand cmd = (SqlCommand) runParams.ElementAt(1);
+               // await Task.Factory.StartNew(() => NewTask.executeQuery(cmd, conn), TaskCreationOptions.LongRunning);
+            }
+            /*         List<object> runParams = e.Argument as List<object>;
+                     int startingIndex = Convert.ToInt32(runParams.ElementAt(0));
+                     await Task.Factory.StartNew(() => NewTask.sendOutput("STARTING INDEX: " + startingIndex), TaskCreationOptions.LongRunning);
+                     Console.WriteLine("STARTING INDEX: " + startingIndex);
+
+                     int lastIndexInView = Convert.ToInt32(runParams.ElementAt(1));
+                     await Task.Factory.StartNew(() => NewTask.sendOutput("LAST INDEX: " + lastIndexInView), TaskCreationOptions.LongRunning);
+                     Console.WriteLine("LAST INDEX: " + lastIndexInView);
+
+                     int numRows = Convert.ToInt32(runParams.ElementAt(2));
+                     await Task.Factory.StartNew(() => NewTask.sendOutput("NUM ROWS: " + numRows), TaskCreationOptions.LongRunning);
+                     Console.WriteLine("NUM ROWS: " + numRows);
+                     */
+            // used to thread the run process and allow for cancellation upon Exit/Abort button click
+            //BackgroundWorker worker = sender as BackgroundWorker;
+
+            
+            // loop to run scripts within given script order range 
+        }
+
+
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+
+        private async Task newTask(object sender, EventArgs e, string query)
+        {
+            var instance = new MainForm();
+
+            try
+            {
+                using (conn = initQatConnection())
+                {
+                    conn.Open();
+                    Console.WriteLine("CONN: " + conn.ConnectionString);
+                    Console.WriteLine("State: " + conn.State);
+                    Console.WriteLine("CMD: " + cmd.CommandText);
+                    using (cmd = new SqlCommand(query, conn));
+                    {
+                        
+                        int result = await cmd.ExecuteNonQueryAsync();
+                        instance.toExecLog("Run result = " + result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+       }
+
+    }
+
+    public class NewTask
+    {
+
+        public static void sendOutput(string output)
+        {
+            var instance = new MainForm();
+            instance.toExecLog(output);
+        }
+
+        public static void updateDGV()
+        {
+            var instance = new MainForm();
+            instance.dataGridView1.Update();
+        }
+
+
+        public static void executeQuery(object sender, DataGridViewRow currentRow, int lastIndexInView, EventArgs e, int selectedIndex)
+        {
+            var instance = new MainForm();
+            instance.runScript(sender, currentRow, lastIndexInView, e);
+        }
+            
     }
 }
 
