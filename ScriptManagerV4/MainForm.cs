@@ -36,6 +36,7 @@ namespace ScriptManagerV4
     {
         SqlConnection conn;
         SqlCommand cmd;
+        SqlException sqlException;
         public static Stream myStream;      // used for file stream
         private string actionSelected = ""; // stores user selected action 
         string selectedID = "";
@@ -48,11 +49,13 @@ namespace ScriptManagerV4
         private bool lightSwitch = false;   // color scheme switch
         public double progress;             // progressBar value
         private int runEnvironment;         // stores index of Run environment selection (comboBox5)
-        public double pp1;
-        public int pp2;
-        private int totalProcesses;
+        public double pp1;                  // progress percent    
+        public int pp2;                     // progress percent
+        private int totalProcesses;         
         private int progressPosition;
-
+        private bool errorEncountered = false;
+        private string errorResponse = "";
+        private readonly System.Threading.SynchronizationContext syncContext;
 
         public MainForm()
         {
@@ -154,6 +157,9 @@ namespace ScriptManagerV4
             radioButton3.Enabled = true;
             radioButton4.Enabled = true;
             toolStripLabel4.Visible = false;
+            button5.Text = "EXIT";
+            button3.Enabled = false;
+            button3.Text = "";
 
             if (comboBox1.Items.Contains("UPDATE & RESUME"))
                 comboBox1.Items.Remove("UPDATE & RESUME");
@@ -181,8 +187,16 @@ namespace ScriptManagerV4
 
         private void button5_Click(object sender, EventArgs e)
         {
-            // CLOSE button
-            Close();
+            // EXIT / ABORT button
+
+            if (button5.Text == "ABORT")
+            {
+                proceed = false;
+            }
+            else 
+            {
+                Close();
+            }
         }
 
 
@@ -216,6 +230,8 @@ namespace ScriptManagerV4
                 comboBox3.Enabled = true;
                 textBox1.ReadOnly = false;
                 textBox3.ReadOnly = false;
+                button3.Text = "INSERT";
+                button3.Enabled = true;
             }
             else if (actionSelected == "UPDATE")
             {
@@ -244,6 +260,8 @@ namespace ScriptManagerV4
                 radioButton1.Visible = false;
                 radioButton3.Visible = false;
                 radioButton4.Visible = false;
+                button3.Text = "UPDATE";
+                button3.Enabled = true;
             }
             else if (actionSelected == "RUN")
             {
@@ -287,6 +305,8 @@ namespace ScriptManagerV4
                 textBox2.Visible = false;
                 textBox3.Visible = false;
                 clearFields(sender, e);
+                button3.Text = "RUN";
+                button3.Enabled = true;
             }
 
             // when UPDATE & RESUME is selected
@@ -320,6 +340,8 @@ namespace ScriptManagerV4
                 richTextBox1.Enabled = true;
                 toggleFieldVisibility(1);
                 setSelectedValues(sender);
+                button3.Text = "RESUME";
+                button3.Enabled = true;
                 if (runEnvironment != -1)
                     comboBox5.SelectedIndex = runEnvironment;
             }
@@ -327,6 +349,8 @@ namespace ScriptManagerV4
             // no selection
             else if (comboBox1.SelectedIndex == -1)
             {
+                button3.Text = "";
+                button3.Enabled = false;
                 label12.Text = "Viewing:";
                 toggleFieldVisibility(0);
                 comboBox5.Visible = false;
@@ -360,7 +384,6 @@ namespace ScriptManagerV4
 
 
         // START: --------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
-
         // CAUTION! 
 
         private void button3_Click(object sender, EventArgs e)
@@ -374,6 +397,9 @@ namespace ScriptManagerV4
             toolStripLabel2.Visible = true;
             runEnvironment = comboBox5.SelectedIndex; // store Run environment for when it gets reset by execution processes
             toolStripLabel3.IsLink = false;
+            button5.Text = "ABORT";
+            toolStripLabel4.Visible = false;
+
 
             // determine number of records in table
             int numRows = dataGridView1.Rows.Count;
@@ -396,34 +422,32 @@ namespace ScriptManagerV4
 
             if (actionSelected == "RUN")
             {
-                int startingIndex;
 
                 // if "From Table View" is selected
                 if ((radioButton1.Checked == true) && (comboBox5.SelectedIndex != -1))
                 {
-                    // select first row 
-                    dataGridView1.Rows[0].Selected = true;
+                    runTableView(sender, e);
 
-                    toolStripLabel4.Visible = false;
-                    startingIndex = 0;
-                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
+                    if (errorEncountered == true)
+                        logError(sender, sqlException, dataGridView1.SelectedRows[0], e);
                 }
                 // Start/Resume At Script Order is selected 
                 else if (radioButton3.Checked == true && (comboBox5.SelectedIndex != -1))
                 {
-                    toolStripLabel4.Visible = false;
-
-                    if (textBox5.Text != dataGridView1.SelectedRows[0].Cells[0].Value.ToString())
+                    while (proceed == true)
                     {
-                        searchForScriptOrder(textBox5.Text);
+                        if (textBox5.Text != dataGridView1.SelectedRows[0].Cells[0].Value.ToString())
+                        {
+                            searchForScriptOrder(textBox5.Text);
+                        }
+                        runAtScriptOrder(sender, e);
+                        if (errorEncountered == true)
+                            logError(sender, sqlException, dataGridView1.SelectedRows[0], e);
                     }
-                    startingIndex = dataGridView1.SelectedRows[0].Index;
-                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 // Run Selected Script is selected 
                 else if ((radioButton4.Checked == true) && (comboBox5.SelectedIndex != -1))
                 {
-                    toolStripLabel4.Visible = false;
                     toolStripLabel3.Text = "Executing script...";
                     toolStripLabel3.Visible = true;
                     toolStripProgressBar1.Value = 0;
@@ -432,8 +456,20 @@ namespace ScriptManagerV4
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
                     runScript(sender, row, lastIndexInView, e);
                     updateProgressBar();
+
+                    if (errorEncountered == true)
+                        logError(sender, sqlException, dataGridView1.SelectedRows[0], e);
+
                     toolStripLabel3.Text = "Execution Complete";
                     toolStrip3.Update();
+                }
+
+                if ((errorResponse == "ignore" || errorResponse == "ignore all") && dataGridView1.SelectedRows[0].Index != lastIndexInView)
+                {
+                    manageRunSequence(sender, numRows, lastIndexInView, e, dataGridView1.SelectedRows[0].Index);
+                    if (errorEncountered == true)
+                        logError(sender, sqlException, dataGridView1.SelectedRows[0], e);
+                    
                 }
             }
             else if (actionSelected == "UPDATE" && proceed == true)
@@ -462,6 +498,7 @@ namespace ScriptManagerV4
             }
             else if (actionSelected == "UPDATE & RESUME")
             {
+                updateProgressBar();
                 int startingIndex = 0;
                 proceed = true;
                 updateRecord(sender, e);
@@ -477,8 +514,9 @@ namespace ScriptManagerV4
 
                 if (dataGridView1.SelectedRows[0] != null && dataGridView1.SelectedRows[0].Index > -1)
                 {
+                    proceed = true;
                     startingIndex = dataGridView1.SelectedRows[0].Index; // start RUN from selected row's index
-                    Task task = runMultiple(sender, numRows, lastIndexInView, e, startingIndex);
+                    manageRunSequence(sender, numRows, lastIndexInView, e, startingIndex);
                 }
                 else
                 {
@@ -488,7 +526,9 @@ namespace ScriptManagerV4
 
             button3.Enabled = true;
             button4.Enabled = true;
-
+            toExecLog("END OF EXEC() REACHED");
+            button5.Text = "EXIT";
+            
             if (toolStripProgressBar1.Value == toolStripProgressBar1.Maximum)
             {
                 toExecLog("Execution complete");
@@ -502,56 +542,33 @@ namespace ScriptManagerV4
 
 
 
-        // ------------------------------------------- Run all records in table (filter applies) ----------------------------------------
-        private void runFromTableView(object sender, int numRows, int lastIndexInView, EventArgs e)
+        private void runTableView(object sender, EventArgs e)
         {
-            /*           toolStripProgressBar1.Maximum = numRows;
-                       toolStripLabel3.Text = "Executing scripts...";
-                       toolStripLabel3.Visible = true;
+            // select first row 
+            dataGridView1.Rows[0].Selected = true;
+            // get last index of table
+            int lastIndexInView = dataGridView1.Rows.GetLastRow(DataGridViewElementStates.Visible);
+            int numRows = dataGridView1.Rows.Count;
+            toolStripLabel4.Visible = false;
+            int startingIndex = dataGridView1.SelectedRows[0].Index;
 
-                       Cursor.Current = Cursors.WaitCursor;
-
-                       foreach (DataGridViewRow row in dataGridView1.Rows)
-                       {
-                           // select current row
-                           dataGridView1.Rows[row.Index].Selected = true;
-                           dataGridView1.Update();
-                           currentIndex = row.Index;
-
-                           if (row.Index.Equals(numRows))
-                           {
-                               // loop exceeded index range
-                               break;
-                           }
-                           // run all scripts matching selected environment or where environment is QUAT_ALL
-                           else if (proceed == true && (row.Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || row.Cells[3].Value.ToString() == "QUAT_ALL"))
-                           {
-                               runScript(sender, row, lastIndexInView, e);
-                               executionSummary("record");
-                           }
-
-                           if (proceed == false)
-                           {   
-                               // proceed will be set to false if the user chooses to edit a script mid-run
-                               break;
-                           }
-
-                           // if this row is the last row of the displayed records, restart the application
-                           if (row.Index == numRows)
-                           {
-                               toExecLog("Run sequence complete.");
-                               tabControl1.Update();
-                               toolStripLabel3.Text = "Execution Complete";
-                               button4_Click(sender, e);
-                           }
-                       }
-                       Cursor.Current = Cursors.Default;*/
+            manageRunSequence(sender, numRows, lastIndexInView, e, startingIndex);
         }
 
 
 
-        // ------------------------------------------- Run a defined range of scripts (or resume from paused run) ----------------------------------------
-        private async Task runMultiple(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
+        private void runAtScriptOrder(object sender, EventArgs e)
+        {
+            int startingIndex = dataGridView1.SelectedRows[0].Index;
+            int lastIndexInView = dataGridView1.Rows.GetLastRow(DataGridViewElementStates.Visible);
+            int numRows = dataGridView1.Rows.Count;
+            toolStripLabel4.Visible = false;
+
+            manageRunSequence(sender, numRows, lastIndexInView, e, startingIndex);
+        }
+
+        // ----------------------------------------------------------- Configure and Manage Run ---------------------------------------------------------------------
+        private void manageRunSequence(object sender, int numRows, int lastIndexInView, EventArgs e, int startingIndex)
         {
             toolStripLabel3.Text = "Executing scripts...";
             int result = 0;
@@ -576,13 +593,11 @@ namespace ScriptManagerV4
 
             if (result > -1)
             {
-
                 startingIndex = dataGridView1.SelectedRows[0].Index;
-
                 Cursor.Current = Cursors.WaitCursor;
 
                 // loop to run scripts within given script order range
-                for (int i = startingIndex; i < numRows; i++)
+                for (int i = startingIndex; i < numRows; i++) 
                 {
                     // select current row
                     dataGridView1.Rows[i].Selected = true;
@@ -594,14 +609,10 @@ namespace ScriptManagerV4
                     // run all scripts matching the selected Run Environment or where script_environment is QUAT_ALL
                     if (proceed == true && (dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == comboBox5.SelectedItem.ToString() || dataGridView1.SelectedRows[0].Cells[3].Value.ToString() == "QUAT_ALL"))
                     {
-                        await Task.Run(() => runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e));
-                    }
+                        runScript(sender, dataGridView1.SelectedRows[0], lastIndexInView, e);
+                        richTextBox2.Update();
 
-                    if (proceed == false)
-                    {
-                        break;
                     }
-
                     updateProgressBar();
                 }
                 Cursor.Current = Cursors.Default;
@@ -618,8 +629,6 @@ namespace ScriptManagerV4
             }
             else
             {
-                button3.Enabled = true;
-                button4.Enabled = true;
                 return;
             }
         }
@@ -629,22 +638,13 @@ namespace ScriptManagerV4
         // --------------------------------------------------------- Run script(s) ------------------------------------------------------------
         private void runScript(object sender, DataGridViewRow currentRow, int lastIndexInView, EventArgs e)
         {
-            Invoke(new Action(() =>
-            {
-                toExecLog("\n____________________________________________" +
-                "\nRunning Script Order: " + currentRow.Cells[0].Value.ToString() + ", ID: " + currentRow.Cells[1].Value.ToString() +
-                "\n------------------------------------------------------------------------------");
-            }));
+            errorEncountered = false;
 
-            Invoke(new Action(() =>
-            {
-                toExecLog("Record Index: " + currentRow.Index + " | " + lastIndexInView);
-            }));
+            toExecLog("\n____________________________________________" +
+            "\nRunning Script Order: " + currentRow.Cells[0].Value.ToString() + ", ID: " + currentRow.Cells[1].Value.ToString() +
+            "\n------------------------------------------------------------------------------");
 
-            Invoke(new Action(() =>
-            {
-                richTextBox2.Update();
-            }));
+             toExecLog("Record Index: " + currentRow.Index + " | " + lastIndexInView);
 
             string query = currentRow.Cells[5].Value.ToString();
             try
@@ -656,23 +656,16 @@ namespace ScriptManagerV4
                         using (cmd = new SqlCommand(query, conn))
                         {
                             conn.Open();
-                            Invoke(new Action(() =>
-                             {
-                                 richTextBox2.AppendText("Connected to " + comboBox5.SelectedItem.ToString());
-                             }));
-
+                            //toExecLog("Connected to " + comboBox5.SelectedItem.ToString());
                             try
                             {
-                                var result = cmd.ExecuteNonQuery();
-                                Convert.ToInt32(result);
-                                Invoke(new Action(() =>
-                                {
-                                    richTextBox2.AppendText("Run Result: " + result);
-                                }));
+                                int result = cmd.ExecuteNonQuery();
+                                toExecLog("Run Result: " + result);
                             }
                             catch (SqlException ex)
-                            {
-                                logError(sender, ex, currentRow, e);
+                            { 
+                                errorEncountered = true;
+                                sqlException = ex;
                             }
                         }
                     }
@@ -687,13 +680,9 @@ namespace ScriptManagerV4
             }
             catch (SqlException ex)
             {
-                logError(sender, ex, currentRow, e);
+                errorEncountered = true;
+                sqlException = ex;
             }
-
-            Invoke(new Action(() =>
-            {
-                richTextBox2.Update();
-            }));
         }
 
 
@@ -786,11 +775,8 @@ namespace ScriptManagerV4
             }
 
         }
-
-
-
-
         // END: --------------------------------------------------------- EXECUTION STATEMENTS --------------------------------------------------------------------------------------
+
 
 
         private void logError(object sender, SqlException exception, DataGridViewRow currentScriptRow, EventArgs e)
@@ -878,51 +864,68 @@ namespace ScriptManagerV4
                     DataGridViewRow errorRow = dgv.SelectedRows[0];
 
                     // open error dialog form and store user's response
-                    string response = openErrorPrompt(errorRow);
+                    openErrorPrompt(errorRow);
 
-                    // handling user's response from error dialog 
-                    if (response == "ignore")
-                        toExecLog("Ignoring error");
-                    else if (response == "ignore all")
+                    // handling user's response from error prompt 
+                    if (errorResponse == "ignore")
                     {
+                        proceed = true;
+                        toExecLog("Ignoring error");
+                    }
+                    else if (errorResponse == "ignore all")
+                    {
+                        proceed = true;
                         ignoreAll = true;
                         toExecLog("Ignoring all errors for this run session\n\t -errors will still be logged");
                     }
-                    else if (response == "edit script")
+                    else if (errorResponse == "edit script")
                     {
                         toExecLog("Entering edit mode...");
                         if (radioButton1.Checked == true || radioButton3.Checked == true)
                             prepareForUpdateAndResume(sender, e, exception, currentScriptRow);
 
+                        // Run a Selected Script is checked
                         else if (radioButton4.Checked == true)
                         {
-                            richTextBox1.Enabled = true;
-                            tabControl1.SelectedIndex = 0;
-                            highlightLine(richTextBox1, Convert.ToInt32(errorRow.Cells[3].Value), Yellow);
+                            // lambda expression because we are accessing form property from async task (Run)                      
+                            Invoke(new Action(() =>
+                            {
+                                richTextBox1.Enabled = true;
+                            }));
+
+                            Invoke(new Action(() =>
+                            {
+                                tabControl1.SelectedIndex = 0;
+                            }));
+
+                            Invoke(new Action(() =>
+                            {
+                                highlightLine(richTextBox1, Convert.ToInt32(errorRow.Cells[3].Value), Yellow);
+                            }));
+
                             proceed = true;
                         }
 
                     }
-                    else if (response == "quit")
+                    else if (errorResponse == "quit")
                     {
                         button4_Click(sender, e);
                         proceed = false;
                     }
-                    else if (response == "failure")
+                    else if (errorResponse == "failure")
                     {
-                        MessageBox.Show(response);
+                        MessageBox.Show(errorResponse);
                     }
                     else
                     {
-                        response = "quit";
-                        toExecLog(response + "\nAborting...");
+                        errorResponse = "quit";
+                        toExecLog(errorResponse + "\nAborting...");
                         proceed = false;
                     }
                 }
                 else
                     MessageBox.Show("The error log is empty");
             }
-            Console.WriteLine("Ignore all is true");
         }
 
 
@@ -966,12 +969,21 @@ namespace ScriptManagerV4
             // store value of progress bar 
             progressPosition = toolStripProgressBar1.Value;
 
-            // switch to tab where script can be modified
-            tabControl1.SelectedIndex = 0;
+            // switch to tab where script can be modified; lambda expression because we are accessing form property from async task (Run)
+            Invoke(new Action(() =>
+            {
+                tabControl1.SelectedIndex = 0;
+            }));
 
             // prepare script in richTextBox 
-            richTextBox1.Enabled = true;
-            richTextBox1.Text = currentScriptRow.Cells[5].Value.ToString();
+            Invoke(new Action(() =>
+            {
+                MainForm form = new MainForm();
+                richTextBox1 = new RichTextBox();
+                richTextBox1.Enabled = true;
+                richTextBox1.Text = currentScriptRow.Cells[5].Value.ToString();
+            }));
+
             colorizeScript();
             highlightLine(richTextBox1, exception.LineNumber, Yellow);
 
@@ -1040,13 +1052,13 @@ namespace ScriptManagerV4
 
                 // show the form and return the user's error-handling choice
                 f2.ShowDialog();
-                string errorOption = f2.option;
-                toExecLog("Your response: " + errorOption);
+                string response = f2.option;
+                toExecLog("Your response: " + errorResponse);
                 f2.Close();
-                return errorOption;
+                return response;
             }
-            string failure = "Failed to open error dialog: selected error record is null or nothing was selected";
-            return failure;
+            else
+                return "Oops: Error log is either empty or there was an mishap selecting the error row.";
         }
 
 
@@ -1144,7 +1156,7 @@ namespace ScriptManagerV4
 
 
         private void colorizeScript()
-        {
+        { 
             // SQL text formatting
             toolStripLabel3.Text = "Formatting script...";
             toolStripLabel3.Visible = true;
