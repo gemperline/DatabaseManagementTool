@@ -65,10 +65,17 @@ namespace ScriptManagerV4
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'testDBDataSet.cpsc362_project' table. You can move, or remove it, as needed.
+            //this.cpsc362_projectTableAdapter.Fill(this.testDBDataSet.cpsc362_project);
             try
             {
+                //********DEVELOPER NOTES********
+                // the data set 'rMDataSet8' must be modified to access the 'dbo.refresh' table (or create a new data set, entirely) when this application is being used for Post-Restore processes
+                // conversely, it must be switched back to access 'dbo.refresh_testing' when developing and testing this application
+                //
+
                 // TODO: This line of code loads data into the 'rMDataSet.refresh_testing' table. You can move, or remove it, as needed.
-                this.refresh_testingTableAdapter1.Fill(this.rMDataSet8.refresh_testing);
+                //this.refresh_testingTableAdapter1.Fill(this.rMDataSet8.refresh_testing);
             }
             catch (Exception ex)
             {
@@ -314,8 +321,6 @@ namespace ScriptManagerV4
                 button3.Enabled = true;
                 button3.Visible = true;
             }
-
-            // when UPDATE & RESUME is selected
             else if (actionSelected == "UPDATE & RESUME")
             {
                 radioButton3.Text = "Resume At S.O. #: ";
@@ -353,7 +358,6 @@ namespace ScriptManagerV4
                 if (runEnvironment != -1)
                     comboBox5.SelectedIndex = runEnvironment;
             }
-
             // no selection
             else if (comboBox1.SelectedIndex == -1)
             {

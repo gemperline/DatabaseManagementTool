@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScriptManFinal.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScriptManagerV4.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="RMConnectionString" Type="(Connection string)" Scope="Application">
@@ -17,6 +17,14 @@
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=brmqatontdbs07;Initial Catalog=dba_admin;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="TestDBConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=adamg.database.windows.net;Initial Catalog=TestDB;Persist Security Info=True;User ID=agemperline&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=adamg.database.windows.net;Initial Catalog=TestDB;Persist Security Info=True;User ID=agemperline</Value>
     </Setting>
   </Settings>
 </SettingsFile>

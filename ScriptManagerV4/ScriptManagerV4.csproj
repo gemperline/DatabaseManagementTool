@@ -122,6 +122,16 @@
       <DependentUpon>RMDataSet8.xsd</DependentUpon>
     </Compile>
     <Compile Include="SourceFormat.cs" />
+    <Compile Include="TestDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TestDBDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDBDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="TsqlFormat.cs" />
     <EmbeddedResource Include="InspectError.resx">
       <DependentUpon>InspectError.cs</DependentUpon>
@@ -205,6 +215,28 @@
     </None>
     <None Include="RMDataSet8.xss">
       <DependentUpon>RMDataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="TestDBDataSet.xsc">
+      <DependentUpon>TestDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="TestDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TestDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TestDBDataSet.xss">
+      <DependentUpon>TestDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="TestDBDataSet1.xsc">
+      <DependentUpon>TestDBDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="TestDBDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TestDBDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TestDBDataSet1.xss">
+      <DependentUpon>TestDBDataSet1.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

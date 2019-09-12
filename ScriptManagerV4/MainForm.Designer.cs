@@ -113,12 +113,6 @@ namespace ScriptManagerV4
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.scriptorderDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scriptfunctionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scriptenvironmentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scriptdescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scriptDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -174,6 +168,14 @@ namespace ScriptManagerV4
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.gradientPanel1 = new ScriptManagerV4.GradientPanel();
             this.gradientPanel2 = new ScriptManagerV4.GradientPanel();
+            this.testDBDataSet = new ScriptManagerV4.TestDBDataSet();
+            this.cpsc362projectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.cpsc362_projectTableAdapter = new ScriptManagerV4.TestDBDataSetTableAdapters.cpsc362_projectTableAdapter();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.genreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.stageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rMDataSet8)).BeginInit();
@@ -200,6 +202,8 @@ namespace ScriptManagerV4
             ((System.ComponentModel.ISupportInitialize)(this.refreshtestingBindingSource2)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.toolStrip3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testDBDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpsc362projectBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // refreshtestingBindingSource
@@ -874,14 +878,13 @@ namespace ScriptManagerV4
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.scriptorderDataGridViewTextBoxColumn,
-            this.iDDataGridViewTextBoxColumn,
-            this.scriptfunctionDataGridViewTextBoxColumn,
-            this.scriptenvironmentDataGridViewTextBoxColumn,
-            this.scriptdescriptionDataGridViewTextBoxColumn,
-            this.scriptDataGridViewTextBoxColumn});
+            this.idDataGridViewTextBoxColumn,
+            this.nameDataGridViewTextBoxColumn,
+            this.genreDataGridViewTextBoxColumn,
+            this.stageDataGridViewTextBoxColumn,
+            this.timeDataGridViewTextBoxColumn});
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.dataGridView1.DataSource = this.refreshtestingBindingSource2;
+            this.dataGridView1.DataSource = this.cpsc362projectBindingSource;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.Color.GhostWhite;
             dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial", 8.25F);
@@ -908,59 +911,6 @@ namespace ScriptManagerV4
             this.dataGridView1.TabIndex = 36;
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseUp);
-            // 
-            // scriptorderDataGridViewTextBoxColumn
-            // 
-            this.scriptorderDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.scriptorderDataGridViewTextBoxColumn.DataPropertyName = "script_order";
-            this.scriptorderDataGridViewTextBoxColumn.HeaderText = "script_order";
-            this.scriptorderDataGridViewTextBoxColumn.Name = "scriptorderDataGridViewTextBoxColumn";
-            this.scriptorderDataGridViewTextBoxColumn.ReadOnly = true;
-            this.scriptorderDataGridViewTextBoxColumn.Width = 91;
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn.Width = 41;
-            // 
-            // scriptfunctionDataGridViewTextBoxColumn
-            // 
-            this.scriptfunctionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.scriptfunctionDataGridViewTextBoxColumn.DataPropertyName = "script_function";
-            this.scriptfunctionDataGridViewTextBoxColumn.HeaderText = "script_function";
-            this.scriptfunctionDataGridViewTextBoxColumn.Name = "scriptfunctionDataGridViewTextBoxColumn";
-            this.scriptfunctionDataGridViewTextBoxColumn.ReadOnly = true;
-            this.scriptfunctionDataGridViewTextBoxColumn.Width = 104;
-            // 
-            // scriptenvironmentDataGridViewTextBoxColumn
-            // 
-            this.scriptenvironmentDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.scriptenvironmentDataGridViewTextBoxColumn.DataPropertyName = "script_environment";
-            this.scriptenvironmentDataGridViewTextBoxColumn.HeaderText = "script_environment";
-            this.scriptenvironmentDataGridViewTextBoxColumn.Name = "scriptenvironmentDataGridViewTextBoxColumn";
-            this.scriptenvironmentDataGridViewTextBoxColumn.ReadOnly = true;
-            this.scriptenvironmentDataGridViewTextBoxColumn.Width = 124;
-            // 
-            // scriptdescriptionDataGridViewTextBoxColumn
-            // 
-            this.scriptdescriptionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.scriptdescriptionDataGridViewTextBoxColumn.DataPropertyName = "script_description";
-            this.scriptdescriptionDataGridViewTextBoxColumn.HeaderText = "script_description";
-            this.scriptdescriptionDataGridViewTextBoxColumn.Name = "scriptdescriptionDataGridViewTextBoxColumn";
-            this.scriptdescriptionDataGridViewTextBoxColumn.ReadOnly = true;
-            this.scriptdescriptionDataGridViewTextBoxColumn.Width = 118;
-            // 
-            // scriptDataGridViewTextBoxColumn
-            // 
-            this.scriptDataGridViewTextBoxColumn.DataPropertyName = "Script";
-            this.scriptDataGridViewTextBoxColumn.HeaderText = "Script";
-            this.scriptDataGridViewTextBoxColumn.Name = "scriptDataGridViewTextBoxColumn";
-            this.scriptDataGridViewTextBoxColumn.ReadOnly = true;
-            this.scriptDataGridViewTextBoxColumn.Width = 200;
             // 
             // contextMenuStrip1
             // 
@@ -1548,6 +1498,55 @@ namespace ScriptManagerV4
             this.gradientPanel2.TabIndex = 64;
             this.gradientPanel2.Visible = false;
             // 
+            // testDBDataSet
+            // 
+            this.testDBDataSet.DataSetName = "TestDBDataSet";
+            this.testDBDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // cpsc362projectBindingSource
+            // 
+            this.cpsc362projectBindingSource.DataMember = "cpsc362_project";
+            this.cpsc362projectBindingSource.DataSource = this.testDBDataSet;
+            // 
+            // cpsc362_projectTableAdapter
+            // 
+            this.cpsc362_projectTableAdapter.ClearBeforeFill = true;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // genreDataGridViewTextBoxColumn
+            // 
+            this.genreDataGridViewTextBoxColumn.DataPropertyName = "genre";
+            this.genreDataGridViewTextBoxColumn.HeaderText = "genre";
+            this.genreDataGridViewTextBoxColumn.Name = "genreDataGridViewTextBoxColumn";
+            this.genreDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // stageDataGridViewTextBoxColumn
+            // 
+            this.stageDataGridViewTextBoxColumn.DataPropertyName = "stage";
+            this.stageDataGridViewTextBoxColumn.HeaderText = "stage";
+            this.stageDataGridViewTextBoxColumn.Name = "stageDataGridViewTextBoxColumn";
+            this.stageDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // timeDataGridViewTextBoxColumn
+            // 
+            this.timeDataGridViewTextBoxColumn.DataPropertyName = "time";
+            this.timeDataGridViewTextBoxColumn.HeaderText = "time";
+            this.timeDataGridViewTextBoxColumn.Name = "timeDataGridViewTextBoxColumn";
+            this.timeDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -1627,6 +1626,8 @@ namespace ScriptManagerV4
             this.toolStrip2.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testDBDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpsc362projectBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1698,12 +1699,6 @@ namespace ScriptManagerV4
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.BindingSource refreshtestingBindingSource2;
         private RMDataSet8TableAdapters.refresh_testingTableAdapter refresh_testingTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn scriptorderDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn scriptfunctionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn scriptenvironmentDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn scriptdescriptionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn scriptDataGridViewTextBoxColumn;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
@@ -1758,6 +1753,14 @@ namespace ScriptManagerV4
         private System.Windows.Forms.DataGridViewTextBoxColumn error_message;
         private System.Windows.Forms.DataGridViewTextBoxColumn error_procedure;
         private System.Windows.Forms.DataGridViewTextBoxColumn error_time;
+        private TestDBDataSet testDBDataSet;
+        private System.Windows.Forms.BindingSource cpsc362projectBindingSource;
+        private TestDBDataSetTableAdapters.cpsc362_projectTableAdapter cpsc362_projectTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn genreDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stageDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeDataGridViewTextBoxColumn;
     }
 }
 
